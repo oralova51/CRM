@@ -5,8 +5,10 @@ import { signOutThunk } from "@/entities/user/api/UserApi";
 import { Button } from "@/shared/ui/Button/Button";
 
 const NAV_ITEMS = [
-  { to: "/", label: "Главная" },
-  { to: "/tasks", label: "Задачи" },
+  { to: "/", label: "Дашборд" },
+  { to: "/bookings", label: "Запись на процедуру" },
+  { to: "/procedures", label: "Календарь посещений" },
+  { to: "/ai", label: "Виртуальный ассистент" },
 ];
 
 export default function Layout() {

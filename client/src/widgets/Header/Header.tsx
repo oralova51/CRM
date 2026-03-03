@@ -21,11 +21,17 @@ export default function Header() {
     <header>
       <nav>
         <NavLink to="/" className="navlink">
-          Главная
+          Дашборд
         </NavLink>
-        <NavLink to="/tasks" className="navlink">
-          Задачи
+        <NavLink to="/bookings" className="navlink">
+          Запись на процедуру
         </NavLink>
+        <NavLink to="/procedures" className="navlink">
+          Процедуры
+        </NavLink>  
+        <NavLink to="/ai" className="navlink">
+          Виртуальный ассистент
+        </NavLink>  
 
         {user ? (
           <>
