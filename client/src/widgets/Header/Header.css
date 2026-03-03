@@ -1,0 +1,29 @@
+nav {
+  display: flex;
+  gap: 35px;
+  justify-content: center;
+  height: 50px;
+  margin-bottom: 20px;
+}
+
+.navlink {
+  text-decoration: none;
+  text-transform: uppercase;
+  color: rgb(23, 23, 23);
+  font-size: 20px;
+  padding: 20px 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  transition: background-color 0.3s ease;
+}
+
+.navlink:hover {
+  background-color: beige;
+}
+
+.navlink.active {
+  background-color: rgb(236, 236, 236);
+}

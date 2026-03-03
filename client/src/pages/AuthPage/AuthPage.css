@@ -1,0 +1,17 @@
+.form-container {
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-link {
+  cursor: pointer;
+  color: #3b82f6;
+  transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+  color: #2563eb;
+}
