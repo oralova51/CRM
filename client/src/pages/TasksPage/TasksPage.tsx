@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import TaskApi from '../../entities/task/api/TaskApi';
-import type { Task } from '../../entities/task/model';
-import './TasksPage.css';
+import { useEffect, useState } from "react";
+import TaskApi from "../../entities/task/api/TaskApi";
+import type { Task } from "../../entities/task/model";
+import "./TasksPage.css";
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -21,32 +21,38 @@ export default function TasksPage() {
       setTasks(data);
       setError(null);
     } else {
-      setError(responseError || 'Не удалось загрузить список задач');
+      setError(responseError || "Не удалось загрузить список задач");
     }
 
     setIsLoading(false);
   }
 
   return (
-    <div className="app-container">
-      <h2>Задачи</h2>
+    <section className="page tasks-page">
+      <header className="page-header">
+        <div>
+          <h1 className="page-title">Задачи</h1>
+          <p className="page-subtitle">
+            Актуальные поручения и рабочие заметки по клиентам.
+          </p>
+        </div>
+      </header>
 
-      {isLoading && <p>Загрузка задач...</p>}
-      {error && <p className="tasks-error">{error}</p>}
+      {isLoading && <p className="page-status">Загрузка задач...</p>}
+      {error && <p className="page-status page-status--error">{error}</p>}
 
       {!isLoading && !error && tasks.length === 0 && (
-        <p>Задач пока нет.</p>
+        <p className="page-status">Задач пока нет.</p>
       )}
 
       <div className="tasks-list">
         {tasks.map((task) => (
-          <div key={task.id} className="task-card">
-            <h3>{task.title}</h3>
-            <p>{task.text}</p>
-          </div>
+          <article key={task.id} className="task-card">
+            <h2 className="task-title">{task.title}</h2>
+            <p className="task-text">{task.text}</p>
+          </article>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
-

@@ -1,0 +1,54 @@
+:.crm-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.crm-input-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.crm-input {
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.625rem;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  background-color: #f3f3f5;
+  font-size: 0.9375rem;
+  color: #111827;
+  outline: none;
+  transition:
+    border-color 0.16s ease-out,
+    box-shadow 0.16s ease-out,
+    background-color 0.16s ease-out;
+}
+
+.crm-input::placeholder {
+  color: #9ca3af;
+}
+
+.crm-input:focus-visible {
+  border-color: rgba(3, 2, 19, 0.9);
+  box-shadow: 0 0 0 3px rgba(3, 2, 19, 0.12);
+  background-color: #ffffff;
+}
+
+.crm-input[aria-invalid="true"] {
+  border-color: #d4183d;
+  box-shadow: 0 0 0 3px rgba(212, 24, 61, 0.18);
+}
+
+.crm-input:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.crm-input-helper {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+

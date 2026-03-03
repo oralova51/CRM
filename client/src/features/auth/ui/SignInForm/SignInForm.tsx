@@ -1,11 +1,11 @@
-import { useState, type FormEvent, type ChangeEvent } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import "./SignInForm.css";
 import { UserValidator } from "../../../../entities/user/model/UserValidator";
-import FormInput from "../../../../shared/ui/FormInput/FormInput";
+import { Input } from "@/shared/ui/Input/Input";
+import { Button } from "@/shared/ui/Button/Button";
 import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { signInThunk } from "@/entities/user/api/UserApi";
-
 
 export default function SignInForm() {
   const initialValue = { email: "", password: "" };
@@ -37,28 +37,30 @@ export default function SignInForm() {
   };
 
   return (
-    <div>
-      <form className="form" onSubmit={signInHandler}>
-        <FormInput
-          placeholder=" "
+    <form className="auth-form" onSubmit={signInHandler}>
+      <div className="auth-fields">
+        <Input
           name="email"
           type="email"
           required
           onChange={inputHandler}
           value={signInData.email}
           label="Почта"
+          placeholder="you@example.com"
         />
-        <FormInput
-          placeholder=" "
+        <Input
           name="password"
           type="password"
           required
           onChange={inputHandler}
           value={signInData.password}
           label="Пароль"
+          placeholder="Введите пароль"
         />
-        <button className="form-action-button">Войти</button>
-      </form>
-    </div>
+      </div>
+      <Button type="submit" fullWidth>
+        Войти
+      </Button>
+    </form>
   );
 }

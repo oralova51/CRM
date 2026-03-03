@@ -1,14 +1,11 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import "./SignUpForm.css";
 import { UserValidator } from "../../../../entities/user/model/UserValidator";
-
-import { setAccessToken } from "../../../../shared/lib/axiosInstance";
-import FormInput from "../../../../shared/ui/FormInput/FormInput";
+import { Input } from "@/shared/ui/Input/Input";
+import { Button } from "@/shared/ui/Button/Button";
 import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { signUpThunk } from "@/entities/user/api/UserApi";
-
-
 
 export default function SignUpForm() {
   const initialValue = { username: "", email: "", password: "" };
@@ -40,37 +37,39 @@ export default function SignUpForm() {
   };
 
   return (
-    <div>
-      <form className="form" onSubmit={signUpHandler}>
-        <FormInput
-          placeholder=" "
+    <form className="auth-form" onSubmit={signUpHandler}>
+      <div className="auth-fields">
+        <Input
           name="username"
           type="text"
           required
           onChange={inputHandler}
           value={signUpData.username}
           label="Имя"
+          placeholder="Как к вам обращаться"
         />
-        <FormInput
-          placeholder=" "
+        <Input
           name="email"
           type="email"
           required
           onChange={inputHandler}
           value={signUpData.email}
           label="Почта"
+          placeholder="you@example.com"
         />
-        <FormInput
-          placeholder=" "
+        <Input
           name="password"
           type="password"
           required
           onChange={inputHandler}
           value={signUpData.password}
           label="Пароль"
+          placeholder="Минимум 8 символов"
         />
-        <button className="form-action-button">Зарегистрироваться</button>
-      </form>
-    </div>
+      </div>
+      <Button type="submit" fullWidth>
+        Зарегистрироваться
+      </Button>
+    </form>
   );
 }
