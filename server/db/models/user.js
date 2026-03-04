@@ -31,12 +31,12 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static validateSignUpData(data) {
-      const { username, email, password } = data;
+      const { name, email, password } = data;
 
       if (
-        !username ||
-        typeof username !== 'string' ||
-        username.trim().length === 0
+        !name ||
+        typeof name !== 'string' ||
+        name.trim().length === 0
       ) {
         return {
           isValid: false,
@@ -103,9 +103,33 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init(
     {
-      username: DataTypes.STRING,
-      email: DataTypes.STRING,
-      password: DataTypes.STRING,
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      phone: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      totalSpent: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+        defaultValue: 0.00,
+      },
+      role: {
+        type: DataTypes.ENUM('isAdmin', 'isClient'),
+        allowNull: false,
+        defaultValue: 'isClient',
+      },
     },
     {
       sequelize,

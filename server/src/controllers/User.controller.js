@@ -133,13 +133,15 @@ class UserController {
 
   static async signUp(req, res) {
     // Достаём данные для регистрации из тела запроса
-    const { username, email, password } = req.body;
+    const { name, email, password, role, phone } = req.body;
 
     // Валидация данных
     const { isValid, error } = User.validateSignUpData({
-      username,
+      name,
       email,
       password,
+      role, 
+      phone
     });
 
     if (!isValid) {
@@ -172,9 +174,11 @@ class UserController {
 
       // Создаем пользователя в БД
       const newUser = await UserService.createNewUser({
-        username,
+        name,
         email,
         password: hashedPassword,
+        role,
+        phone
       });
 
       if (!newUser) {
