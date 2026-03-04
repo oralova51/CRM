@@ -22,6 +22,20 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      phone: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      totalSpent: {
+        type: Sequelize.DECIMAL(10, 2),
+        allowNull: false,
+        defaultValue: 0.00,
+      },
+      role: {
+        type: Sequelize.ENUM('isAdmin', 'isClient'),
+        allowNull: false,
+        defaultValue: 'isClient',
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
