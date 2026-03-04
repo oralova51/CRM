@@ -8,7 +8,7 @@ module.exports = {
 
     await queryInterface.bulkInsert('Users', [
       {
-        username: 'Алексей Петров',
+        name: 'Алексей Петров',
         email: 'aleksey.petrov@example.com',
         password: hashedPassword,
         phone: '+79161234567',
@@ -18,7 +18,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        username: 'Мария Иванова',
+        name: 'Мария Иванова',
         email: 'maria.ivanova@example.com',
         password: hashedPassword,
         phone: '+79037654321',
@@ -28,7 +28,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        username: 'Дмитрий Сидоров',
+        name: 'Дмитрий Сидоров',
         email: 'dmitry.sidorov@example.com',
         password: hashedPassword,
         phone: '+79261112233',
@@ -38,17 +38,17 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        username: 'Екатерина Козлова',
+        name: 'Екатерина Козлова',
         email: 'ekaterina.kozlova@example.com',
         password: hashedPassword,
-        phone: null,
+        phone: +79213678484,
         totalSpent: 0.00,
         role: 'isClient',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        username: 'Сергей Новиков',
+        name: 'Сергей Новиков',
         email: 'sergey.novikov@example.com',
         password: hashedPassword,
         phone: '+79854449900',

@@ -31,12 +31,12 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static validateSignUpData(data) {
-      const { username, email, password } = data;
+      const { name, email, password } = data;
 
       if (
-        !username ||
-        typeof username !== 'string' ||
-        username.trim().length === 0
+        !name ||
+        typeof name !== 'string' ||
+        name.trim().length === 0
       ) {
         return {
           isValid: false,
@@ -103,7 +103,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init(
     {
-      username: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
