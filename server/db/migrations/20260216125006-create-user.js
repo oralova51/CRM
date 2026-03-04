@@ -24,7 +24,7 @@ module.exports = {
       },
       phone: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       totalSpent: {
         type: Sequelize.DECIMAL(10, 2),
