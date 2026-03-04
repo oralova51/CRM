@@ -22,7 +22,8 @@ export default function MainPage() {
           </p>
         </div>
         <div className="main-card-image">
-          <img src="/beaver-1.jpg" alt="Бобр" />
+          {/* <img src="/beaver-1.jpg" alt="Бобр" /> */}
+          🥰🥰🥰🥰🥰🥰
         </div>
       </div>
     </section>

@@ -1,6 +1,6 @@
 export type UserType = {
   id: number;
-  username: string;
+  name: string;
   email: string;
   password: string;
   createdAt: string;
@@ -13,9 +13,11 @@ export type UserWithTokenType = {
 };
 
 export type UserSignUpData = {
-  username: string;
+  name: string;
   email: string;
   password: string;
+  phone: string;
+  
 }
 
 export type UserSignInData = {
