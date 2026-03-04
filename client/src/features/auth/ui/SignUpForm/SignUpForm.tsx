@@ -8,7 +8,7 @@ import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { signUpThunk } from "@/entities/user/api/UserApi";
 
 export default function SignUpForm() {
-  const initialValue = { username: "", email: "", password: "" };
+  const initialValue = { name: "", email: "", password: "", phone: ""  };
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
@@ -40,11 +40,11 @@ export default function SignUpForm() {
     <form className="auth-form" onSubmit={signUpHandler}>
       <div className="auth-fields">
         <Input
-          name="username"
+          name="name"
           type="text"
           required
           onChange={inputHandler}
-          value={signUpData.username}
+          value={signUpData.name}
           label="Имя"
           placeholder="Как к вам обращаться"
         />
@@ -65,6 +65,16 @@ export default function SignUpForm() {
           value={signUpData.password}
           label="Пароль"
           placeholder="Минимум 8 символов"
+        />
+
+        <Input
+          name="phone"
+          type="tel"
+          required
+          onChange={inputHandler}
+          value={signUpData.phone}
+          label="Телефон"
+          placeholder="+7 (999) 999-99-99"
         />
       </div>
       <Button type="submit" fullWidth>

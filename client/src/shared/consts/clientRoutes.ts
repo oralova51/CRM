@@ -1,6 +1,6 @@
 export const CLIENT_ROUTES = {
   MAIN_PAGE: "/",
-  TASKS: "/tasks",
+  // TASKS: "/tasks",
   AUTH: "/auth",
 } as const;
 
