@@ -18,6 +18,7 @@ export default function AppRouter() {
           path={CLIENT_ROUTES.AUTH.slice(1)}
           element={<AuthPage  />}
         />
+        <Route path="*" element={<h1>Нет контента</h1>} />
         {/* <Route path={CLIENT_ROUTES.TASKS.slice(1)} element={<TasksPage />} /> */}
       </Route>
     </Routes>
