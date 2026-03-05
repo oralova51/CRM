@@ -232,6 +232,148 @@ class UserController {
         .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
     }
   }
+
+  static async getMe(req, res) {
+    try {
+      const { user } = res.locals;
+      console.log("User from token:", user);
+      const userWithoutPassword = {
+        ...user,
+      };
+      delete userWithoutPassword.password;
+      res
+        .status(200)
+        .json(
+          formatResponse(
+            200,
+            "Данные о пользователе получены",
+            userWithoutPassword,
+            null,
+          ),
+        );
+    } catch (error) {
+      console.log("==== UserController.getMe ==== ");
+      console.log(error);
+      res
+        .status(500)
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
+    }
+  }
+
+  //возможность менять totalSpent при оформлении заказа, для корректного отображения в профиле клиента
+  //totalSpent может менять только админ
+
+  static async totalSpentChanger(req, res) {
+    try {
+      const { user: adminUser } = res.locals;
+
+      // Проверка прав администратора
+      if (adminUser.role !== "isAdmin") {
+        return res
+          .status(403)
+          .json(
+            formatResponse(
+              403,
+              "Доступ запрещён: недостаточно прав",
+              null,
+              "Доступ запрещён: недостаточно прав",
+            ),
+          );
+      }
+
+      const { userId, amount } = req.body;
+
+      // Валидация входных данных
+      if (!userId) {
+        return res
+          .status(400)
+          .json(
+            formatResponse(
+              400,
+              "Не указан ID пользователя",
+              null,
+              "Missing userId",
+            ),
+          );
+      }
+
+      if (amount === undefined || amount === null) {
+        return res
+          .status(400)
+          .json(
+            formatResponse(400, "Не указана сумма", null, "Missing amount"),
+          );
+      }
+
+      // Проверяем, что amount - число
+      const amountNum = parseFloat(amount);
+      if (isNaN(amountNum)) {
+        return res
+          .status(400)
+          .json(
+            formatResponse(
+              400,
+              "Сумма должна быть числом",
+              null,
+              "Invalid amount format",
+            ),
+          );
+      }
+
+      // Дополнительно: проверяем, что сумма не слишком большая
+      if (amountNum > 99999999.99) {
+        return res
+          .status(400)
+          .json(
+            formatResponse(
+              400,
+              "Сумма превышает допустимый лимит",
+              null,
+              "Amount too large",
+            ),
+          );
+      }
+
+      const updatedUser = await UserService.totalSpentChanger(
+        userId,
+        amountNum,
+      );
+
+      // Преобразуем totalSpent в число для ответа (если в модели нет геттера)
+      const responseUser = {
+        ...updatedUser,
+        totalSpent: parseFloat(updatedUser.totalSpent),
+      };
+
+      res
+        .status(200)
+        .json(
+          formatResponse(
+            200,
+            "Сумма totalSpent успешно обновлена",
+            responseUser,
+            null,
+          ),
+        );
+    } catch (error) {
+      console.log("==== UserController.totalSpentChanger ==== ");
+      console.log(error);
+
+      if (error.message === "User not found") {
+        return res
+          .status(404)
+          .json(
+            formatResponse(404, "Пользователь не найден", null, error.message),
+          );
+      }
+
+      res
+        .status(500)
+        .json(
+          formatResponse(500, "Внутренняя ошибка сервера", null, error.message),
+        );
+    }
+  }
 }
 
 module.exports = UserController;

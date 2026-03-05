@@ -57,6 +57,16 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        name: 'Olya2@mail.ru',
+        email: 'olya2@mail.ru',
+        password: hashedPassword,
+        phone: '+79854449900',
+        totalSpent: 67450.00,
+        role: 'isAdmin',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
 

@@ -45,6 +45,13 @@
   padding: 1.5rem 1.25rem;
 }
 
+/* Карточка лояльности внутри main-card занимает всю ширину и идёт ниже контента */
+.main-card .loyalty-card,
+.main-card .loyalty-card-skeleton {
+  grid-column: 1 / -1;
+  margin-top: 0.75rem;
+}
+
 @media (max-width: 640px) {
   .main-card {
     grid-template-columns: minmax(0, 1fr);
