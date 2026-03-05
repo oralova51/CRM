@@ -6,6 +6,7 @@ import LoyaltyApi from "../api/LoyaltyApi";
 import { useUserLoyaltyStore } from "../store/store";
 import { Crown } from "lucide-react";
 import * as Progress from "@radix-ui/react-progress";
+import { useAppSelector } from "@/shared/hooks/useReduxHooks";
 
 export default function LoyaltyLevelCard() {
   const userLoyaltyLevel = useUserLoyaltyStore(
@@ -19,12 +20,16 @@ export default function LoyaltyLevelCard() {
   useEffect(() => {
     async function loadDiscount() {
       const data = await LoyaltyApi.getUserDiscount();
-      console.log("!!!!!!",data);
-      
+      console.log("!!!!!!", data);
+
       setUserLoyaltyLevel(data);
     }
     loadDiscount();
   }, []);
+
+  const userState = useAppSelector((state) => state.user);
+  const user = userState?.user;
+  console.log('это мой юзер', user?.totalSpent);
 
   // Mock data for when userLoyaltyLevel is not available yet
   if (!userLoyaltyLevel) {
@@ -35,7 +40,7 @@ export default function LoyaltyLevelCard() {
     );
   }
 
-  const currentSpending = 128000; // This should come from userLoyaltyLevel data
+  const currentSpending = user?.totalSpent || 0; //вычисляю, сколько потрятил мой юзер
   const nextLevelTarget = 136500; // This should come from loyalty level config
   const toNextLevel = nextLevelTarget - currentSpending;
   const progress = (currentSpending / nextLevelTarget) * 100;
@@ -68,7 +73,9 @@ export default function LoyaltyLevelCard() {
       {/* Progress Section */}
       <div className="loyalty-card-progress-section">
         <div className="loyalty-card-progress-header">
-          <span className="loyalty-card-progress-label">До следующего уровня</span>
+          <span className="loyalty-card-progress-label">
+            До следующего уровня
+          </span>
           <span className="loyalty-card-progress-value">
             {toNextLevel.toLocaleString("ru-RU")} ₽
           </span>
@@ -91,7 +98,8 @@ export default function LoyaltyLevelCard() {
       {/* Next Level Info */}
       <div className="loyalty-card-next-level">
         <p className="loyalty-card-next-level-text">
-          Следующий уровень: <span className="loyalty-card-next-level-name">Diamond</span> • 
+          Следующий уровень:{" "}
+          <span className="loyalty-card-next-level-name">Diamond</span> •
           Скидка: <span className="loyalty-card-next-level-discount">15%</span>
         </p>
       </div>
