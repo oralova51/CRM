@@ -1,6 +1,7 @@
 const apiRouter = require('express').Router();
 // const taskRouter = require('./task.route');/
 const authRouter = require('./auth.route');
+const loyaltyLevelRouter = require('./loyaltyLevel.route');
 const formatResponse = require('../utils/formatResponse');
 const measurementRouter = require('./measurement.route');
 
@@ -8,6 +9,7 @@ const measurementRouter = require('./measurement.route');
 apiRouter.use('/auth', authRouter);
 apiRouter.use('/measurement', measurementRouter);
 
+apiRouter.use('/loyalty', loyaltyLevelRouter);
 
 // Обрабатываем несуществующие пути в API
 apiRouter.use((req, res) => {

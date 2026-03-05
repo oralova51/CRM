@@ -1,6 +1,11 @@
 import "./MainPage.css";
+import LoyaltyApi from "@/entities/loyaltyLevel/api/LoyaltyApi";
 
 export default function MainPage() {
+  console.log(LoyaltyApi.getLoyaltyLevels());
+  console.log(LoyaltyApi.getUserDiscount());
+  
+  
   return (
     <section className="page main-page">
       <header className="page-header">
@@ -22,7 +27,8 @@ export default function MainPage() {
           </p>
         </div>
         <div className="main-card-image">
-          <img src="/beaver-1.jpg" alt="Бобр" />
+          {/* <img src="/beaver-1.jpg" alt="Бобр" /> */}
+          🥰🥰🥰🥰🥰🥰
         </div>
       </div>
     </section>

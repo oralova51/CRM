@@ -1,51 +1,70 @@
 import { NavLink } from "react-router";
-import type { Dispatch, SetStateAction } from "react";
 import "./Header.css";
-// import UserApi from "../../entities/user/api/UserApi";
-// import { setAccessToken } from "../../shared/lib/axiosInstance";
-// import type { User } from "../../entities/user/model";
 import { signOutThunk } from "../../entities/user/api/UserApi";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import { Button } from "@/shared/ui/Button/Button";
 
+const NAV_ITEMS = [
+  { to: "/", label: "Дашборд" },
+  { to: "/bookings", label: "Запись на процедуру" },
+  { to: "/procedures", label: "Календарь посещений" },
+  { to: "/ai", label: "Виртуальный ассистент" },
+];
 
 export default function Header() {
-  const userState = useAppSelector((state) => state.user);
-  const { user } = userState;
+  const { user } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
   async function handleSignOut() {
-    await dispatch(signOutThunk())
+    await dispatch(signOutThunk());
   }
 
   return (
-    <header>
-      <nav>
-        <NavLink to="/" className="navlink">
-          Дашборд
-        </NavLink>
-        <NavLink to="/bookings" className="navlink">
-          Запись на процедуру
-        </NavLink>
-        <NavLink to="/procedures" className="navlink">
-          Процедуры
-        </NavLink>  
-        <NavLink to="/ai" className="navlink">
-          Виртуальный ассистент
-        </NavLink>  
+    <header className="shell-header">
+      <div className="shell-brand">
+        <span className="shell-brand-title">CRM Studio</span>
+        <span className="shell-brand-subtitle">Рабочее пространство</span>
+      </div>
+      
+      <nav className="shell-nav-desktop">
+        {NAV_ITEMS.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            className={({ isActive }) =>
+              [
+                "shell-nav-link",
+                isActive && "shell-nav-link--active",
+              ]
+                .filter(Boolean)
+                .join(" ")
+            }
+            end={item.to === "/"}
+          >
+            {item.label}
+          </NavLink>
+        ))}
+      </nav>
 
+      <div className="shell-user">
         {user ? (
           <>
-            <p>{user.username}</p>
-            <NavLink to="/auth" className="navlink" onClick={handleSignOut}>
-              Выход
-            </NavLink>
+            <span className="shell-user-name">{user.name}</span>
+            <Button
+              type="button"
+              size="sm"
+              variant="ghost"
+              onClick={handleSignOut}
+            >
+              Выйти
+            </Button>
           </>
         ) : (
-          <NavLink to="/auth" className="navlink">
-            Вход
+          <NavLink to="/auth" className="shell-auth-link">
+            Войти
           </NavLink>
         )}
-      </nav>
+      </div>
     </header>
   );
 }

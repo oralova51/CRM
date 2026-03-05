@@ -25,14 +25,16 @@ export class UserValidator {
     return true;
   }
 
-  static validateSignUpData(data: SignUpRequest): ValidationResult {
-    const { username, email, password } = data;
+  static validatePhone(phone: string): boolean {
+    const phonePattern =
+      /^(\+7|8)?[\s\-]?\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}$/;
+    return phonePattern.test(phone);
+  }
 
-    if (
-      !username ||
-      typeof username !== "string" ||
-      username.trim().length === 0
-    ) {
+  static validateSignUpData(data: SignUpRequest): ValidationResult {
+    const { name, email, password, phone } = data;
+
+    if (!name || typeof name !== "string" || name.trim().length === 0) {
       return {
         isValid: false,
         error: "Имя пользователя не должно быть пустым",
@@ -62,6 +64,18 @@ export class UserValidator {
         error: "Пароль не соответствует критериям валидации",
       };
     }
+
+     if (
+    !phone ||
+    typeof phone !== "string" ||
+    phone.trim().length === 0 ||
+    !this.validatePhone(phone)
+  ) {
+    return {
+      isValid: false,
+      error: "Неверный формат номера телефона",
+    };
+  }
 
     return { isValid: true, error: null };
   }
