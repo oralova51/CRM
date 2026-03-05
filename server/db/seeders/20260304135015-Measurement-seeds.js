@@ -21,8 +21,6 @@ module.exports = {
           // Заметки
           notes: "Начальные замеры, левое бедро 57.5 см",
           created_by: 1,
-          created_at: new Date(),
-          updated_at: new Date(),
         },
         {
           user_id: 1,
@@ -36,8 +34,6 @@ module.exports = {
           photo_after: "/public/measurements/to_2.jpeg",
           notes: "Отличный прогресс! Левое бедро уменьшилось",
           created_by: 1,
-          created_at: new Date(),
-          updated_at: new Date(),
         },
         {
           user_id: 2,
@@ -51,8 +47,6 @@ module.exports = {
           photo_after: "/public/measurements/to_3.jpeg",
           notes: "Цель: увеличить бедра",
           created_by: 2,
-          created_at: new Date(),
-          updated_at: new Date(),
         },
         {
           user_id: 3, // Третий клиент
@@ -66,8 +60,6 @@ module.exports = {
           photo_after: "/public/measurements/to_4.jpeg",
           notes: "Левое бедро мощное - 62 см",
           created_by: 1,
-          created_at: new Date(),
-          updated_at: new Date(),
         },
       ],
       {},

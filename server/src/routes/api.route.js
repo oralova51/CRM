@@ -2,9 +2,12 @@ const apiRouter = require('express').Router();
 // const taskRouter = require('./task.route');/
 const authRouter = require('./auth.route');
 const formatResponse = require('../utils/formatResponse');
+const measurementRouter = require('./measurement.route');
 
 // apiRouter.use('/tasks', taskRouter);
 apiRouter.use('/auth', authRouter);
+apiRouter.use('/measurement', measurementRouter);
+
 
 // Обрабатываем несуществующие пути в API
 apiRouter.use((req, res) => {
