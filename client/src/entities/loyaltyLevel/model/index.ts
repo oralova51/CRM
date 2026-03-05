@@ -7,7 +7,7 @@ export type ServerResponseType<T> = {
 
 export type LoyaltyLevel = {
     id: number;
-    name: string;
+    level: string;
     min_spent: number;
     discount_pct: number;
     created_at: string;

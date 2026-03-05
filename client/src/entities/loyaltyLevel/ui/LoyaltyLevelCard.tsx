@@ -20,6 +20,8 @@ export default function LoyaltyLevelCard() {
   useEffect(() => {
     async function loadDiscount() {
       const data = await LoyaltyApi.getUserDiscount();
+      console.log("!!!!!!", data.data);
+      
       setUserLoyaltyLevel(data.data);
     }
     loadDiscount();
@@ -51,7 +53,7 @@ export default function LoyaltyLevelCard() {
             <span className="loyalty-card-status-label">Ваш статус</span>
           </div>
           <h2 className="loyalty-card-level">
-            {userLoyaltyLevel.level || "PLATINUM"}
+            {userLoyaltyLevel.level || "Без уровня"}
           </h2>
           <p className="loyalty-card-discount-info">
             Индивидуальная скидка:{" "}
