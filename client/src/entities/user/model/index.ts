@@ -3,6 +3,8 @@ export type UserType = {
   name: string;
   email: string;
   password: string;
+  phone: string;
+  totalSpent: number;
   createdAt: string;
   updatedAt: string;
 }
