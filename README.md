@@ -284,17 +284,15 @@ Booking {
 Measurement {
   id            SERIAL PRIMARY KEY
   user_id       INTEGER REFERENCES User(id) ON DELETE CASCADE
-  measured_at   DATE NOT NULL
-  weight_kg     DECIMAL(5, 2)
-  waist_cm      DECIMAL(5, 2)
-  hips_cm       DECIMAL(5, 2)
-  chest_cm      DECIMAL(5, 2)
-  thigh_cm      DECIMAL(5, 2)
-  arms_cm       DECIMAL(5, 2)
-  body_fat_pct  DECIMAL(5, 2)
+  measured_at   DATE NOT NULL 
+  waist_cm      DECIMAL(5, 2)//талия НАДО 
+  hips_cm       DECIMAL(5, 2) //БЕДРА НАДО 
+  hip_1    DECIMAL(5, 2) //НАДО 
+  chest_cm      DECIMAL(5, 2) // грудь НАДО  
+  arms_cm       DECIMAL(5, 2) //руки НАДО 
   photo_before  VARCHAR(500)             -- URL или путь к файлу
   photo_after   VARCHAR(500)
-  notes         TEXT                     -- комментарий администратора
+  notes         TEXT                     -- комментарий администратора //заметку может видеть только админ 
   created_by    INTEGER REFERENCES User(id)  -- id администратора
   created_at    TIMESTAMP DEFAULT NOW()
   updated_at    TIMESTAMP DEFAULT NOW()
