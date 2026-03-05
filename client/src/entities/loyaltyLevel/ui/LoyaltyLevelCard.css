@@ -1,0 +1,215 @@
+.loyalty-card {
+  background: linear-gradient(to bottom right, #171717, #262626, #171717);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Large screens (laptop/desktop) - matches lg: prefix */
+@media (min-width: 1024px) {
+  .loyalty-card {
+    padding: 3rem;
+  }
+}
+
+.loyalty-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.loyalty-card-title-section {
+  flex: 1;
+}
+
+.loyalty-card-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.loyalty-card-crown {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #fbbf24;
+}
+
+@media (min-width: 1024px) {
+  .loyalty-card-crown {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}
+
+.loyalty-card-status-label {
+  font-size: 0.875rem;
+  color: #a3a3a3;
+}
+
+@media (min-width: 1024px) {
+  .loyalty-card-status-label {
+    font-size: 1rem;
+  }
+}
+
+.loyalty-card-level {
+  font-size: 1.875rem;
+  letter-spacing: 0.025em;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+@media (min-width: 1024px) {
+  .loyalty-card-level {
+    font-size: 2.25rem;
+  }
+}
+
+.loyalty-card-discount-info {
+  font-size: 0.875rem;
+  color: #a3a3a3;
+}
+
+@media (min-width: 1024px) {
+  .loyalty-card-discount-info {
+    font-size: 1rem;
+  }
+}
+
+.loyalty-card-discount-value {
+  color: white;
+  font-weight: 500;
+}
+
+.loyalty-card-discount-badge {
+  padding: 0.5rem 1rem;
+  background-color: rgba(251, 191, 36, 0.2);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.loyalty-card-discount-badge-text {
+  font-size: 1.5rem;
+  color: #fbbf24;
+}
+
+@media (min-width: 1024px) {
+  .loyalty-card-discount-badge-text {
+    font-size: 1.875rem;
+  }
+}
+
+/* Progress Section */
+.loyalty-card-progress-section {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.loyalty-card-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.75rem;
+}
+
+.loyalty-card-progress-label {
+  font-size: 0.875rem;
+  color: #a3a3a3;
+}
+
+.loyalty-card-progress-value {
+  font-size: 1.125rem;
+}
+
+@media (min-width: 1024px) {
+  .loyalty-card-progress-value {
+    font-size: 1.25rem;
+  }
+}
+
+/* Progress Bar */
+.loyalty-card-progress-root {
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  width: 100%;
+  height: 0.75rem;
+}
+
+.loyalty-card-progress-indicator {
+  background: linear-gradient(to right, #fbbf24, #f59e0b);
+  width: 100%;
+  height: 100%;
+  transition: transform 500ms ease-out;
+  border-radius: 9999px;
+}
+
+.loyalty-card-progress-range {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #a3a3a3;
+  margin-top: 0.5rem;
+}
+
+/* Next Level Info */
+.loyalty-card-next-level {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.loyalty-card-next-level-text {
+  font-size: 0.875rem;
+  color: #a3a3a3;
+}
+
+.loyalty-card-next-level-name,
+.loyalty-card-next-level-discount {
+  color: white;
+}
+
+/* Skeleton Loading State */
+.loyalty-card-skeleton {
+  background: linear-gradient(to bottom right, #171717, #262626, #171717);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  min-height: 300px;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .loyalty-card-skeleton {
+    padding: 2rem;
+    min-height: 350px;
+  }
+}
+
+.loyalty-card-shimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

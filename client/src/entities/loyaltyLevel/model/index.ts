@@ -14,7 +14,9 @@ export type LoyaltyLevel = {
     updated_at: string;
 };
 export type UserLoyaltyData = {
-    discount: number;
+    discount_pct: number;
+    level: string;
+    min_spent: number;
 };
 
 export type UserLoyaltyLevel = ServerResponseType<UserLoyaltyData>;
