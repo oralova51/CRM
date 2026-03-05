@@ -1,14 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./LoyaltyLevelCard.css";
-import { create } from "zustand";
-import type { UserLoyaltyLevel } from "../model";
+import type { LoyaltyLevel } from "../model";
 import LoyaltyApi from "../api/LoyaltyApi";
 import { useUserLoyaltyStore } from "../store/store";
 import { Crown } from "lucide-react";
 import * as Progress from "@radix-ui/react-progress";
 import { useAppSelector } from "@/shared/hooks/useReduxHooks";
+import {
+  getNextLevel,
+  getProgress,
+  getRemainingToNext,
+} from "../lib/loyaltyHelpers";
 
 export default function LoyaltyLevelCard() {
+  const [levels, setLevels] = useState<LoyaltyLevel[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
   const userLoyaltyLevel = useUserLoyaltyStore(
     (state) => state.userLoyaltyLevel,
   );
@@ -18,20 +25,38 @@ export default function LoyaltyLevelCard() {
   );
 
   useEffect(() => {
-    async function loadDiscount() {
-      const data = await LoyaltyApi.getUserDiscount();
-      console.log("!!!!!!", data.data);
-      
-      setUserLoyaltyLevel(data.data);
+    async function loadLoyaltyData() {
+      try {
+        const [userDiscountResponse, loyaltyLevels] = await Promise.all([
+          LoyaltyApi.getUserDiscount(),
+          LoyaltyApi.getLoyaltyLevels(),
+        ]);
+
+        setUserLoyaltyLevel(userDiscountResponse.data);
+        if (Array.isArray(loyaltyLevels) && loyaltyLevels.length > 0) {
+          const sortedLevels = [...loyaltyLevels].sort(
+            (a, b) => a.min_spent - b.min_spent,
+          );
+          setLevels(sortedLevels);
+        } else {
+          setLevels(null);
+        }
+      } catch (error) {
+        // В продакшене можно добавить отдельный трекинг ошибок
+        console.error("Failed to load loyalty data", error);
+      } finally {
+        setIsLoading(false);
+      }
     }
-    loadDiscount();
-  }, []);
+
+    loadLoyaltyData();
+  }, [setUserLoyaltyLevel]);
 
   const userState = useAppSelector((state) => state.user);
   const user = userState?.user;
 
-  // Mock data for when userLoyaltyLevel is not available yet
-  if (!userLoyaltyLevel) {
+  // Skeleton для состояния загрузки
+  if (isLoading && !userLoyaltyLevel) {
     return (
       <div className="loyalty-card-skeleton">
         <div className="loyalty-card-shimmer" />
@@ -39,10 +64,50 @@ export default function LoyaltyLevelCard() {
     );
   }
 
-  const currentSpending = user?.totalSpent || 0; //вычисляю, сколько потрятил мой юзер
-  const nextLevelTarget = 136500; // This should come from loyalty level config
-  const toNextLevel = nextLevelTarget - currentSpending;
-  const progress = (currentSpending / nextLevelTarget) * 100;
+  // Если загрузка закончилась, но данных нет — показываем аккуратный плейсхолдер
+  if (!userLoyaltyLevel) {
+    return (
+      <div className="loyalty-card empty-state">
+        <div className="loyalty-card-header">
+          <div className="loyalty-card-title-section">
+            <div className="loyalty-card-title-wrapper">
+              <Crown className="loyalty-card-crown" />
+              <span className="loyalty-card-status-label">Ваш статус</span>
+            </div>
+            <h2 className="loyalty-card-level">Нет данных</h2>
+            <p className="loyalty-card-discount-info">
+              Информация о программе лояльности временно недоступна.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const currentSpending = user?.totalSpent || 0;
+
+  const hasLevels = Array.isArray(levels) && levels.length > 0;
+
+  const currentLevel = hasLevels
+    ? // определяем текущий уровень по суммарным тратам
+      [...levels].reverse().find((level) => currentSpending >= level.min_spent)
+    : undefined;
+
+  const rawProgress = hasLevels
+    ? getProgress(levels, currentSpending)
+    : 0;
+  const progress = Math.max(0, Math.min(100, rawProgress));
+  const toNextLevel = hasLevels
+    ? getRemainingToNext(levels, currentSpending)
+    : 0;
+  const nextLevel = hasLevels
+    ? getNextLevel(levels, currentSpending)
+    : undefined;
+
+  const nextLevelTarget =
+    hasLevels && nextLevel?.min_spent
+      ? nextLevel.min_spent
+      : currentSpending || 1;
 
   return (
     <div className="loyalty-card">
@@ -53,18 +118,19 @@ export default function LoyaltyLevelCard() {
             <span className="loyalty-card-status-label">Ваш статус</span>
           </div>
           <h2 className="loyalty-card-level">
-            {userLoyaltyLevel.level || "Без уровня"}
+            {currentLevel?.level || userLoyaltyLevel.level || "Без уровня"}
           </h2>
           <p className="loyalty-card-discount-info">
             Индивидуальная скидка:{" "}
             <span className="loyalty-card-discount-value">
-              {userLoyaltyLevel.discount_pct}%
+              {(currentLevel?.discount_pct ??
+                userLoyaltyLevel.discount_pct) || 0}
             </span>
           </p>
         </div>
         <div className="loyalty-card-discount-badge">
           <div className="loyalty-card-discount-badge-text">
-            {userLoyaltyLevel.min_spent}%
+            {(currentLevel?.discount_pct ?? userLoyaltyLevel.discount_pct) || 0}%
           </div>
         </div>
       </div>
@@ -76,7 +142,9 @@ export default function LoyaltyLevelCard() {
             До следующего уровня
           </span>
           <span className="loyalty-card-progress-value">
-            {toNextLevel.toLocaleString("ru-RU")} ₽
+            {hasLevels && nextLevel
+              ? toNextLevel.toLocaleString("ru-RU")
+              : "—"} ₽
           </span>
         </div>
 
@@ -97,9 +165,30 @@ export default function LoyaltyLevelCard() {
       {/* Next Level Info */}
       <div className="loyalty-card-next-level">
         <p className="loyalty-card-next-level-text">
-          Следующий уровень:{" "}
-          <span className="loyalty-card-next-level-name">Diamond</span> •
-          Скидка: <span className="loyalty-card-next-level-discount">15%</span>
+          {!hasLevels ? (
+            <>
+              Информация о следующих уровнях появится позже.
+            </>
+          ) : nextLevel ? (
+            <>
+              Следующий уровень:{" "}
+              <span className="loyalty-card-next-level-name">
+                {nextLevel.level}
+              </span>{" "}
+              • Скидка:{" "}
+              <span className="loyalty-card-next-level-discount">
+                {nextLevel.discount_pct}%
+              </span>
+            </>
+          ) : (
+            <>
+              Вы на максимальном уровне программы лояльности. Текущая скидка:{" "}
+              <span className="loyalty-card-next-level-discount">
+                {(currentLevel?.discount_pct ??
+                  userLoyaltyLevel.discount_pct) || 0}
+              </span>
+            </>
+          )}
         </p>
       </div>
     </div>

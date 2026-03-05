@@ -4,12 +4,16 @@
   padding: 1.5rem;
   color: white;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 /* Large screens (laptop/desktop) - matches lg: prefix */
 @media (min-width: 1024px) {
   .loyalty-card {
-    padding: 3rem;
+    padding: 2.5rem;
+    max-width: 540px;
   }
 }
 
@@ -181,12 +185,23 @@
   min-height: 300px;
   position: relative;
   overflow: hidden;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.loyalty-card.empty-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 220px;
 }
 
 @media (min-width: 1024px) {
   .loyalty-card-skeleton {
-    padding: 2rem;
-    min-height: 350px;
+    padding: 2.5rem;
+    min-height: 340px;
+    max-width: 540px;
   }
 }
 
