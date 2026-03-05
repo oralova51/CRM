@@ -232,6 +232,28 @@ class UserController {
         .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
     }
   }
+
+  static async getMe(req, res) {
+    try {
+      const { user } = res.locals;
+      console.log('User from token:', user)
+      const userWithoutPassword = {
+        ...user,
+      };
+      delete userWithoutPassword.password;
+      res
+        .status(200)
+        .json(
+          formatResponse(200, "Данные о пользователе получены", userWithoutPassword, null),
+        );
+    } catch (error) {
+      console.log("==== UserController.getMe ==== ");
+      console.log(error);
+      res
+        .status(500)
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
+    }
+  }
 }
 
 module.exports = UserController;

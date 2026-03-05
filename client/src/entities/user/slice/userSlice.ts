@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { initialUserState, type UserType } from '../model';
-import { refreshThunk, signInThunk, signOutThunk, signUpThunk } from '../api/UserApi';
+import { refreshThunk, signInThunk, signOutThunk, signUpThunk, getMeThunk } from '../api/UserApi';
 
 
 const userSlice = createSlice({
@@ -68,6 +68,21 @@ const userSlice = createSlice({
             state.user = null;
         })
         builder.addCase(signOutThunk.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload || null;
+            state.user = null;
+            state.isInitialized = true;
+        })
+        builder.addCase(getMeThunk.pending, (state) => {
+            state.isLoading = true;
+            state.error = null;
+        })
+        builder.addCase(getMeThunk.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isInitialized = true;
+            state.user = action.payload;
+        })
+        builder.addCase(getMeThunk.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.payload || null;
             state.user = null;
