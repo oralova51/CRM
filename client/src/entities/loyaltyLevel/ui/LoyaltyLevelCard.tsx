@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./LoyaltyLevelCard.css";
 import { create } from "zustand";
-import type { UserLoyaltyData } from "../model";
+import type { UserLoyaltyLevel } from "../model";
 import LoyaltyApi from "../api/LoyaltyApi";
 import { useUserLoyaltyStore } from "../store/store";
 import { Crown } from "lucide-react";
@@ -20,16 +20,13 @@ export default function LoyaltyLevelCard() {
   useEffect(() => {
     async function loadDiscount() {
       const data = await LoyaltyApi.getUserDiscount();
-      console.log("!!!!!!", data);
-
-      setUserLoyaltyLevel(data);
+      setUserLoyaltyLevel(data.data);
     }
     loadDiscount();
   }, []);
 
   const userState = useAppSelector((state) => state.user);
   const user = userState?.user;
-  console.log('это мой юзер', user?.totalSpent);
 
   // Mock data for when userLoyaltyLevel is not available yet
   if (!userLoyaltyLevel) {

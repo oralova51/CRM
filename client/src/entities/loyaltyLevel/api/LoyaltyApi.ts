@@ -2,7 +2,6 @@ import { axiosInstance } from "../../../shared/lib/axiosInstance";
 
 import type {
   LoyaltyLevel,
-  UserLoyaltyData,
   UserLoyaltyLevel,
   ServerResponseType,
 } from "@/entities/loyaltyLevel/model";
@@ -10,9 +9,7 @@ import type {
 export default class LoyaltyApi {
   static async getUserDiscount(): Promise<ServerResponseType<LoyaltyLevel>> {
     const response = await axiosInstance.get<ServerResponseType<LoyaltyLevel>>("/loyalty/status");
-    const data = response.data.data;
-    console.log('!!!!!>>>>>>', data);
-    
+    const data = response.data;
     return data;
   }
 
