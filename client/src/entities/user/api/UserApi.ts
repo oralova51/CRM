@@ -9,14 +9,16 @@ const USER_THUNK_NAMES = {
   SIGN_UP: 'user/signUp',
   SIGN_IN: 'user/signIn',
   REFRESH: 'user/refresh',
-  SIGN_OUT: 'user/signOut'
+  SIGN_OUT: 'user/signOut',
+  ME: 'user/getMe'
 } as const;
 
 const USER_API_URL = {
   SIGN_UP: '/auth/signup',
   SIGN_IN: '/auth/signin',
   REFRESH: '/auth/refresh',
-  SIGN_OUT: '/auth/signout'
+  SIGN_OUT: '/auth/signout',
+  ME: '/auth/me'
 } as const;
 
 
@@ -38,6 +40,25 @@ export const refreshThunk = createAsyncThunk<UserType, void, { rejectValue: stri
   }
 });
 
+export const getMeThunk = createAsyncThunk<UserType, void, { rejectValue: string }>(
+  USER_THUNK_NAMES.ME, 
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await axiosInstance.get<ServerResponseType<UserType>>(USER_API_URL.ME)
+
+      if (data.statusCode === 200 && data.data) {
+        // Не вызываем setAccessToken - токен не меняется!
+        return data.data; // data.data - это сам пользователь
+      }
+      return rejectWithValue('Ошибка при получении данных пользователя');
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return rejectWithValue(error.response?.data?.message || 'Ошибка при получении данных пользователя');
+      }
+      return rejectWithValue('Ошибка при получении данных пользователя');
+    }
+  }
+);
 
 export const signUpThunk = createAsyncThunk<UserType, UserSignUpData, { rejectValue: string }>(USER_THUNK_NAMES.SIGN_UP, async (userData, { rejectWithValue }) => {
 
