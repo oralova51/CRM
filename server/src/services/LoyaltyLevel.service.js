@@ -10,10 +10,15 @@ class LoyaltyLevelService {
       throw new Error("User not found");
     }
 
+    // Используем правильное имя поля - totalSpent (как в модели)
+    const totalSpent = parseFloat(user.totalSpent) || 0;
+
+    console.log("Total spent:", totalSpent); // Должно быть 30000
+
     const loyaltyLevel = await LoyaltyLevel.findOne({
       where: {
         min_spent: {
-          [Op.lte]: user.total_spent,
+          [Op.lte]: totalSpent,
         },
       },
       order: [["min_spent", "DESC"]],
@@ -34,10 +39,10 @@ class LoyaltyLevelService {
     };
   }
 
-    static async getLoyaltyLevels() {
-        const loyaltyLevels = await LoyaltyLevel.findAll();
-        return loyaltyLevels;
-    }
+  static async getLoyaltyLevels() {
+    const loyaltyLevels = await LoyaltyLevel.findAll();
+    return loyaltyLevels;
+  }
 }
 
 module.exports = LoyaltyLevelService;
