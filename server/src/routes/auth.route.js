@@ -8,6 +8,7 @@ authRouter
   .post('/signin', UserController.signIn)
   .get('/signout', UserController.signOut)
   .get('/me', verifyAccessToken, UserController.getMe)
-  .get('/refresh', verifyRefreshToken, UserController.refreshTokens);
+  .get('/refresh', verifyRefreshToken, UserController.refreshTokens)
+  .patch('/change-total-spend', verifyAccessToken, UserController.totalSpentChanger)
 
 module.exports = authRouter;
