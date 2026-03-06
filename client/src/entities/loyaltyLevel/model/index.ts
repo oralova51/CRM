@@ -6,12 +6,12 @@ export type ServerResponseType<T> = {
 };
 
 export type LoyaltyLevel = {
-    id: number;
-    level: string;
-    min_spent: number;
-    discount_pct: number;
-    created_at: string;
-    updated_at: string;
+  id: number;
+  name: string;
+  min_spent: number;
+  discount_pct: number;
+  created_at: string;
+  updated_at: string;
 };
 
 export type UserLoyaltyLevel = ServerResponseType<LoyaltyLevel>;

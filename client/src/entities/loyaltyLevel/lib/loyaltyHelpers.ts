@@ -23,8 +23,9 @@ export function getProgress(levels: LoyaltyLevel[], totalSpent:number) {
 
   if (!next) return 100
 
-  const prevTarget = current?.min_spent ?? 0
-  const nextTarget = next.min_spent
+// loyaltyHelpers.ts
+const prevTarget = Number(current?.min_spent ?? 0)
+const nextTarget = Number(next.min_spent)
 
   return ((totalSpent - prevTarget) / (nextTarget - prevTarget)) * 100
 }

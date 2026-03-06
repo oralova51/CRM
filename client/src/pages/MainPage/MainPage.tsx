@@ -2,6 +2,7 @@ import LoyaltyLevelCard from "@/entities/loyaltyLevel/ui/LoyaltyLevelCard/Loyalt
 import "./MainPage.css";
 import { FinansialBenefits } from "@/entities/loyaltyLevel/ui/FinansialBenefits/FinansialBenefits";
 
+
 export default function MainPage() {
   return (
     <section className="page main-page">
@@ -19,8 +20,7 @@ export default function MainPage() {
         <div className="main-card-text">
           <h2>Добро пожаловать</h2>
           <p>
-            Здесь вы можете отслеживать задачи, работать с клиентами и
-            планировать работу команды в едином интерфейсе.
+            Ваша личная панель лояльности
           </p>
         </div>
         <div className="main-card-image">
