@@ -236,18 +236,25 @@ class UserController {
   static async getMe(req, res) {
     try {
       const { user } = res.locals;
-      console.log("User from token:", user);
-      const userWithoutPassword = {
-        ...user,
-      };
-      delete userWithoutPassword.password;
+
+      // Читаем актуальные данные из БД, чтобы totalSpent не был устаревшим из JWT
+      const freshUser = await User.findByPk(user.id, {
+        attributes: { exclude: ["password"] },
+      });
+
+      if (!freshUser) {
+        return res
+          .status(404)
+          .json(formatResponse(404, "Пользователь не найден", null, "User not found"));
+      }
+
       res
         .status(200)
         .json(
           formatResponse(
             200,
             "Данные о пользователе получены",
-            userWithoutPassword,
+            freshUser,
             null,
           ),
         );

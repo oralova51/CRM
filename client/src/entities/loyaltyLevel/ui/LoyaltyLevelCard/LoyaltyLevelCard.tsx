@@ -8,6 +8,7 @@ import * as Progress from "@radix-ui/react-progress";
 import { useAppSelector, useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { getMeThunk } from "@/entities/user/api/UserApi";
 import {
+  getCurrentLevel,
   getNextLevel,
   getProgress,
   getRemainingToNext,
@@ -33,8 +34,7 @@ export default function LoyaltyLevelCard() {
   useEffect(() => {
     dispatch(getMeThunk());
   }, [dispatch]);
-  console.log(user, 'USER');
-  
+
 
   // Загружаем данные лояльности
   useEffect(() => {
@@ -84,17 +84,21 @@ export default function LoyaltyLevelCard() {
     );
   }
 
-  const currentSpending = user?.totalSpent || 0;
+  // DECIMAL из PostgreSQL приходит как строка, parseFloat обеспечивает корректную арифметику
+  const currentSpending = parseFloat(String(user?.totalSpent ?? 0)) || 0;
 
   const hasLevels = Array.isArray(levels) && levels.length > 0;
 
+  // Используем хелпер — он ищет наивысший уровень, порог которого не превышает currentSpending
   const currentLevel = hasLevels
-    ? [...levels].reverse().find((level) => currentSpending >= level.min_spent)
+    ? getCurrentLevel(levels, currentSpending)
     : undefined;
 
+  // getProgress: (currentSpending − currentLevel.min_spent) / (nextLevel.min_spent − currentLevel.min_spent) × 100
   const rawProgress = hasLevels ? getProgress(levels, currentSpending) : 0;
-
   const progress = Math.max(0, Math.min(100, rawProgress));
+
+  // nextLevel.min_spent − currentSpending
   const toNextLevel = hasLevels
     ? getRemainingToNext(levels, currentSpending)
     : 0;
@@ -102,12 +106,12 @@ export default function LoyaltyLevelCard() {
     ? getNextLevel(levels, currentSpending)
     : undefined;
 
-  const nextLevelTarget =
-    hasLevels && nextLevel?.min_spent
-      ? nextLevel.min_spent
-      : currentSpending || 1;
+  // Левая метка = порог текущего уровня (начало диапазона на баре)
+  const currentLevelTarget = currentLevel?.min_spent ?? 0;
+  // Правая метка = порог следующего уровня; при максимальном уровне — порог текущего (бар заполнен)
+  const nextLevelTarget = nextLevel?.min_spent ?? currentLevel?.min_spent ?? currentSpending;
 
-  // Определяем скидку для отображения
+  // Скидка берётся из currentLevel (вычисленного по фактическому spending), с fallback на ответ сервера
   const discountPct =
     currentLevel?.discount_pct ?? userLoyaltyLevel.discount_pct ?? 0;
 
@@ -120,7 +124,7 @@ export default function LoyaltyLevelCard() {
             <span className="loyalty-card-status-label">Ваш статус</span>
           </div>
           <h2 className="loyalty-card-level">
-            {currentLevel?.level || userLoyaltyLevel.level || "Без уровня"}
+            {currentLevel?.name || userLoyaltyLevel.name || "Без уровня"}
           </h2>
           <p className="loyalty-card-discount-info">
             Индивидуальная скидка:{" "}
@@ -139,8 +143,9 @@ export default function LoyaltyLevelCard() {
             До следующего уровня
           </span>
           <span className="loyalty-card-progress-value">
-            {hasLevels && nextLevel ? toNextLevel.toLocaleString("ru-RU") : "—"}{" "}
-            ₽
+            {hasLevels && nextLevel
+              ? `${toNextLevel.toLocaleString("ru-RU")} ₽`
+              : "—"}
           </span>
         </div>
 
@@ -153,7 +158,9 @@ export default function LoyaltyLevelCard() {
         </Progress.Root>
 
         <div className="loyalty-card-progress-range">
-          <span>{currentSpending.toLocaleString("ru-RU")} ₽</span>
+          {/* Начало диапазона = порог текущего уровня */}
+          <span>{currentLevelTarget.toLocaleString("ru-RU")} ₽</span>
+          {/* Конец диапазона = порог следующего уровня (или текущего при максимальном уровне) */}
           <span>{nextLevelTarget.toLocaleString("ru-RU")} ₽</span>
         </div>
       </div>
@@ -167,7 +174,7 @@ export default function LoyaltyLevelCard() {
             <>
               Следующий уровень:{" "}
               <span className="loyalty-card-next-level-name">
-                {nextLevel.level}
+                {nextLevel.name}
               </span>{" "}
               • Скидка:{" "}
               <span className="loyalty-card-next-level-discount">

@@ -27,20 +27,23 @@ class LoyaltyLevelService {
     if (!loyaltyLevel) {
       return {
         discount_pct: 0,
-        level: "base",
+        name: "base",
         min_spent: 0,
       };
     }
 
     return {
       discount_pct: loyaltyLevel.discount_pct,
-      level: loyaltyLevel.level,
+      name: loyaltyLevel.level,
       min_spent: loyaltyLevel.min_spent,
     };
   }
 
+  // server/src/services/LoyaltyLevel.service.js
   static async getLoyaltyLevels() {
-    const loyaltyLevels = await LoyaltyLevel.findAll();
+    const loyaltyLevels = await LoyaltyLevel.findAll({
+      order: [['min_spent', 'ASC']],  // ← добавить сортировку
+    });
     return loyaltyLevels;
   }
 }

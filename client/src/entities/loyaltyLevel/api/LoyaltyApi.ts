@@ -14,11 +14,11 @@ export default class LoyaltyApi {
   }
 
   static async getLoyaltyLevels(): Promise<LoyaltyLevel[]> {
-    const response =
-      await axiosInstance.get<ServerResponseType<LoyaltyLevel[]>>(
-        "/loyalty/levels",
-      );
+    const response = await axiosInstance.get<
+      ServerResponseType<{ loyaltyLevels: LoyaltyLevel[] }>
+    >("/loyalty/levels");
 
-    return response.data.data;
+    // Сервер оборачивает массив в { loyaltyLevels: [...] }
+    return response.data.data?.loyaltyLevels ?? [];
   }
 }
