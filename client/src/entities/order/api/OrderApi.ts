@@ -6,9 +6,11 @@ import type {
   CreateOrderRequest,
   UpdateOrderRequest,
   OrderApiData,
+  OrdersApiData,
+  OrdersResponse,
 } from "../model";
 import type { ServerResponseType } from "@/shared/types";
-
+import { CLIENT_ROUTES } from "@/shared/consts/clientRoutes";
 const ORDER_BASE = "/order";
 
 function toOrderResponse(
@@ -22,12 +24,23 @@ function toOrderResponse(
   };
 }
 
+function toOrdersResponse(
+  raw: ServerResponseType<OrdersApiData>,
+): OrdersResponse {
+  return {
+    statusCode: raw.statusCode,
+    message: raw.message,
+    data: raw.data?.orders ?? [],
+    error: raw.error,
+  };
+}
+
 export default class OrderApi {
   static async createOrder(body: CreateOrderRequest): Promise<OrderResponse> {
     try {
       const response = await axiosInstance.post<
         ServerResponseType<OrderApiData>
-      >(ORDER_BASE, body);
+      >(CLIENT_ROUTES.ORDER + '/byUser/' + body.user_id, body);
       return toOrderResponse(response.data);
     } catch (error) {
       console.error("OrderApi.createOrder:", error);
@@ -53,6 +66,23 @@ export default class OrderApi {
         message: "Ошибка при получении заказа",
         data: null,
         error: "Ошибка при получении заказа",
+      };
+    }
+  }
+
+  static async getOrdersByUserId(userId: number): Promise<OrdersResponse> {
+    try {
+      const response = await axiosInstance.get<
+        ServerResponseType<OrdersApiData>
+      >(`${ORDER_BASE}/byUser/${userId}`);
+      return toOrdersResponse(response.data);
+    } catch (error) {
+      console.error("OrderApi.getOrdersByUserId:", error);
+      return {
+        statusCode: 500,
+        message: "Ошибка при получении заказов",
+        data: [],
+        error: "Ошибка при получении заказов",
       };
     }
   }

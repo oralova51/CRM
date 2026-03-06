@@ -45,6 +45,18 @@ class OrderController {
       res.status(500).json(formatResponse(500, "Failed to retrieve order"));
     }
   }
+
+  static async getOrdersByUserId(req, res) {
+    try {
+      const orders = await OrderService.getOrdersByUserId(req.params.userId);
+      res.json(formatResponse(200, "Orders retrieved successfully", { orders }));
+    } catch (error) {
+      console.error("Error retrieving orders:", error);
+      res.status(500).json(formatResponse(500, "Failed to retrieve orders"));
+    }
+  }
+
+
   static async updateOrder(req, res) {
     try {
       const order = await OrderService.updateOrder(req.params.id, req.body);
