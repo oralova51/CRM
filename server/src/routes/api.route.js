@@ -4,12 +4,14 @@ const authRouter = require('./auth.route');
 const loyaltyLevelRouter = require('./loyaltyLevel.route');
 const formatResponse = require('../utils/formatResponse');
 const measurementRouter = require('./measurement.route');
+const bookingRouter = require('./booking.route');
 
 
 apiRouter.use('/auth', authRouter);
 apiRouter.use('/measurement', measurementRouter);
 apiRouter.use('/procedures', procedureRouter);
 apiRouter.use('/loyalty', loyaltyLevelRouter);
+apiRouter.use('/booking', bookingRouter);
 
 // Обрабатываем несуществующие пути в API
 apiRouter.use((req, res) => {
