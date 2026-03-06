@@ -5,6 +5,7 @@ const loyaltyLevelRouter = require('./loyaltyLevel.route');
 const formatResponse = require('../utils/formatResponse');
 const measurementRouter = require('./measurement.route');
 const orderRouter = require('./order.route');
+const bookingRouter = require('./booking.route');
 
 apiRouter.use('/auth', authRouter);
 apiRouter.use('/measurement', measurementRouter);

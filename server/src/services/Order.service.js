@@ -22,6 +22,15 @@ class OrderService {
       throw new Error('Error fetching order: ' + error.message);
     }
   }
+
+  static async getOrdersByUserId(userId) {
+    try {
+      const orders = await Order.findAll({ where: { user_id: userId } });
+      return orders;
+    } catch (error) {
+      throw new Error('Error fetching orders: ' + error.message);
+    }
+  }
   
   static async updateOrder(orderId, updateData) {
     try {
