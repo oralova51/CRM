@@ -33,3 +33,7 @@ export type OrderDeleteResponse = ServerResponseType<null>;
 
 /** Формат data в ответах API бэкенда (get/create/update) */
 export type OrderApiData = { order: Order };
+
+/** Формат data в ответе API для списка заказов пользователя */
+export type OrdersApiData = { orders: Order[] };
+export type OrdersResponse = ServerResponseType<Order[]>;
