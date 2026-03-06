@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./LoyaltyLevelCard.css";
-import type { LoyaltyLevel } from "../model";
-import LoyaltyApi from "../api/LoyaltyApi";
-import { useUserLoyaltyStore } from "../store/store";
+import type { LoyaltyLevel } from "../../model";
+import LoyaltyApi from "../../api/LoyaltyApi";
+import { useUserLoyaltyStore } from "../../store/store";
 import { Crown } from "lucide-react";
 import * as Progress from "@radix-ui/react-progress";
 import { useAppSelector, useAppDispatch } from "@/shared/hooks/useReduxHooks";
@@ -11,7 +11,7 @@ import {
   getNextLevel,
   getProgress,
   getRemainingToNext,
-} from "../lib/loyaltyHelpers";
+} from "../../lib/loyaltyHelpers";
 
 export default function LoyaltyLevelCard() {
   const [levels, setLevels] = useState<LoyaltyLevel[] | null>(null);
@@ -32,8 +32,9 @@ export default function LoyaltyLevelCard() {
   // Загружаем актуальные данные пользователя при монтировании
   useEffect(() => {
     dispatch(getMeThunk());
-    console.log("user!!!!!", user);
   }, [dispatch]);
+  console.log(user, 'USER');
+  
 
   // Загружаем данные лояльности
   useEffect(() => {
