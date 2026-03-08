@@ -7,7 +7,7 @@ module.exports = {
       "Measurements",
       [
         {
-          user_id: 1,
+          user_id: 6,
           measured_at: new Date("2024-01-15"),
           // Антропометрические данные (все в сантиметрах)
           waist_cm: 85.5, // 📏 Окружность талии
@@ -23,7 +23,7 @@ module.exports = {
           created_by: 1,
         },
         {
-          user_id: 1,
+          user_id: 6,
           measured_at: new Date("2024-02-15"),
           waist_cm: 82.0, // минус 3.5 см
           hips_cm: 97.0, // минус 1 см
@@ -36,7 +36,7 @@ module.exports = {
           created_by: 1,
         },
         {
-          user_id: 2,
+          user_id: 6,
           measured_at: new Date("2024-01-20"),
           waist_cm: 78.0,
           hips_cm: 92.0,
@@ -49,7 +49,7 @@ module.exports = {
           created_by: 2,
         },
         {
-          user_id: 3, // Третий клиент
+          user_id: 6, // Третий клиент
           measured_at: new Date("2024-01-10"),
           waist_cm: 95.0,
           hips_cm: 108.0,
