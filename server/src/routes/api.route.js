@@ -7,7 +7,7 @@ const measurementRouter = require('./measurement.route');
 
 // apiRouter.use('/tasks', taskRouter);
 apiRouter.use('/auth', authRouter);
-apiRouter.use('/measurement', measurementRouter);
+apiRouter.use('/measurements', measurementRouter);
 
 apiRouter.use('/loyalty', loyaltyLevelRouter);
 

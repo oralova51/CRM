@@ -3,7 +3,7 @@ const MeasurementController = require("../controllers/Measurement.controller");
 const verifyAccessToken = require("../middlewares/verifyAccessToken");
 
 measurementRouter
-  .get("/get", MeasurementController.getAllMeasurement)
+  .get("/getall", MeasurementController.getAllMeasurement)
   .get("/byUser", verifyAccessToken, MeasurementController.getUserMeasurement)
   .post("/", verifyAccessToken, MeasurementController.createMeasurement)
   .put("/:id", verifyAccessToken, MeasurementController.updateMeasurement)
