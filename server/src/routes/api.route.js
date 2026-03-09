@@ -8,7 +8,7 @@ const orderRouter = require('./order.route');
 const bookingRouter = require('./booking.route');
 
 apiRouter.use('/auth', authRouter);
-apiRouter.use('/measurement', measurementRouter);
+apiRouter.use('/measurements', measurementRouter);
 apiRouter.use('/order', orderRouter);
 apiRouter.use('/procedure', procedureRouter);
 apiRouter.use('/loyalty', loyaltyLevelRouter);

@@ -25,17 +25,14 @@ export default function Header() {
         <span className="shell-brand-title">CRM Studio</span>
         <span className="shell-brand-subtitle">Рабочее пространство</span>
       </div>
-      
+
       <nav className="shell-nav-desktop">
         {NAV_ITEMS.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}
             className={({ isActive }) =>
-              [
-                "shell-nav-link",
-                isActive && "shell-nav-link--active",
-              ]
+              ["shell-nav-link", isActive && "shell-nav-link--active"]
                 .filter(Boolean)
                 .join(" ")
             }
@@ -49,7 +46,9 @@ export default function Header() {
       <div className="shell-user">
         {user ? (
           <>
-            <span className="shell-user-name">{user.name}</span>
+            <span className="shell-user-name">
+              <NavLink to="/profile">{user.name}</NavLink>
+            </span>
             <Button
               type="button"
               size="sm"
