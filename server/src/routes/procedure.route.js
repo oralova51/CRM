@@ -3,7 +3,6 @@ const ProcedureController = require("../controllers/Procedure.controller");
 const verifyAccessToken = require("../middlewares/verifyAccessToken");
 
 procedureRouter
-  .use(verifyAccessToken)
   .get("/", ProcedureController.getProcedures)
   .get("/:id", ProcedureController.getOneProcedure)
   .post("/", ProcedureController.createProcedure)
