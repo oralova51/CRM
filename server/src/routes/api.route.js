@@ -6,8 +6,10 @@ const formatResponse = require('../utils/formatResponse');
 const measurementRouter = require('./measurement.route');
 const orderRouter = require('./order.route');
 const bookingRouter = require('./booking.route');
+const aiRouter = require('./ai.route');
 
 apiRouter.use('/auth', authRouter);
+apiRouter.use('/ai', aiRouter);
 apiRouter.use('/measurements', measurementRouter);
 apiRouter.use('/order', orderRouter);
 apiRouter.use('/procedure', procedureRouter);
