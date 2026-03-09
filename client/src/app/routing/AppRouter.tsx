@@ -5,6 +5,7 @@ import MainPage from "../../pages/MainPage/MainPage";
 import ProcedureCalendarPage from "../../pages/ProcedureCalendarPage/ProcedureCalendarPage";
 import BookAppointmentPage from "../../pages/BookAppointmentPage/BookAppointmentPage";
 import { CLIENT_ROUTES } from "../../shared/consts/clientRoutes";
+import  PromoPage  from "@/pages/PromoPage/PromoPage";
 
 export default function AppRouter() {
   return (
@@ -21,6 +22,7 @@ export default function AppRouter() {
           element={<BookAppointmentPage />}
         />
         <Route path="*" element={<h1>Нет контента</h1>} />
+        <Route path={CLIENT_ROUTES.PROMO.slice(1)} element={<PromoPage />} />
         {/* <Route path={CLIENT_ROUTES.TASKS.slice(1)} element={<TasksPage />} /> */}
       </Route>
     </Routes>
