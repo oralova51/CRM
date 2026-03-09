@@ -1,0 +1,101 @@
+/* client/src/widgets/bookings/BookingCard/BookingCard.module.css */
+
+.card {
+  background-color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  border: 1px solid #e5e5e5;
+  transition: border-color 0.2s;
+}
+
+.card:hover {
+  border-color: #d4d4d4;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.125rem;
+  color: #171717;
+  margin-bottom: 0.25rem;
+}
+
+.datetime {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.datetimeItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #525252;
+}
+
+.icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.rescheduleButton {
+  flex: 1;
+  background-color: #f5f5f5;
+  color: #171717;
+  padding: 0.625rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.rescheduleButton:hover:not(:disabled) {
+  background-color: #e5e5e5;
+}
+
+.cancelButton {
+  flex: 1;
+  background-color: #fef2f2;
+  color: #dc2626;
+  padding: 0.625rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background-color: #fee2e2;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.pastNote {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background-color: #f5f5f5;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: #737373;
+  text-align: center;
+}
