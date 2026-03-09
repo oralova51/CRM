@@ -5,6 +5,13 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert("LoyaltyLevels", [
       {
+        name: "Base",
+        min_spent: 0,
+        discount_pct: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
         name: "Bronze",
         min_spent: 10000,
         discount_pct: 0,

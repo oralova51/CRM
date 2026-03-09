@@ -1,0 +1,146 @@
+/* FinansialBenefits.module.css */
+
+.container {
+  background-color: var(--crm-surface, #ffffff);
+  border-radius: var(--crm-radius-lg, 1rem);
+  padding: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--crm-border-subtle, rgba(15, 23, 42, 0.08));
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 1.5rem;
+    max-width: 540px;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.iconWrapper {
+  padding: 0.625rem;
+  background-color: #ecfdf5; /* emerald-50 */
+  border-radius: 0.75rem;
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #059669; /* emerald-600 */
+}
+
+.title {
+  font-size: 1rem;
+  color: var(--crm-text-main, #030213);
+  margin: 0;
+  font-weight: 500;
+}
+
+@media (min-width: 1024px) {
+  .title {
+    font-size: 1.125rem; /* text-lg */
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+}
+
+.rowLabel {
+  font-size: 0.875rem; /* text-sm */
+  color: var(--crm-text-muted, #6b7280);
+  margin-bottom: 0.25rem;
+}
+
+.rowValue {
+  font-size: 1.25rem;
+  color: var(--crm-text-main, #030213);
+  margin: 0;
+}
+
+@media (min-width: 1024px) {
+  .rowValue {
+    font-size: 1.5rem; /* text-2xl */
+  }
+}
+
+.rowValueGreen {
+  font-size: 1.25rem;
+  color: #059669; /* emerald-600 */
+  margin: 0;
+}
+
+@media (min-width: 1024px) {
+  .rowValueGreen {
+    font-size: 1.5rem; /* text-2xl */
+  }
+}
+
+.divider {
+  height: 1px;
+  background-color: var(--crm-border-subtle, rgba(15, 23, 42, 0.08));
+  margin: 0;
+}
+
+.savingsHighlight {
+  background-color: #ecfdf5; /* emerald-50 */
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid #d1fae5; /* emerald-100 */
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+  .savingsHighlight {
+    padding: 1rem;
+  }
+}
+
+.savingsContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.savingsLabel {
+  font-size: 0.875rem; /* text-sm */
+  color: #064e3b; /* emerald-900 */
+}
+
+.savingsPercentageWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.savingsIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #059669; /* emerald-600 */
+}
+
+.savingsPercentage {
+  font-size: 1.25rem;
+  color: #059669; /* emerald-600 */
+}
+
+@media (min-width: 1024px) {
+  .savingsPercentage {
+    font-size: 1.5rem; /* text-2xl */
+  }
+}

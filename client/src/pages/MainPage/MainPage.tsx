@@ -1,11 +1,9 @@
+import LoyaltyLevelCard from "@/entities/loyaltyLevel/ui/LoyaltyLevelCard/LoyaltyLevelCard";
 import "./MainPage.css";
-import LoyaltyApi from "@/entities/loyaltyLevel/api/LoyaltyApi";
+import { FinansialBenefits } from "@/entities/loyaltyLevel/ui/FinansialBenefits/FinansialBenefits";
+
 
 export default function MainPage() {
-  console.log(LoyaltyApi.getLoyaltyLevels());
-  console.log(LoyaltyApi.getUserDiscount());
-  
-  
   return (
     <section className="page main-page">
       <header className="page-header">
@@ -22,14 +20,15 @@ export default function MainPage() {
         <div className="main-card-text">
           <h2>Добро пожаловать</h2>
           <p>
-            Здесь вы можете отслеживать задачи, работать с клиентами и
-            планировать работу команды в едином интерфейсе.
+            Ваша личная панель лояльности
           </p>
         </div>
         <div className="main-card-image">
           {/* <img src="/beaver-1.jpg" alt="Бобр" /> */}
           🥰🥰🥰🥰🥰🥰
         </div>
+        <LoyaltyLevelCard />
+        <FinansialBenefits />
       </div>
     </section>
   );

@@ -1,15 +1,18 @@
 const apiRouter = require('express').Router();
-// const taskRouter = require('./task.route');/
+const procedureRouter = require('./procedure.route');
 const authRouter = require('./auth.route');
 const loyaltyLevelRouter = require('./loyaltyLevel.route');
 const formatResponse = require('../utils/formatResponse');
 const measurementRouter = require('./measurement.route');
+const orderRouter = require('./order.route');
+const bookingRouter = require('./booking.route');
 
-// apiRouter.use('/tasks', taskRouter);
 apiRouter.use('/auth', authRouter);
 apiRouter.use('/measurements', measurementRouter);
-
+apiRouter.use('/order', orderRouter);
+apiRouter.use('/procedure', procedureRouter);
 apiRouter.use('/loyalty', loyaltyLevelRouter);
+apiRouter.use('/booking', bookingRouter);
 
 // Обрабатываем несуществующие пути в API
 apiRouter.use((req, res) => {
