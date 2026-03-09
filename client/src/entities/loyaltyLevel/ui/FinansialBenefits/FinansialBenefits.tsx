@@ -1,24 +1,34 @@
 // FinansialBenefits.tsx
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { TrendingUp, Wallet } from "lucide-react";
 import styles from "./FinansialBenefits.module.css";
 import { useAppSelector, useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { getMeThunk } from "@/entities/user/api/UserApi";
 import LoyaltyApi from "../../api/LoyaltyApi";
 import { useUserLoyaltyStore } from "../../store/store";
+import { getEconomicBenefits } from "../../lib/loyaltyHelpers";
 
 export function FinansialBenefits() {
   const dispatch = useAppDispatch();
   const userState = useAppSelector((state) => state.user);
   const user = userState?.user;
 
+  const [discountsReceived, setDiscountsReceived] = useState(0);
+  const [savedPercentage, setSavedPercentage] = useState(0);
+
   useEffect(() => {
     dispatch(getMeThunk());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (!user?.id) return;
+    getEconomicBenefits(user.id).then(({ discountsReceived, savedPercentage }) => {
+      setDiscountsReceived(discountsReceived);
+      setSavedPercentage(savedPercentage);
+    });
+  }, [user?.id]);
+
   const totalSpent = user?.totalSpent;
-  const discountsReceived = 21340; //TODO: заменить на реальное значение из данных пользователя
-  const savedPercentage = 16.6;//TODO: заменить на реальное значение из данных пользователя
   return (
     <div className={styles.container}>
       <div className={styles.header}>

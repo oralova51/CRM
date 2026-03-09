@@ -58,6 +58,16 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        name: 'DAN',
+        email: 'test3@mail.ru',
+        password: await bcrypt.hash('Test3@mail.ru', 10),
+        phone: '+79997779977',
+        totalSpent: 1000,
+        role: 'isClient',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
         name: 'Olya2@mail.ru',
         email: 'olya2@mail.ru',
         password: hashedPassword,

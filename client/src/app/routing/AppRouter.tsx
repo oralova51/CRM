@@ -2,8 +2,7 @@ import { Routes, Route } from "react-router";
 import Layout from "../Layout/Layout";
 import AuthPage from "../../pages/AuthPage/AuthPage";
 import MainPage from "../../pages/MainPage/MainPage";
-import { ProcedureCalendarPage } from "@/pages/ProcedureCalendarPage/ProcedureCalendarPage";
-import { BookAppointmentPage } from "@/pages/BookAppointmentPage/BookAppointmentPage";
+import TasksPage from "../../pages/TasksPage/TasksPage";
 import { CLIENT_ROUTES } from "../../shared/consts/clientRoutes";
 
 export default function AppRouter() {

@@ -1,10 +1,13 @@
 const { Measurement } = require("../../db/models");
 class MeasurementService {
-  // static async getMeasurementById(id) {
-  //   return await Measurement.findByPk(id);
-  // }
+  static async getAllMeasurement() {
+    return await Measurement.findAll();
+  }
+  static async getMeasurementById(id) {
+    return await Measurement.findByPk(id);
+  }
 
-static async getMeasurementByUserId(userId) {
+  static async getMeasurementByUserId(userId) {
     return await Measurement.findAll({ where: { user_id: userId } });
   }
   static async createNewMeasurement(measurementData) {
@@ -23,7 +26,6 @@ static async getMeasurementByUserId(userId) {
     await updateMeasurement.save();
     return updateMeasurement;
   }
-  
 }
 
 module.exports = MeasurementService;

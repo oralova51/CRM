@@ -5,4 +5,8 @@ export const CLIENT_ROUTES = {
   PROCEDURES: "/procedures",
   HISTORY: "/history",
   AI: "/ai",
+  PROFILE_PAGE: "/profile",
+  ORDER: "/order",
 } as const;
+
+export type ClientRouteKey = keyof typeof CLIENT_ROUTES;

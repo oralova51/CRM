@@ -2,6 +2,16 @@ const MeasurementService = require("../services/Measurement.service");
 const formatResponse = require("../utils/formatResponse");
 
 class MeasurementController {
+  static async getAllMeasurement(req, res) {
+    try {
+      const measurement = await MeasurementService.getAllMeasurement();
+      return res.status(200).json(formatResponse(200, "Succes", measurement));
+    } catch (error) {
+      console.log(error);
+      console.log("==== MeasurementController.getAllMeasurement ==== ");
+      res.status(500).json(formatResponse(500, "Внутренняя ошибка сервера"));
+    }
+  }
   static async getUserMeasurement(req, res) {
     try {
       const { user } = res.locals;
@@ -10,7 +20,7 @@ class MeasurementController {
           .status(401)
           .json(formatResponse(401, "Авторизуйтесь, пожалуйста"));
       }
-      const userMeasurement = MeasurementService.getMeasurementByUserId(
+      const userMeasurement = await MeasurementService.getMeasurementByUserId(
         user.id,
       );
       if (userMeasurement.length === 0) {
