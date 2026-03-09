@@ -2,21 +2,23 @@ import { Routes, Route } from "react-router";
 import Layout from "../Layout/Layout";
 import AuthPage from "../../pages/AuthPage/AuthPage";
 import MainPage from "../../pages/MainPage/MainPage";
-import TasksPage from "../../pages/TasksPage/TasksPage";
+import { ProcedureCalendarPage } from "@/pages/ProcedureCalendarPage/ProcedureCalendarPage";
+import { BookAppointmentPage } from "@/pages/BookAppointmentPage/BookAppointmentPage";
 import { CLIENT_ROUTES } from "../../shared/consts/clientRoutes";
-
 
 export default function AppRouter() {
   return (
     <Routes>
-      <Route
-        path={CLIENT_ROUTES.MAIN_PAGE}
-        element={<Layout />}
-      >
+      <Route path={CLIENT_ROUTES.MAIN_PAGE} element={<Layout />}>
         <Route index element={<MainPage />} />
+        <Route path={CLIENT_ROUTES.AUTH.slice(1)} element={<AuthPage />} />
         <Route
-          path={CLIENT_ROUTES.AUTH.slice(1)}
-          element={<AuthPage  />}
+          path={CLIENT_ROUTES.PROCEDURES.slice(1)}
+          element={<ProcedureCalendarPage />}
+        />
+        <Route
+          path={CLIENT_ROUTES.BOOK.slice(1)}
+          element={<BookAppointmentPage />}
         />
         <Route path="*" element={<h1>Нет контента</h1>} />
         {/* <Route path={CLIENT_ROUTES.TASKS.slice(1)} element={<TasksPage />} /> */}

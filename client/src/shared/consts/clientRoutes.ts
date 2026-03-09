@@ -1,7 +1,8 @@
 export const CLIENT_ROUTES = {
   MAIN_PAGE: "/",
-  // TASKS: "/tasks",
   AUTH: "/auth",
+  BOOK: "/book",
+  PROCEDURES: "/procedures",
+  HISTORY: "/history",
+  AI: "/ai",
 } as const;
-
-export type ClientRouteKey = keyof typeof CLIENT_ROUTES;

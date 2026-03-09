@@ -11,7 +11,7 @@ apiRouter.use('/auth', authRouter);
 apiRouter.use('/measurement', measurementRouter);
 apiRouter.use('/procedures', procedureRouter);
 apiRouter.use('/loyalty', loyaltyLevelRouter);
-apiRouter.use('/booking', bookingRouter);
+apiRouter.use('/bookings', bookingRouter);
 
 // Обрабатываем несуществующие пути в API
 apiRouter.use((req, res) => {
