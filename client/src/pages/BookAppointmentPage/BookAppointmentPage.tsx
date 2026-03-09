@@ -12,7 +12,7 @@ import styles from "./BookAppointmentPage.module.css";
 
 type Step = 1 | 2 | 3;
 
-export function BookAppointmentPage() {
+export default function BookAppointmentPage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { procedures, isLoading: proceduresLoading } = useAppSelector((state) => state.procedures);

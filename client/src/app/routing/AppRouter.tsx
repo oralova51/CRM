@@ -18,7 +18,7 @@ export default function AppRouter() {
         />
         <Route
           path={CLIENT_ROUTES.BOOK.slice(1)}
-          element={<BookAppointmentPage />} 
+          element={<BookAppointmentPage />}
         />
         <Route path="*" element={<h1>Нет контента</h1>} />
         {/* <Route path={CLIENT_ROUTES.TASKS.slice(1)} element={<TasksPage />} /> */}

@@ -5,7 +5,7 @@ import { getMyBookingsThunk } from "@/entities/booking/api/bookingApi";
 import { BookingsList } from "@/widgets/bookings/BookingsList/BookingsList";
 import styles from "./ProcedureCalendarPage.module.css";
 
-export function ProcedureCalendarPage() {
+export default function ProcedureCalendarPage() {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
   const { procedures } = useAppSelector((state) => state.procedures);
