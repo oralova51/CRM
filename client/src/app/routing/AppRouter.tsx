@@ -2,8 +2,9 @@ import { Routes, Route } from "react-router";
 import Layout from "../Layout/Layout";
 import AuthPage from "../../pages/AuthPage/AuthPage";
 import MainPage from "../../pages/MainPage/MainPage";
-
-import ProfilePage from "../../pages/ProfilePage/ProfilePage";
+// import TasksPage from "../../pages/TasksPage/TasksPage";
+import AdminPage from "@/pages/AdminPage/AdminPage";
+import ProfilePage from "@/pages/ProfilePage/ProfilePage";
 import AiPage from "../../pages/AiPage/AiPage";
 import ProcedureCalendarPage from "../../pages/ProcedureCalendarPage/ProcedureCalendarPage";
 import BookAppointmentPage from "../../pages/BookAppointmentPage/BookAppointmentPage";
@@ -25,6 +26,7 @@ export default function AppRouter() {
         <Route path={CLIENT_ROUTES.HISTORY.slice(1)} element={<VisitHistoryPage />} />
         <Route path={CLIENT_ROUTES.PROMO.slice(1)} element={<PromoPage />} />
         <Route path={CLIENT_ROUTES.PROFILE_PAGE} element={<ProfilePage />} />
+        <Route path={CLIENT_ROUTES.ADMIN_PAGE} element={<AdminPage  />} />
         <Route path={CLIENT_ROUTES.AI_PAGE} element={<AiPage />} />
         <Route path="*" element={<h1>Нет контента</h1>} />
       </Route>

@@ -245,7 +245,14 @@ class UserController {
       if (!freshUser) {
         return res
           .status(404)
-          .json(formatResponse(404, "Пользователь не найден", null, "User not found"));
+          .json(
+            formatResponse(
+              404,
+              "Пользователь не найден",
+              null,
+              "User not found",
+            ),
+          );
       }
 
       res
@@ -381,6 +388,31 @@ class UserController {
         );
     }
   }
-}
 
+  //поиск клиентов админом
+  static async searchUsers(req, res) {
+    try {
+      const { user: adminUser } = res.locals;
+      const { query } = req.query;
+      if (adminUser.role !== "isAdmin") {
+        return res
+          .status(403)
+          .json(formatResponse(403, "Доступ запрещён: недостаточно прав"));
+      }
+      if (!query || query.length < 2) {
+        return res
+          .status(400)
+          .json(formatResponse(400, "Минимум 2 символа в поиске"));
+      }
+      const users = await UserService.searchUsers(query);
+      res.status(200).json(formatResponse(200, "Пользователи найдены", users));
+    } catch (error) {
+      console.log("==== UserController.searchUsers ==== ");
+      console.log(error);
+      res
+        .status(500)
+        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
+    }
+  }
+}
 module.exports = UserController;

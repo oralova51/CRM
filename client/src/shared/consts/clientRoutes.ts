@@ -7,6 +7,7 @@ export const CLIENT_ROUTES = {
   HISTORY: "/history",
   AI: "/ai",
   PROFILE_PAGE: "/profile",
+  ADMIN_PAGE: "/admin",
   ORDER: "/order",
   AI_PAGE: "/ai",
   PROMO: "/promo",

@@ -1,75 +1,81 @@
-import { axiosInstance } from '../../../shared/lib/axiosInstance';
+import { axiosInstance } from "../../../shared/lib/axiosInstance";
 import type {
   MeasurementType,
   MeasurementInputData,
   MeasurementsListResponse,
-  MeasurementResponse
-} from '../model';
-import type { ServerResponseType } from '@/shared/types';
+  MeasurementResponse,
+} from "../model";
+import type { ServerResponseType } from "@/shared/types";
 
 export default class MeasurementApi {
-  static async getMeasurements(): Promise<MeasurementsListResponse> {
+  static async AdminGetUsersMeasurements(
+    userId: number,
+  ): Promise<MeasurementsListResponse> {
     try {
-      const response = await axiosInstance.get<ServerResponseType<MeasurementType[]>>('/measurements/getall');
+      const response = await axiosInstance.get<
+        ServerResponseType<MeasurementType[]>
+      >(`/admin/measurements/user/${userId}`);
       return response.data;
     } catch (error) {
       console.log(error);
       return {
         statusCode: 500,
-        message: 'Ошибка при получении замеров',
+        message: "Ошибка при получении замеров пользователя",
         data: [],
-        error: 'Ошибка при получении замеров',
+        error: "Ошибка при получении замеров пользователя",
       };
     }
   }
 
   static async getMeasurementsByUser(): Promise<MeasurementsListResponse> {
     try {
-      
-      const response = await axiosInstance.get<ServerResponseType<MeasurementType[]>>('/measurements/byUser');
+      const response = await axiosInstance.get<
+        ServerResponseType<MeasurementType[]>
+      >("/measurements/byUser");
       return response.data;
     } catch (error) {
       console.log(error);
       return {
         statusCode: 500,
-        message: 'Ошибка при получении замеров',
+        message: "Ошибка при получении замеров",
         data: [],
-        error: 'Ошибка при получении замеров',
+        error: "Ошибка при получении замеров",
       };
     }
   }
 
-  // static async getMeasurement(id: number): Promise<MeasurementResponse> {
-  //   try {
-  //     const response = await axiosInstance.get<ServerResponseType<MeasurementType>>(
-  //       `/measurements/${id}`,
-  //     );
-  //     return response.data;
-  //   } catch (error) {
-  //     console.log(error);
-  //     return {
-  //       statusCode: 500,
-  //       message: 'Ошибка при получении замеров',
-  //       data: {} as MeasurementType,
-  //       error: 'Ошибка при получении замеров',
-  //     };
-  //   }
-  // }
-
-  static async createMeasurement(body: MeasurementInputData): Promise<MeasurementResponse> {
+  static async getMeasurement(id: number): Promise<MeasurementResponse> {
     try {
-      const response = await axiosInstance.post<ServerResponseType<MeasurementType>>(
-        '/measurements',
-        body,
-      );
+      const response = await axiosInstance.get<
+        ServerResponseType<MeasurementType>
+      >(`/measurements/${id}`);
       return response.data;
     } catch (error) {
       console.log(error);
       return {
         statusCode: 500,
-        message: 'Ошибка при создании замеров',
+        message: "Ошибка при получении замеров",
         data: {} as MeasurementType,
-        error: 'Ошибка при создании замеров',
+        error: "Ошибка при получении замеров",
+      };
+    }
+  }
+
+  static async createMeasurement(
+    body: MeasurementInputData,
+  ): Promise<MeasurementResponse> {
+    try {
+      const response = await axiosInstance.post<
+        ServerResponseType<MeasurementType>
+      >("/measurements", body);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return {
+        statusCode: 500,
+        message: "Ошибка при создании замеров",
+        data: {} as MeasurementType,
+        error: "Ошибка при создании замеров",
       };
     }
   }
@@ -79,23 +85,24 @@ export default class MeasurementApi {
     body: MeasurementInputData,
   ): Promise<MeasurementResponse> {
     try {
-      const response = await axiosInstance.put<ServerResponseType<MeasurementType>>(
-        `/measurements/${id}`,
-        body,
-      );
+      const response = await axiosInstance.put<
+        ServerResponseType<MeasurementType>
+      >(`/measurements/${id}`, body);
       return response.data;
     } catch (error) {
       console.log(error);
       return {
         statusCode: 500,
-        message: 'Ошибка при обновлении замеров',
+        message: "Ошибка при обновлении замеров",
         data: {} as MeasurementType,
-        error: 'Ошибка при обновлении замеров',
+        error: "Ошибка при обновлении замеров",
       };
     }
   }
 
-  static async deleteMeasurement(id: number): Promise<ServerResponseType<null>> {
+  static async deleteMeasurement(
+    id: number,
+  ): Promise<ServerResponseType<null>> {
     try {
       const response = await axiosInstance.delete<ServerResponseType<null>>(
         `/measurements/${id}`,
@@ -105,11 +112,10 @@ export default class MeasurementApi {
       console.log(error);
       return {
         statusCode: 500,
-        message: 'Ошибка при удалении замеров',
+        message: "Ошибка при удалении замеров",
         data: null,
-        error: 'Ошибка при удалении замеров',
+        error: "Ошибка при удалении замеров",
       };
     }
   }
 }
-

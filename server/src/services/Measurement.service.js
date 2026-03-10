@@ -8,15 +8,17 @@ class MeasurementService {
   }
 
   static async getMeasurementByUserId(userId) {
-    return await Measurement.findAll({ where: { user_id: userId } });
+    return await Measurement.findAll({
+      where: { user_id: userId },
+      order: [["measured_at", "DESC"]],
+    });
   }
   static async createNewMeasurement(measurementData) {
     return await Measurement.create(measurementData);
   }
   static async deleteMeasurementById(id) {
-    const measurementToDelete = await Measurement.findByPk(id, userId);
+    const measurementToDelete = await Measurement.findByPk(id);
     if (!measurementToDelete) return null;
-    if (measurementToDelete.user_id !== userId) return null;
     return await measurementToDelete.destroy();
   }
   static async updateMeasurementById(id, measurementData) {
