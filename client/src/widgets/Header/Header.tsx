@@ -71,8 +71,8 @@ export function Header() {
         <aside className={styles.desktopSidebar}>
           <div className={styles.sidebarHeader}>
             <div className={styles.logo}>
-              <span className={styles.logoTitle}>Ideal Body</span>
-              <span className={styles.logoSubtitle}>Studio</span>
+              <img className={styles.logoTitle} src='./logo.svg' alt='logo'></img>
+              <span className={styles.logoSubtitle}>Студия идеального тела</span>
             </div>
           </div>
 
@@ -155,7 +155,7 @@ export function Header() {
         {/* Маленький хедер для десктопа (только бренд) */}
         <header className={styles.desktopHeader}>
           <div className={styles.desktopHeaderContent}>
-            <span className={styles.desktopHeaderTitle}>Ideal Body Studio</span>
+            <span className={styles.desktopHeaderTitle}>Студия идеального тела</span>
           </div>
         </header>
       </>
@@ -167,8 +167,7 @@ export function Header() {
     <header className={styles.mobileHeader}>
       <div className={styles.mobileHeaderContent}>
         <div className={styles.mobileLogo}>
-          <span className={styles.mobileLogoTitle}>Ideal Body</span>
-          <span className={styles.mobileLogoSubtitle}>Studio</span>
+          <img className={styles.mobileLogoTitle} src='./logo.svg' alt="logo"></img>
         </div>
         <button
           className={styles.mobileMenuButton}
