@@ -4,6 +4,8 @@ import type {
   LoyaltyLevel,
   UserLoyaltyLevel,
   ServerResponseType,
+  BookingApiItem,
+  ActivityStatistics
 } from "@/entities/loyaltyLevel/model";
 
 export default class LoyaltyApi {
@@ -20,5 +22,15 @@ export default class LoyaltyApi {
 
     // Сервер оборачивает массив в { loyaltyLevels: [...] }
     return response.data.data?.loyaltyLevels ?? [];
+  }
+
+  static async getStatistics(): Promise<ServerResponseType<BookingApiItem[]>> {
+    const response = await axiosInstance.get<ServerResponseType<BookingApiItem[]>>("/bookings/my/past");
+    return response.data;
+  }
+
+  static async getActivityStatistics(): Promise<ServerResponseType<ActivityStatistics>> {
+    const response = await axiosInstance.get<ServerResponseType<ActivityStatistics>>("/loyalty/statistics");
+    return response.data;
   }
 }

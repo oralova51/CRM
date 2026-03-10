@@ -11,3 +11,4 @@ export const useUserLoyaltyStore = create<UserLoyaltyStore>((set) => ({
   setUserLoyaltyLevel: (userLoyaltyLevel) =>
     set({ userLoyaltyLevel }),
 }));
+

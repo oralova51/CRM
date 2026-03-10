@@ -1,6 +1,7 @@
 import LoyaltyLevelCard from "@/entities/loyaltyLevel/ui/LoyaltyLevelCard/LoyaltyLevelCard";
 import "./MainPage.css";
 import { FinansialBenefits } from "@/entities/loyaltyLevel/ui/FinansialBenefits/FinansialBenefits";
+import Statistics from "@/entities/loyaltyLevel/ui/Statistics/Statistics";
 
 
 export default function MainPage() {
@@ -29,6 +30,7 @@ export default function MainPage() {
         </div>
         <LoyaltyLevelCard />
         <FinansialBenefits />
+        <Statistics />
       </div>
     </section>
   );
