@@ -2,6 +2,38 @@ const MeasurementService = require("../services/Measurement.service");
 const formatResponse = require("../utils/formatResponse");
 
 class MeasurementController {
+
+  static async adminGetMeasurementByUserId(req, res){
+try {
+  const {user: adminUser}= res.locals;
+  const {userId} = req.params;
+  if (adminUser.role !== "isAdmin") {
+    return res
+      .status(403)
+      .json(formatResponse(403, "Доступ запрещён: недостаточно прав"));
+  }
+  if (!userId || isNaN(Number(userId))) {
+    return res
+      .status(400)
+      .json(formatResponse(400, "Некорректный ID пользователя"));
+  }
+  const userMeasurement = await MeasurementService.getMeasurementByUserId(
+    userId,
+  );
+  if (userMeasurement.length === 0) {
+    return res
+      .status(200)
+      .json(formatResponse(200, "У данного пользователя пока нет замеров"));
+  }
+  res
+    .status(200)
+    .json(formatResponse(200, "Замеры получены", userMeasurement));
+} catch (error) {
+  console.log(error);
+      console.log("==== MeasurementController.adminGetMeasurementByUserId ==== ");
+      res.status(500).json(formatResponse(500, "Внутренняя ошибка сервера"));
+}
+  }
   static async getAllMeasurement(req, res) {
     try {
       const measurement = await MeasurementService.getAllMeasurement();

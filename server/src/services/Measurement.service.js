@@ -8,7 +8,10 @@ class MeasurementService {
   }
 
   static async getMeasurementByUserId(userId) {
-    return await Measurement.findAll({ where: { user_id: userId } });
+    return await Measurement.findAll({
+      where: { user_id: userId },
+      order: [["measured_at", "DESC"]],
+    });
   }
   static async createNewMeasurement(measurementData) {
     return await Measurement.create(measurementData);

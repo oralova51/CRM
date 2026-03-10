@@ -6,7 +6,7 @@ const formatResponse = require('../utils/formatResponse');
 const measurementRouter = require('./measurement.route');
 const orderRouter = require('./order.route');
 const bookingRouter = require('./booking.route');
-const userRouter = require('./user.route');
+const adminRouter = require('./admin.route');
 
 apiRouter.use('/auth', authRouter);
 apiRouter.use('/measurements', measurementRouter);
@@ -14,7 +14,7 @@ apiRouter.use('/order', orderRouter);
 apiRouter.use('/procedure', procedureRouter);
 apiRouter.use('/loyalty', loyaltyLevelRouter);
 apiRouter.use('/booking', bookingRouter);
-apiRouter.use('/adminsearchuser', userRouter)
+apiRouter.use('/admin', adminRouter)
 
 // Обрабатываем несуществующие пути в API
 apiRouter.use((req, res) => {
