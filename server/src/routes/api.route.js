@@ -7,14 +7,17 @@ const measurementRouter = require('./measurement.route');
 const orderRouter = require('./order.route');
 const bookingRouter = require('./booking.route');
 const adminRouter = require('./admin.route');
+const aiRouter = require('./ai.route');
 
 apiRouter.use('/auth', authRouter);
+apiRouter.use('/ai', aiRouter);
 apiRouter.use('/measurements', measurementRouter);
 apiRouter.use('/order', orderRouter);
 apiRouter.use('/procedure', procedureRouter);
 apiRouter.use('/loyalty', loyaltyLevelRouter);
 apiRouter.use('/booking', bookingRouter);
 apiRouter.use('/admin', adminRouter)
+apiRouter.use('/bookings', bookingRouter);
 
 // Обрабатываем несуществующие пути в API
 apiRouter.use((req, res) => {

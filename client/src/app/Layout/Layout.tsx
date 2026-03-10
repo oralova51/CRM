@@ -1,14 +1,16 @@
 import { Outlet } from "react-router";
-import Header from "@/widgets/Header/Header";
-import "./Layout.css";
+import { Header } from "@/widgets/Header/Header";
+import { Footer } from "@/widgets/Footer/Footer";
+import styles from "./Layout.module.css";
 
 export default function Layout() {
   return (
-    <div className="shell">
+    <div className={styles.layout}>
       <Header />
-      <main className="shell-main">
+      <main className={styles.main}>
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 }

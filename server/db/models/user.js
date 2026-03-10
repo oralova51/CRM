@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       this.hasMany(models.Order, { foreignKey: 'user_id' });
+      this.hasMany(models.AiMessage, { foreignKey: 'user_id' });
     }
 
     static validateEmail(email) {

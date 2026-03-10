@@ -4,6 +4,6 @@ const verifyAccessToken = require('../middlewares/verifyAccessToken');
 
 loyaltyLevelRouter.get('/status', verifyAccessToken, LoyaltyLevelController.getUserDiscount);
 loyaltyLevelRouter.get('/levels', verifyAccessToken, LoyaltyLevelController.getLoyaltyLevels);
-
+loyaltyLevelRouter.get('/statistics', verifyAccessToken, LoyaltyLevelController.getActivityStatistics);
 
 module.exports = loyaltyLevelRouter;

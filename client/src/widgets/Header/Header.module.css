@@ -1,0 +1,363 @@
+/* client/src/widgets/Header/Header.module.css */
+
+/* ========== DESKTOP SIDEBAR ========== */
+.desktopSidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 280px;
+  background-color: #ffffff;
+  border-right: 1px solid rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+}
+
+.sidebarHeader {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.logoTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #030213;
+}
+
+.logoSubtitle {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.sidebarNav {
+  flex: 1;
+  padding: 1.5rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  color: #6b7280;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.navItem:hover {
+  background-color: rgba(15, 23, 42, 0.04);
+  color: #030213;
+}
+
+.navItemActive {
+  background-color: #030213;
+  color: #ffffff;
+}
+
+.navItemActive:hover {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.navItemDisabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.navIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.navLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.sidebarUser {
+  padding: 1.5rem;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.userAvatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-color: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #6b7280;
+}
+
+.userDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.userName {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #030213;
+}
+
+.userRole {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.signOutButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 0.5rem;
+  background: none;
+  color: #ef4444;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.signOutButton:hover {
+  background-color: #fef2f2;
+}
+
+.signOutIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.signInLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 0.5rem;
+  color: #030213;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.signInLink:hover {
+  background-color: #f3f4f6;
+}
+
+.signInIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* ========== DESKTOP HEADER (минимальный) ========== */
+.desktopHeader {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background-color: #ffffff;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  margin-left: 280px;
+}
+
+.desktopHeaderContent {
+  padding: 1rem 2rem;
+}
+
+.desktopHeaderTitle {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+/* ========== MOBILE HEADER ========== */
+.mobileHeader {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: #ffffff;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.mobileHeaderContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+}
+
+.mobileLogo {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobileLogoTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #030213;
+}
+
+.mobileLogoSubtitle {
+  font-size: 0.7rem;
+  color: #6b7280;
+}
+
+.mobileMenuButton {
+  padding: 0.5rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 0.5rem;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobileMenuButton svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #030213;
+}
+
+.mobileMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mobileNav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.mobileNavItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  color: #6b7280;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.mobileNavItem:hover {
+  background-color: #f3f4f6;
+}
+
+.mobileNavItemActive {
+  background-color: #030213;
+  color: #ffffff;
+}
+
+.mobileNavItemActive:hover {
+  background-color: #1a1a1a;
+}
+
+.mobileNavItemDisabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.mobileNavIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.mobileUser {
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+  padding-top: 1rem;
+}
+
+.mobileUserInfo {
+  margin-bottom: 1rem;
+}
+
+.mobileUserName {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #030213;
+}
+
+.mobileUserRole {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.mobileSignOutButton,
+.mobileSignInLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.mobileSignOutButton {
+  color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.mobileSignOutButton:hover {
+  background-color: #fee2e2;
+}
+
+.mobileSignInLink {
+  color: #030213;
+  background-color: #f3f4f6;
+  text-decoration: none;
+}
+
+.mobileSignInLink:hover {
+  background-color: #e5e7eb;
+}

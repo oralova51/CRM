@@ -5,7 +5,7 @@ export type UserType = {
   password: string;
   phone: string;
   totalSpent: number;
-  role: 'isClient' | 'isAdmin';
+  role: 'isAdmin' | 'isClient';
   createdAt: string;
   updatedAt: string;
 }
@@ -20,7 +20,7 @@ export type UserSignUpData = {
   email: string;
   password: string;
   phone: string;
-  
+
 }
 
 export type UserSignInData = {
