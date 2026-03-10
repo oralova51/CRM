@@ -5,6 +5,7 @@ export type UserType = {
   password: string;
   phone: string;
   totalSpent: number;
+  role: 'isClient' | 'isAdmin';
   createdAt: string;
   updatedAt: string;
 }
@@ -32,11 +33,19 @@ export type UserState = {
   isLoading: boolean;
   isInitialized: boolean;
   error: string | null;
+  searchResults: UserWithoutPassword[];
+  searchLoading: boolean;
+  searchError: string | null
 }
 
 export const initialUserState: UserState = {
   user: null,
   isLoading: false,
   isInitialized: false,
-  error: null
+  error: null,
+  searchResults: [],
+  searchLoading: false,
+  searchError: null
 }
+
+export type UserWithoutPassword = Omit<UserType, 'password'>;

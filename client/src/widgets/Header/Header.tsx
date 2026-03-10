@@ -95,7 +95,20 @@ export default function Header() {
               );
             })}
           </nav>
-          
+          <nav className="shell-nav-desktop">
+            {user?.role === 'isAdmin' ? (
+              <NavLink
+                to="/admin"
+                className={({ isActive }) =>
+                  ["shell-nav-link", isActive && "shell-nav-link--active"]
+                    .filter(Boolean)
+                    .join(" ")
+                }
+              >
+                admin
+              </NavLink>
+            ) : null}
+          </nav>
           <nav className="shell-nav-desktop">
             {user ? (
               <NavLink

@@ -10,7 +10,8 @@ const USER_THUNK_NAMES = {
   SIGN_IN: 'user/signIn',
   REFRESH: 'user/refresh',
   SIGN_OUT: 'user/signOut',
-  ME: 'user/getMe'
+  ME: 'user/getMe',
+  SEARCH_USER: 'user/searchUsers'
 } as const;
 
 const USER_API_URL = {
@@ -18,9 +19,25 @@ const USER_API_URL = {
   SIGN_IN: '/auth/signin',
   REFRESH: '/auth/refresh',
   SIGN_OUT: '/auth/signout',
-  ME: '/auth/me'
+  ME: '/auth/me',
+  SEARCH_USERS: '/admin/user_search'
 } as const;
 
+export const searchUserThunk = createAsyncThunk<UserType[], string, { rejectValue: string}>(USER_THUNK_NAMES.SEARCH_USER, async (query: string, {rejectWithValue})=>{
+    try {
+      const {data}= await axiosInstance.get<ServerResponseType<UserType[]>>(USER_API_URL.SEARCH_USERS,{params: {query}});
+      // console.log('✅ Ответ от сервера:', data);
+      if (data.statusCode === 200 && data.data) {
+        return data.data;
+      }
+      return rejectWithValue(data.message||"ERROR SEARCHING USERS THUNK");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return rejectWithValue(error.response?.data?.message || 'ERROR SEARCHING USERS THUNK');
+      }
+      return rejectWithValue('ERROR SEARCHING USERS THUNK');
+    }
+  })
 
 export const refreshThunk = createAsyncThunk<UserType, void, { rejectValue: string }>(USER_THUNK_NAMES.REFRESH, async (_, { rejectWithValue }) => {
 

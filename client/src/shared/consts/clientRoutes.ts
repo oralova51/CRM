@@ -3,6 +3,7 @@ export const CLIENT_ROUTES = {
   // TASKS: "/tasks",
   AUTH: "/auth",
   PROFILE_PAGE: "/profile",
+  ADMIN_PAGE: "/admin",
   ORDER: "/order",
 } as const;
 

@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { initialUserState, type UserType } from '../model';
-import { refreshThunk, signInThunk, signOutThunk, signUpThunk, getMeThunk } from '../api/UserApi';
+import { refreshThunk, signInThunk, signOutThunk, signUpThunk, getMeThunk, searchUserThunk } from '../api/UserApi';
 
 
 const userSlice = createSlice({
@@ -9,6 +9,12 @@ const userSlice = createSlice({
     reducers: {
         setUser: (state, action: PayloadAction<UserType>) => {
             state.user = action.payload;
+        },
+        clearUser: (state) =>{
+            state.user = null;
+        },
+        clearSearch: (state) => {
+            state.searchResults = [];
         }
     },
     extraReducers: (builder) => {
@@ -88,9 +94,21 @@ const userSlice = createSlice({
             state.user = null;
             state.isInitialized = true;
         })
+        builder.addCase(searchUserThunk.pending, (state) => {
+            state.searchLoading = true;
+            state.searchError = null;
+        })
+        builder.addCase(searchUserThunk.fulfilled, (state, action) => {
+            state.searchLoading = false;
+            state.searchResults = action.payload;
+        })
+        builder.addCase(searchUserThunk.rejected, (state, action) => {
+            state.searchLoading = false;
+            state.searchError = action.payload || null;
+        })
     }
 })
 
-export const {setUser} = userSlice.actions;
+export const {setUser, clearUser, clearSearch} = userSlice.actions;
 
 export const userReducer = userSlice.reducer;
