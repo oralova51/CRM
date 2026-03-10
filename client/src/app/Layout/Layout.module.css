@@ -1,0 +1,16 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1 1 auto;
+}
+
+/* На десктопе сдвигаем контент вправо, чтобы учесть боковую панель */
+@media (min-width: 1024px) {
+  .main {
+    margin-left: 280px; /* ширина боковой панели */
+  }
+}
