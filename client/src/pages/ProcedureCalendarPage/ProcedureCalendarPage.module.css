@@ -1,0 +1,50 @@
+/* client/src/pages/ProcedureCalendarPage/ui/ProcedureCalendarPage.module.css */
+
+.page {
+  min-height: 100vh;
+  background-color: #fafafa;
+}
+
+.container {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 2rem 1rem;
+  }
+}
+
+.header {
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  color: #171717;
+  margin-bottom: 0.25rem;
+}
+
+@media (min-width: 1024px) {
+  .title {
+    font-size: 1.875rem;
+  }
+}
+
+.subtitle {
+  color: #525252;
+}
+
+.loadingContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fafafa;
+}
+
+.loading {
+  color: #525252;
+}

@@ -12,9 +12,9 @@ apiRouter.use('/auth', authRouter);
 apiRouter.use('/ai', aiRouter);
 apiRouter.use('/measurements', measurementRouter);
 apiRouter.use('/order', orderRouter);
-apiRouter.use('/procedure', procedureRouter);
+apiRouter.use('/procedures', procedureRouter);
 apiRouter.use('/loyalty', loyaltyLevelRouter);
-apiRouter.use('/booking', bookingRouter);
+apiRouter.use('/bookings', bookingRouter);
 
 // Обрабатываем несуществующие пути в API
 apiRouter.use((req, res) => {

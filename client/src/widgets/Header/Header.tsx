@@ -8,7 +8,7 @@ import { CLIENT_ROUTES } from "@/shared/consts/clientRoutes";
 
 const NAV_ITEMS = [
   { to: "/", label: "Дашборд" },
-  { to: "/bookings", label: "Запись на процедуру" },
+  { to: "/book", label: "Запись на процедуру" },
   { to: "/procedures", label: "Календарь посещений" },
   { to: "/ai", label: "Виртуальный ассистент" },
 ];
