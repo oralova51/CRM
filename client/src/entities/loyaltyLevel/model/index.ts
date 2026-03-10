@@ -40,4 +40,9 @@ export type BookingApiItem = {
 export type UserLoyaltyLevel = ServerResponseType<LoyaltyLevel>;
 
 export type LoyaltyLevelResponse = ServerResponseType<LoyaltyLevel>;
+
+export type ActivityStatistics = {
+  visits: number;
+  averageInterval: number | null;
+};
 export type LoyaltyLevelArrayType = LoyaltyLevelResponse[];
