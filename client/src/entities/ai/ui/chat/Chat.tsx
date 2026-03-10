@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import AiApi from '../../api/AiApi'
 import './Chat.css'
-import { Send } from 'lucide-react'
+import { Send, CheckCheck } from 'lucide-react'
 
 const WELCOME_MESSAGE = 'Здравствуйте! Я виртуальный ассистент Студии идеального тела. Подскажу по процедурам, ценам и помогу записаться. Чем я могу быть полезна?'
 
@@ -12,17 +12,30 @@ type ChatMessage = {
 
 export default function Chat() {
     const [message, setMessage] = useState<string>('')
-    const [messages, setMessages] = useState<ChatMessage[]>([])
-
-    useEffect(() => {
-        setMessages([{ content: WELCOME_MESSAGE, role: 'assistant' }])
-    }, [])
+    const [messages, setMessages] = useState<ChatMessage[]>([
+        { content: WELCOME_MESSAGE, role: 'assistant' },
+    ])
+    const [writing, setWriting] = useState<boolean>(false)
+    const requestCompletedRef = useRef(false)
 
     const handleSend = async () => {
         if (!message.trim()) return;
-        const response = await AiApi.createChat({ message });
-        console.log(response);
-        setMessage(''); // очистить поле после отправки
+        const userMessage = message.trim();
+        setMessages((prev) => [...prev, { content: userMessage, role: 'user' }]);
+        setMessage('');
+        requestCompletedRef.current = false;
+        setTimeout(() => {
+            if (!requestCompletedRef.current) setWriting(true);
+        }, 0);
+        try {
+            const response = await AiApi.createChat({ message: userMessage });
+            if (response?.data?.content) {
+                setMessages((prev) => [...prev, { content: response.data.content, role: 'assistant' }]);
+            }
+        } finally {
+            requestCompletedRef.current = true;
+            setWriting(false);
+        }
     };
 
     return (
@@ -34,9 +47,21 @@ export default function Chat() {
                             key={index}
                             className={`chat-message chat-message--${msg.role}`}
                         >
-                            {msg.content}
+                            <span className="chat-message__text">{msg.content}</span>
+                            {msg.role === 'user' && (
+                                <CheckCheck className="chat-message__status" size={16} />
+                            )}
                         </div>
                     ))}
+                    {writing && (
+                        <div className="chat-message chat-message--assistant chat-typing">
+                            <span className="chat-typing__dots">
+                                <span className="chat-typing__dot" />
+                                <span className="chat-typing__dot" />
+                                <span className="chat-typing__dot" />
+                            </span>
+                        </div>
+                    )}
                 </div>
                 <div className="chat-input-container">
                     <input
