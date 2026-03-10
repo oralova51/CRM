@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { User } = require("../../db/models");
 
 class UserService {
@@ -38,6 +39,22 @@ class UserService {
       throw error;
     }
   }
+static async searchUsers(query){
+  const users = await User.findAll({
+    where: {
+      [Op.or]: [
+        { name: { [Op.iLike]: `%${query}%` } },
+        { email: { [Op.iLike]: `%${query}%` } },
+        { phone: { [Op.iLike]: `%${query}%` } },
+      ],
+    },
+    attributes: ["id", "name", "email", "phone","role", "totalSpent"],
+    limit: 10,
+    order: [["name", "ASC"]],
+  });
+  return users;
+}
+
 }
 
 module.exports = UserService;
