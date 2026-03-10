@@ -4,6 +4,7 @@ import AuthPage from "../../pages/AuthPage/AuthPage";
 import MainPage from "../../pages/MainPage/MainPage";
 import TasksPage from "../../pages/TasksPage/TasksPage";
 import ProfilePage from "../../pages/ProfilePage/ProfilePage";
+import AiPage from "../../pages/AiPage/AiPage";
 import { CLIENT_ROUTES } from "../../shared/consts/clientRoutes";
 
 export default function AppRouter() {
@@ -15,6 +16,7 @@ export default function AppRouter() {
         <Route path={CLIENT_ROUTES.PROFILE_PAGE} element={<ProfilePage />} />
         <Route path="*" element={<h1>Нет контента</h1>} />
         {/* <Route path={CLIENT_ROUTES.TASKS.slice(1)} element={<TasksPage />} /> */}
+        <Route path={CLIENT_ROUTES.AI_PAGE} element={<AiPage />} />
       </Route>
     </Routes>
   );
