@@ -7,6 +7,7 @@ export const CLIENT_ROUTES = {
   AI: "/ai",
   PROFILE_PAGE: "/profile",
   ORDER: "/order",
+  AI_PAGE: "/ai",
   PROMO: "/promo",
 } as const;
 
