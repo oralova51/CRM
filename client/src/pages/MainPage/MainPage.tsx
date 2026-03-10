@@ -9,29 +9,20 @@ export default function MainPage() {
     <section className="page main-page">
       <header className="page-header">
         <div>
-          <h1 className="page-title">CRM-панель</h1>
+          <h1 className="page-title">Добро пожаловать</h1>
           <p className="page-subtitle">
-            Краткий обзор задач и активности. Используйте меню, чтобы перейти к
-            нужному разделу.
+          Ваша личная панель лояльности
           </p>
         </div>
       </header>
 
-      <div className="main-card">
-        <div className="main-card-text">
-          <h2>Добро пожаловать</h2>
-          <p>
-            Ваша личная панель лояльности
-          </p>
-        </div>
         <div className="main-card-image">
           {/* <img src="/beaver-1.jpg" alt="Бобр" /> */}
-          🥰🥰🥰🥰🥰🥰
         </div>
         <LoyaltyLevelCard />
         <FinansialBenefits />
         <Statistics />
-      </div>
+      
     </section>
   );
 }

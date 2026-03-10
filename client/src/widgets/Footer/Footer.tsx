@@ -19,7 +19,7 @@ export function Footer() {
             <Link to="#" className={styles.link}>
               Политика конфиденциальности
             </Link>
-            <p className={styles.copyright}>© 2026 Ideal Body Studio</p>
+            <p className={styles.copyright}>© 2019 Студия идеального тела</p>
           </div>
         </div>
       </div>
