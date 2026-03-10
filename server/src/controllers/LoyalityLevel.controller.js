@@ -32,6 +32,21 @@ class LoyaltyLevelController {
       res.status(500).json(formatResponse(500, 'Failed to fetch loyalty levels'));
     }
   }
+
+  static async getActivityStatistics(req, res) {
+    try {
+      const { user } = res.locals;
+      const statistics = await LoyaltyLevelService.getActivityStatistics(user.id);
+      res.json(
+        formatResponse(200, 'Activity statistics fetched successfully', statistics)
+      );
+    } catch (error) {
+      console.error('Error fetching activity statistics:', error);
+      res
+        .status(500)
+        .json(formatResponse(500, 'Failed to fetch activity statistics'));
+    }
+  }
 }
 
 module.exports = LoyaltyLevelController;
