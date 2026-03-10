@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { to: "/", label: "Дашборд" },
   { to: "/book", label: "Запись на процедуру" },
   { to: "/procedures", label: "Календарь посещений" },
+  { to: "/history", label: "История" },
   { to: "/ai", label: "Виртуальный ассистент" },
 ];
 

@@ -12,7 +12,7 @@ apiRouter.use('/auth', authRouter);
 apiRouter.use('/ai', aiRouter);
 apiRouter.use('/measurements', measurementRouter);
 apiRouter.use('/order', orderRouter);
-apiRouter.use('/procedures', procedureRouter);
+apiRouter.use('/procedure', procedureRouter);
 apiRouter.use('/loyalty', loyaltyLevelRouter);
 apiRouter.use('/bookings', bookingRouter);
 

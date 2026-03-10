@@ -1,0 +1,137 @@
+.calendar {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  border: 1px solid #e5e5e5;
+}
+
+@media (min-width: 1024px) {
+  .calendar {
+    padding: 1.5rem;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.navButton {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #737373;
+  transition: all 0.2s;
+}
+
+.navButton:hover {
+  background-color: #f5f5f5;
+  color: #171717;
+}
+
+.navIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.monthTitle {
+  font-size: 1.125rem;
+  color: #171717;
+  margin: 0;
+}
+
+@media (min-width: 1024px) {
+  .monthTitle {
+    font-size: 1.25rem;
+  }
+}
+
+.weekDays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.weekDay {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #737373;
+  padding-bottom: 0.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.emptyCell {
+  aspect-ratio: 1;
+}
+
+.dayCell {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  position: relative;
+}
+
+.dayNumber {
+  font-size: 0.875rem;
+  color: #525252;
+  margin-bottom: 0.125rem;
+}
+
+.today .dayNumber {
+  color: #171717;
+  font-weight: 500;
+}
+
+.today {
+  border: 2px solid #d4d4d4;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e5e5;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.visitDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: #171717;
+}
+
+.todayDot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  border: 2px solid #d4d4d4;
+  background-color: white;
+}
+
+.legendText {
+  font-size: 0.875rem;
+  color: #737373;
+}
