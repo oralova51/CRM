@@ -13,11 +13,11 @@ const PROCEDURE_THUNK_NAMES = {
 } as const;
 
 const PROCEDURE_API_URL = {
-  GET_ALL: "/procedures",
-  GET_ONE: (id: number) => `/procedures/${id}`,
-  CREATE: "/procedures",
-  UPDATE: (id: number) => `/procedures/${id}`,
-  DELETE: (id: number) => `/procedures/${id}`,
+  GET_ALL: "/procedure",
+  GET_ONE: (id: number) => `/procedure/${id}`,
+  CREATE: "/procedure",
+  UPDATE: (id: number) => `/procedure/${id}`,
+  DELETE: (id: number) => `/procedure/${id}`,
 } as const;
 
 // Получить все процедуры
