@@ -12,7 +12,7 @@ export function BookingStatusBadge({ status }: Props) {
   // Конфигурация для каждого статуса
   const statusConfig: Record<BookingStatus, { label: string; icon: typeof Circle; color: string }> = {
     pending: { 
-      label: "Ожидает", 
+      label: "Предстоит", 
       icon: Clock, 
       color: "blue" 
     },

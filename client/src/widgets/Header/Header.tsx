@@ -1,31 +1,44 @@
 import { NavLink, useNavigate } from "react-router";
 import { useState, useEffect } from "react";
-import "./Header.css";
-import { signOutThunk } from "../../entities/user/api/UserApi";
+import {
+  LayoutDashboard,
+  CalendarPlus,    // для записи
+  CalendarDays,
+  History,
+  MessageCircle,
+  Info,
+  Menu,
+  X,
+  LogOut,
+  LogIn,
+  User
+} from "lucide-react";
+import { signOutThunk } from "@/entities/user/api/UserApi";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
-import { Button } from "@/shared/ui/Button/Button";
 import { CLIENT_ROUTES } from "@/shared/consts/clientRoutes";
+import styles from "./Header.module.css";
 
 const NAV_ITEMS = [
-  { to: "/", label: "Дашборд" },
-  { to: "/book", label: "Запись на процедуру" },
-  { to: "/procedures", label: "Календарь посещений" },
-  { to: "/history", label: "История" },
-  { to: "/ai", label: "Виртуальный ассистент" },
+  { to: "/", label: "Дашборд", icon: LayoutDashboard, protected: true },
+  { to: "/landing", label: "О студии", icon: Info, protected: false },  // новый пункт
+  { to: "/book", label: "Запись", icon: CalendarPlus, protected: true },
+  { to: "/procedures", label: "Календарь", icon: CalendarDays, protected: true },
+  { to: "/history", label: "История", icon: History, protected: true },
+  { to: "/ai", label: "AI ассистент", icon: MessageCircle, protected: true },
 ];
 
-export default function Header() {
+export function Header() {
   const { user } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
       if (window.innerWidth > 768) {
-        setIsMenuOpen(false);
+        setIsMobileMenuOpen(false);
       }
     };
 
@@ -33,187 +46,209 @@ export default function Header() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const closeMenu = () => setIsMenuOpen(false);
-
-  // Функция-обработчик для защищенных ссылок
-  const handleProtectedNavigation = (e: React.MouseEvent, to: string) => {
-    if (!user) {
-      e.preventDefault(); // Предотвращаем переход
-      navigate(CLIENT_ROUTES.AUTH); // Отправляем на авторизацию
-    }
-    // Если пользователь авторизован - переход произойдет normally
+  const handleSignOut = async () => {
+    await dispatch(signOutThunk());
+    navigate(CLIENT_ROUTES.AUTH);
   };
 
-  async function handleSignOut() {
-    await dispatch(signOutThunk());
+  const handleProtectedNavigation = (e: React.MouseEvent, to: string) => {
+    if (!user) {
+      e.preventDefault();
+      navigate(CLIENT_ROUTES.AUTH);
+      setIsMobileMenuOpen(false);
+    }
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  // На десктопе показываем боковую панель
+  if (!isMobile) {
+    return (
+      <>
+        {/* Боковая панель */}
+        <aside className={styles.desktopSidebar}>
+          <div className={styles.sidebarHeader}>
+            <div className={styles.logo}>
+              <span className={styles.logoTitle}>Ideal Body</span>
+              <span className={styles.logoSubtitle}>Studio</span>
+            </div>
+          </div>
+
+          <nav className={styles.sidebarNav}>
+            {NAV_ITEMS.map((item) => {
+              const Icon = item.icon;
+
+              // Если пункт не защищён (landing) - доступен всем
+              if (!item.protected) {
+                return (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    className={({ isActive }) =>
+                      `${styles.navItem} ${isActive ? styles.navItemActive : ""}`
+                    }
+                    end={item.to === "/"}
+                  >
+                    <Icon className={styles.navIcon} />
+                    <span className={styles.navLabel}>{item.label}</span>
+                  </NavLink>
+                );
+              }
+
+              // Защищённые пункты - только для авторизованных
+              return (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  className={({ isActive }) =>
+                    `${styles.navItem} ${isActive ? styles.navItemActive : ""} ${!user ? styles.navItemDisabled : ""
+                    }`
+                  }
+                  onClick={(e) => {
+                    if (!user) {
+                      e.preventDefault();
+                      navigate(CLIENT_ROUTES.AUTH);
+                    }
+                  }}
+                >
+                  <Icon className={styles.navIcon} />
+                  <span className={styles.navLabel}>{item.label}</span>
+                </NavLink>
+              );
+            })}
+          </nav>
+
+          {/* Блок пользователя внизу */}
+          <div className={styles.sidebarUser}>
+            {user ? (
+              <>
+                <div className={styles.userInfo}>
+                  <div className={styles.userAvatar}>
+                    <User className={styles.userIcon} />
+                  </div>
+                  <div className={styles.userDetails}>
+                    <span className={styles.userName}>{user.name}</span>
+                    <span className={styles.userRole}>
+                      {user.role === 'isAdmin' ? 'Администратор' : 'Клиент'}
+                    </span>
+                  </div>
+                </div>
+                <button
+                  className={styles.signOutButton}
+                  onClick={handleSignOut}
+                >
+                  <LogOut className={styles.signOutIcon} />
+                  <span>Выйти</span>
+                </button>
+              </>
+            ) : (
+              <NavLink to="/auth" className={styles.signInLink}>
+                <LogIn className={styles.signInIcon} />
+                <span>Войти</span>
+              </NavLink>
+            )}
+          </div>
+        </aside>
+
+        {/* Маленький хедер для десктопа (только бренд) */}
+        <header className={styles.desktopHeader}>
+          <div className={styles.desktopHeaderContent}>
+            <span className={styles.desktopHeaderTitle}>Ideal Body Studio</span>
+          </div>
+        </header>
+      </>
+    );
   }
 
+  // Мобильная версия
   return (
-    <header className="shell-header">
-      <div className="shell-brand">
-        <span className="shell-brand-title">CRM Studio</span>
-        <span className="shell-brand-subtitle">Рабочее пространство</span>
+    <header className={styles.mobileHeader}>
+      <div className={styles.mobileHeaderContent}>
+        <div className={styles.mobileLogo}>
+          <span className={styles.mobileLogoTitle}>Ideal Body</span>
+          <span className={styles.mobileLogoSubtitle}>Studio</span>
+        </div>
+        <button
+          className={styles.mobileMenuButton}
+          onClick={toggleMobileMenu}
+        >
+          {isMobileMenuOpen ? <X /> : <Menu />}
+        </button>
       </div>
 
-      {/* Десктопная навигация */}
-      {!isMobile && (
-        <>
-          <nav className="shell-nav-desktop">
+      {isMobileMenuOpen && (
+        <div className={styles.mobileMenu}>
+          <nav className={styles.mobileNav}>
             {NAV_ITEMS.map((item) => {
-              // Для дашборда не нужна защита (доступен всем)
+              const Icon = item.icon;
               if (item.to === "/") {
                 return (
                   <NavLink
                     key={item.to}
                     to={item.to}
                     className={({ isActive }) =>
-                      ["shell-nav-link", isActive && "shell-nav-link--active"]
-                        .filter(Boolean)
-                        .join(" ")
+                      `${styles.mobileNavItem} ${isActive ? styles.mobileNavItemActive : ""}`
                     }
-                    end={item.to === "/"}
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    {item.label}
+                    <Icon className={styles.mobileNavIcon} />
+                    <span>{item.label}</span>
                   </NavLink>
                 );
               }
-              
-              // Для остальных пунктов - с обработчиком
               return (
                 <NavLink
                   key={item.to}
                   to={item.to}
                   className={({ isActive }) =>
-                    ["shell-nav-link", isActive && "shell-nav-link--active"]
-                      .filter(Boolean)
-                      .join(" ")
+                    `${styles.mobileNavItem} ${isActive ? styles.mobileNavItemActive : ""} ${!user ? styles.mobileNavItemDisabled : ""
+                    }`
                   }
-                  onClick={(e) => handleProtectedNavigation(e, item.to)}
+                  onClick={(e) => {
+                    handleProtectedNavigation(e, item.to);
+                    setIsMobileMenuOpen(false);
+                  }}
                 >
-                  {item.label}
+                  <Icon className={styles.mobileNavIcon} />
+                  <span>{item.label}</span>
                 </NavLink>
               );
             })}
           </nav>
-          
-          <nav className="shell-nav-desktop">
-            {user ? (
-              <NavLink
-                to="/profile"
-                className={({ isActive }) =>
-                  ["shell-nav-link", isActive && "shell-nav-link--active"]
-                    .filter(Boolean)
-                    .join(" ")
-                }
-              >
-                {user.name}
-              </NavLink>
-            ) : (
-              <span className="shell-guest">Гость</span>
-            )}
-          </nav>
 
-          <div className="shell-user">
+          <div className={styles.mobileUser}>
             {user ? (
-              <Button
-                type="button"
-                size="sm"
-                variant="ghost"
-                onClick={handleSignOut}
-              >
-                Выйти
-              </Button>
+              <>
+                <div className={styles.mobileUserInfo}>
+                  <span className={styles.mobileUserName}>{user.name}</span>
+                  <span className={styles.mobileUserRole}>
+                    {user.role === 'isAdmin' ? 'Администратор' : 'Клиент'}
+                  </span>
+                </div>
+                <button
+                  className={styles.mobileSignOutButton}
+                  onClick={() => {
+                    handleSignOut();
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  <LogOut />
+                  <span>Выйти</span>
+                </button>
+              </>
             ) : (
-              <NavLink to="/auth" className="shell-auth-link">
-                Войти
+              <NavLink
+                to="/auth"
+                className={styles.mobileSignInLink}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <LogIn />
+                <span>Войти</span>
               </NavLink>
             )}
           </div>
-        </>
-      )}
-
-      {/* Мобильная версия */}
-      {isMobile && (
-        <div className="shell-mobile">
-          <button 
-            className="shell-burger-button" 
-            onClick={toggleMenu}
-          >
-            <span className="burger-icon">☰</span>
-          </button>
-
-          {isMenuOpen && (
-            <div className="shell-dropdown-menu">
-              {NAV_ITEMS.map((item) => {
-                // Дашборд без защиты
-                if (item.to === "/") {
-                  return (
-                    <NavLink
-                      key={item.to}
-                      to={item.to}
-                      className="shell-dropdown-item"
-                      onClick={closeMenu}
-                    >
-                      {item.label}
-                    </NavLink>
-                  );
-                }
-                
-                // Остальные пункты с защитой
-                return (
-                  <NavLink
-                    key={item.to}
-                    to={item.to}
-                    className="shell-dropdown-item"
-                    onClick={(e) => {
-                      if (!user) {
-                        e.preventDefault();
-                        navigate(CLIENT_ROUTES.AUTH);
-                        closeMenu();
-                      } else {
-                        closeMenu();
-                      }
-                    }}
-                  >
-                    {item.label}
-                  </NavLink>
-                );
-              })}
-              
-              {user && (
-                <NavLink
-                  to="/profile"
-                  className="shell-dropdown-item"
-                  onClick={closeMenu}
-                >
-                  👤 {user.name}
-                </NavLink>
-              )}
-              
-              <div className="dropdown-divider"></div>
-              
-              {user ? (
-                <button
-                  className="shell-dropdown-item dropdown-button"
-                  onClick={() => {
-                    handleSignOut();
-                    closeMenu();
-                  }}
-                >
-                  Выйти
-                </button>
-              ) : (
-                <NavLink
-                  to="/auth"
-                  className="shell-dropdown-item"
-                  onClick={closeMenu}
-                >
-                  Войти
-                </NavLink>
-              )}
-            </div>
-          )}
         </div>
       )}
     </header>

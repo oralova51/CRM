@@ -1,5 +1,6 @@
 export const CLIENT_ROUTES = {
   MAIN_PAGE: "/",
+  LANDING: "/landing", 
   AUTH: "/auth",
   BOOK: "/book",
   PROCEDURES: "/procedures",

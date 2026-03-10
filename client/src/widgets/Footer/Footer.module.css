@@ -1,40 +1,28 @@
-/* =============================================
-   Footer — mobile-first
-   Переменные из index.css:
-     --crm-surface, --crm-border-subtle,
-     --crm-text-main, --crm-text-muted
-   ============================================= */
-
-/* Base (mobile) */
-.shell-footer {
+.footer {
   background-color: var(--crm-surface, #ffffff);
   border-top: 1px solid var(--crm-border-subtle, rgba(15, 23, 42, 0.08));
   padding: 2rem 1rem;
   margin-top: 3rem;
 }
 
-/* Tablet + */
 @media (min-width: 768px) {
-  .shell-footer {
+  .footer {
     padding: 2rem;
   }
 }
 
-/* Desktop + */
 @media (min-width: 1024px) {
-  .shell-footer {
+  .footer {
     padding: 2.5rem 3rem;
   }
 }
 
-/* ---- Inner wrapper ---- */
-.shell-footer-inner {
-  max-width: 80rem; /* ~1280px, аналог max-w-7xl */
+.inner {
+  max-width: 80rem;
   margin-inline: auto;
 }
 
-/* ---- Three-column grid ---- */
-.shell-footer-grid {
+.grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.5rem;
@@ -43,47 +31,43 @@
 }
 
 @media (min-width: 768px) {
-  .shell-footer-grid {
+  .grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
   }
 }
 
-/* ---- Column ---- */
-.shell-footer-col {
+.col {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
 }
 
-.shell-footer-col p {
+.col p {
   margin: 0;
   line-height: 1.6;
 }
 
-/* ---- Section heading ---- */
-.shell-footer-heading {
+.heading {
   margin: 0 0 0.5rem;
   font-size: 0.875rem;
-  font-weight: var(--font-weight-medium, 500);
+  font-weight: 500;
   color: var(--crm-text-main, #030213);
   line-height: 1.5;
 }
 
-/* ---- Link ---- */
-.shell-footer-link {
+.link {
   display: block;
   color: var(--crm-text-muted, #6b7280);
   text-decoration: none;
   transition: color 0.16s ease-out;
 }
 
-.shell-footer-link:hover {
+.link:hover {
   color: var(--crm-text-main, #030213);
 }
 
-/* ---- Copyright ---- */
-.shell-footer-copy {
+.copyright {
   margin: 0.5rem 0 0;
   color: var(--crm-text-muted, #6b7280);
   font-size: 0.875rem;
