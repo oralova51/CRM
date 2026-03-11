@@ -20,7 +20,7 @@ import styles from "./Header.module.css";
 
 const NAV_ITEMS = [
   { to: "/", label: "Дашборд", icon: LayoutDashboard, protected: true },
-  { to: "/landing", label: "О студии", icon: Info, protected: false }, // новый пункт
+  { to: "/promo", label: "О студии", icon: Info, protected: false },  // новый пункт
   { to: "/book", label: "Запись", icon: CalendarPlus, protected: true },
   {
     to: "/procedures",
