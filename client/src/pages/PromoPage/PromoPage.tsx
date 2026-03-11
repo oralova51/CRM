@@ -19,29 +19,40 @@ type AppointmentFormData = {
   infoAgreement: boolean;
 };
 
-// Временные заглушки для картинок
-const getPlaceholderImage = (id: number) => {
-  const images = [
-    'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400',
-    'https://images.unsplash.com/photo-1519823551278-64ac92734ab1?w=400',
-    'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=400',
-    'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=400',
-  ];
-  return images[id % images.length];
+// Маппинг названий процедур на файлы в public/procedures
+const PROCEDURE_IMAGE_MAP: Record<string, string> = {
+  'Массаж тела по технологии LPG': '/procedures/lpg_telo.jpg',
+  'LPG массаж лица': '/procedures/lpg_face.jpg',
+  'Sketch массаж': '/procedures/placeholder.svg',
+  'Sketch массаж лица': '/procedures/sketch_face.JPG',
+  'Индиба (1 зона)': '/procedures/indiba.JPG',
+  'Турбо массаж для похудения': '/procedures/turbo.JPG',
+  'Криолиполиз (манипула для тела)': '/procedures/cryolipoliz.jpg',
+  'Криолиполиз (манипула для подбородка)': '/procedures/placeholder.svg',
+  'RF лифтинг для лица': '/procedures/rf_face.JPG',
+  'RF лифтинг для тела': '/procedures/rf_lifting.jpg',
+  'Кавитация': '/procedures/kavitaciya.jpeg',
+  'Миостимуляция': '/procedures/miostimul.jpeg',
+  'Прессотерапия': '/procedures/pressoterapia.jpg',
+  'Обёртывания': '/procedures/obertivanie.jpeg',
 };
 
-// Функция для определения новых процедур
-const isNewProcedure = (createdAt: string): boolean => {
-  const createdDate = new Date(createdAt);
-  const now = new Date();
-  const daysDiff = (now.getTime() - createdDate.getTime()) / (1000 * 3600 * 24);
-  return daysDiff <= 30;
+const PLACEHOLDER_IMAGE = '/procedures/placeholder.svg';
+
+// Процедуры без фото: Горячий массаж для похудения, БиоФотон
+const getProcedureImageUrl = (name: string): string => {
+  const mapped = PROCEDURE_IMAGE_MAP[name];
+  return mapped ?? PLACEHOLDER_IMAGE;
 };
+
+// Процедуры с плашкой НОВИНКА
+const NEW_PROCEDURE_NAMES = new Set(['Индиба (1 зона)', 'Sketch массаж', 'Sketch массаж лица']);
+
+const isNewProcedure = (name: string): boolean => NEW_PROCEDURE_NAMES.has(name);
 
 // Локальный тип для отображения
 type ProcedureDisplay = Procedure & {
   isNew?: boolean;
-  imageUrl?: string;
 };
 
 const PromoPage: React.FC = () => {
@@ -68,7 +79,7 @@ const PromoPage: React.FC = () => {
     .filter(proc => proc.is_active)
     .map(proc => ({
       ...proc,
-      isNew: isNewProcedure(proc.createdAt),
+      isNew: isNewProcedure(proc.name),
       description: proc.description || 'Описание временно отсутствует'
     }));
 
@@ -284,7 +295,7 @@ const PromoPage: React.FC = () => {
                 <article key={procedure.id} className="procedure-card">
                   <div className="procedure-image">
                     <img 
-                      src={procedure.imageUrl || getPlaceholderImage(procedure.id)} 
+                      src={getProcedureImageUrl(procedure.name)} 
                       alt={procedure.name}
                       loading="lazy"
                     />
