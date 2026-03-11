@@ -1,28 +1,20 @@
 import { useEffect } from "react";
 import AppRouter from "./app/routing/AppRouter";
-import { refreshThunk } from "@/entities/user/api/UserApi";
-import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
+// import { refreshThunk } from "@/entities/user/api/UserApi";
+import { getMeThunk } from "@/entities/user/api/UserApi";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
 
 function App() {
-  // const [user, setUser] = useState<User | null>(null);
-
-  // async function refreshUser() {
-  //   const { data, statusCode }: AuthResponse = await UserApi.refresh();
-
-  //   if (statusCode === 200) {
-  //     setUser(data.user);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   void refreshUser();
-  // }, []);
-
   const dispatch = useAppDispatch();
+   const { isInitialized, user } = useAppSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(refreshThunk());
+    dispatch(getMeThunk());
   }, []);
+
+  if (!isInitialized) {
+    return <div>Загрузка приложения...</div>;
+  }
 
   return <AppRouter />;
 }
