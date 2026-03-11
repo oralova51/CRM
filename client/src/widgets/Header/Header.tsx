@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import {
   LayoutDashboard,
-  CalendarPlus,    // для записи
+  CalendarPlus, // для записи
   CalendarDays,
   History,
   MessageCircle,
@@ -11,7 +11,7 @@ import {
   X,
   LogOut,
   LogIn,
-  User
+  User,
 } from "lucide-react";
 import { signOutThunk } from "@/entities/user/api/UserApi";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
@@ -22,7 +22,12 @@ const NAV_ITEMS = [
   { to: "/", label: "Дашборд", icon: LayoutDashboard, protected: true },
   { to: "/promo", label: "О студии", icon: Info, protected: false },  // новый пункт
   { to: "/book", label: "Запись", icon: CalendarPlus, protected: true },
-  { to: "/procedures", label: "Календарь", icon: CalendarDays, protected: true },
+  {
+    to: "/procedures",
+    label: "Календарь",
+    icon: CalendarDays,
+    protected: true,
+  },
   { to: "/history", label: "История", icon: History, protected: true },
   { to: "/ai", label: "AI ассистент", icon: MessageCircle, protected: true },
 ];
@@ -71,8 +76,14 @@ export function Header() {
         <aside className={styles.desktopSidebar}>
           <div className={styles.sidebarHeader}>
             <div className={styles.logo}>
-              <img className={styles.logoTitle} src='./logo.svg' alt='logo'></img>
-              <span className={styles.logoSubtitle}>Студия идеального тела</span>
+              <img
+                className={styles.logoTitle}
+                src="./logo.svg"
+                alt="logo"
+              ></img>
+              <span className={styles.logoSubtitle}>
+                Студия идеального тела
+              </span>
             </div>
           </div>
 
@@ -103,7 +114,8 @@ export function Header() {
                   key={item.to}
                   to={item.to}
                   className={({ isActive }) =>
-                    `${styles.navItem} ${isActive ? styles.navItemActive : ""} ${!user ? styles.navItemDisabled : ""
+                    `${styles.navItem} ${isActive ? styles.navItemActive : ""} ${
+                      !user ? styles.navItemDisabled : ""
                     }`
                   }
                   onClick={(e) => {
@@ -124,20 +136,34 @@ export function Header() {
           <div className={styles.sidebarUser}>
             {user ? (
               <>
-                <div className={styles.userInfo}>
+                {/* Оборачиваем ТОЛЬКО userInfo в кликабельный div */}
+                <div
+                  className={styles.userInfo}
+                  onClick={() => {
+                    if (user.role === "isAdmin") {
+                      navigate("/admin");
+                    } else {
+                      navigate("/profile");
+                    }
+                  }}
+                  style={{ cursor: "pointer" }}
+                >
                   <div className={styles.userAvatar}>
                     <User className={styles.userIcon} />
                   </div>
                   <div className={styles.userDetails}>
                     <span className={styles.userName}>{user.name}</span>
                     <span className={styles.userRole}>
-                      {user.role === 'isAdmin' ? 'Администратор' : 'Клиент'}
+                      {user.role === "isAdmin" ? "Администратор" : "Клиент"}
                     </span>
                   </div>
                 </div>
                 <button
                   className={styles.signOutButton}
-                  onClick={handleSignOut}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Предотвращаем всплытие события
+                    handleSignOut();
+                  }}
                 >
                   <LogOut className={styles.signOutIcon} />
                   <span>Выйти</span>
@@ -155,7 +181,9 @@ export function Header() {
         {/* Маленький хедер для десктопа (только бренд) */}
         <header className={styles.desktopHeader}>
           <div className={styles.desktopHeaderContent}>
-            <span className={styles.desktopHeaderTitle}>Студия идеального тела</span>
+            <span className={styles.desktopHeaderTitle}>
+              Студия идеального тела
+            </span>
           </div>
         </header>
       </>
@@ -167,12 +195,13 @@ export function Header() {
     <header className={styles.mobileHeader}>
       <div className={styles.mobileHeaderContent}>
         <div className={styles.mobileLogo}>
-          <img className={styles.mobileLogoTitle} src='./logo.svg' alt="logo"></img>
+          <img
+            className={styles.mobileLogoTitle}
+            src="./logo.svg"
+            alt="logo"
+          ></img>
         </div>
-        <button
-          className={styles.mobileMenuButton}
-          onClick={toggleMobileMenu}
-        >
+        <button className={styles.mobileMenuButton} onClick={toggleMobileMenu}>
           {isMobileMenuOpen ? <X /> : <Menu />}
         </button>
       </div>
@@ -202,7 +231,8 @@ export function Header() {
                   key={item.to}
                   to={item.to}
                   className={({ isActive }) =>
-                    `${styles.mobileNavItem} ${isActive ? styles.mobileNavItemActive : ""} ${!user ? styles.mobileNavItemDisabled : ""
+                    `${styles.mobileNavItem} ${isActive ? styles.mobileNavItemActive : ""} ${
+                      !user ? styles.mobileNavItemDisabled : ""
                     }`
                   }
                   onClick={(e) => {
@@ -220,10 +250,20 @@ export function Header() {
           <div className={styles.mobileUser}>
             {user ? (
               <>
-                <div className={styles.mobileUserInfo}>
+                <div
+                  className={styles.mobileUserInfo}
+                  onClick={() => {
+                    if (user.role === "isAdmin") {
+                      navigate("/admin");
+                    } else {
+                      navigate("/profile"); // или другой роут для профиля клиента
+                    }
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
                   <span className={styles.mobileUserName}>{user.name}</span>
                   <span className={styles.mobileUserRole}>
-                    {user.role === 'isAdmin' ? 'Администратор' : 'Клиент'}
+                    {user.role === "isAdmin" ? "Администратор" : "Клиент"}
                   </span>
                 </div>
                 <button

@@ -49,7 +49,7 @@ module.exports = {
           created_by: 2,
         },
         {
-          user_id: 6, // Третий клиент
+          user_id: 1, // Третий клиент
           measured_at: new Date("2024-01-10"),
           waist_cm: 95.0,
           hips_cm: 108.0,

@@ -46,3 +46,16 @@ export const initialMeasurementState: MeasurementState = {
 export type MeasurementsListResponse = ServerResponseType<MeasurementType[]>;
 
 export type MeasurementResponse = ServerResponseType<MeasurementType>;
+
+export type CreateMeasurementType = {
+  user_id: number;
+  measured_at?: Date;
+  waist_cm?: number;
+  hips_cm?: number;
+  hip_1?: number;
+  chest_cm?: number;
+  arms_cm?: number;
+  photo_before?: string;
+  photo_after?: string;
+  notes?: string;
+};
