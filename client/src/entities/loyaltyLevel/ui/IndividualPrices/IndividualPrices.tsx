@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { Tag, Sparkles } from "lucide-react";
 import { useAppSelector, useAppDispatch } from "@/shared/hooks/useReduxHooks";
+import { useUserLoyaltyStore } from "../../store/store";
 import { getAllProceduresThunk } from "@/entities/procedure/api/procedureApi";
 import type { Procedure } from "@/entities/procedure/model/types";
 import "./IndividualPrices.css";
 
-const DISCOUNT_PERCENT = 10;
+
+
 
 const ALLOWED_PROCEDURE_NAMES = [
   "Криолиполиз (манипула для тела)",
@@ -14,15 +16,20 @@ const ALLOWED_PROCEDURE_NAMES = [
   "Индиба (1 зона)",
 ];
 
-function applyDiscount(price: number): number {
-  return Math.round(price * (1 - DISCOUNT_PERCENT / 100));
-}
-
 export function IndividualPrices() {
   const dispatch = useAppDispatch();
   const { procedures, isLoading, error } = useAppSelector(
     (state) => state.procedures,
   );
+  const userLoyaltyLevel = useUserLoyaltyStore(
+    (state) => state.userLoyaltyLevel,
+  );
+
+  const DISCOUNT_PERCENT = userLoyaltyLevel?.discount_pct || 0;
+
+  function applyDiscount(price: number): number {
+    return Math.round(price * (1 - DISCOUNT_PERCENT / 100));
+  }
 
   useEffect(() => {
     dispatch(getAllProceduresThunk());

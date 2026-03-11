@@ -1,7 +1,7 @@
 import LoyaltyLevelCard from "@/entities/loyaltyLevel/ui/LoyaltyLevelCard/LoyaltyLevelCard";
 import "./MainPage.css";
 import { FinansialBenefits } from "@/entities/loyaltyLevel/ui/FinansialBenefits/FinansialBenefits";
-import { IndividualPrices } from "@/entities/ui/IndividualPrices/IndividualPrices";
+import { IndividualPrices } from "@/entities/loyaltyLevel/ui/IndividualPrices/IndividualPrices";
 import Statistics from "@/entities/loyaltyLevel/ui/Statistics/Statistics";
 
 
