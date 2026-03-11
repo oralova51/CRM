@@ -36,8 +36,8 @@ export function Header() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-      if (window.innerWidth > 768) {
+      setIsMobile(window.innerWidth < 800);
+      if (window.innerWidth >= 800) {
         setIsMobileMenuOpen(false);
       }
     };
