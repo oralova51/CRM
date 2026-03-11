@@ -79,3 +79,8 @@
   object-fit: cover;
 }
 
+@media screen and (min-width: 1000px) {
+  .page-header {
+   align-items: center;
+  }
+}
