@@ -3,11 +3,17 @@ import { useUserSearch } from "@/shared/hooks/useUserSearch";
 import { UserWithoutPassword } from "@/entities/user/model";
 import MeasurementApi from "@/entities/measurement/api/MeasurementApi";
 import MeasurementCard from "@/entities/measurement/ui/MeasurementCard";
-import { MeasurementType } from "@/entities/measurement/model";
+import {
+  MeasurementInputData,
+  MeasurementType,
+  CreateMeasurementType,
+} from "@/entities/measurement/model";
+import { Button } from "@/shared/ui/Button/Button";
 
 export default function AdminPage() {
   // Поиск
   const { query, setQuery, results } = useUserSearch();
+  const [showCreateForm, setShowCreateForm] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserWithoutPassword | null>(
     null,
   );
@@ -15,7 +21,8 @@ export default function AdminPage() {
 
   const handleSelectUser = async (user: UserWithoutPassword) => {
     setSelectedUser(user);
-    setQuery('');
+    setQuery("");
+    setShowCreateForm(false);
     try {
       const response = await MeasurementApi.AdminGetUsersMeasurements(user.id);
       if (response && Array.isArray(response.data)) {
@@ -29,10 +36,51 @@ export default function AdminPage() {
     }
   };
 
+  // Создание замера
+  async function handleCreate() {
+    if (!selectedUser) return;
+
+    const newMeasurement: CreateMeasurementType = {
+      user_id: selectedUser.id,
+      measured_at: new Date(),
+      waist_cm: 0,
+      hips_cm: 0,
+      hip_1: 0,
+      chest_cm: 0,
+      arms_cm: 0,
+      photo_before: "",
+      photo_after: "",
+      notes: "",
+    };
+
+    try {
+      const response = await MeasurementApi.createMeasurement(newMeasurement);
+      if (response?.data) {
+        const newMeasurementData: MeasurementType = response.data;
+        setMeasurements((prev) => [...prev, newMeasurementData]);
+      }
+    } catch (error) {
+      console.error("Error creating measurement:", error);
+    }
+  }
+
   // Обновление замера
-  const handleUpdate = async (measurement: MeasurementType) => {
-    await MeasurementApi.updateMeasurement(measurement.id, measurement);
-  };
+  async function handleUpdate(updatedMeasurement: MeasurementType) {
+    try {
+      const response = await MeasurementApi.updateMeasurement(
+        updatedMeasurement.id,
+        updatedMeasurement,
+      );
+      if (response?.data) {
+        const updatedData: MeasurementType = response.data;
+        setMeasurements((prev) =>
+          prev.map((m) => (m.id === updatedData.id ? updatedData : m)),
+        );
+      }
+    } catch (error) {
+      console.error("Error updating measurement:", error);
+    }
+  }
 
   // Удаление замера
   const handleDelete = async (id: number) => {
@@ -42,7 +90,7 @@ export default function AdminPage() {
 
   return (
     <div style={{ padding: 20 }}>
-      <h1>Админка</h1>
+      <h1>Админ панель</h1>
 
       {/* Поиск */}
       <div>
@@ -50,7 +98,7 @@ export default function AdminPage() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Поиск клиента..."
+          placeholder="Поиск клиента... email, имя, телефон."
           style={{ width: "100%", padding: 10, marginBottom: 10 }}
         />
 
@@ -87,12 +135,13 @@ export default function AdminPage() {
       {/* Замеры */}
       {selectedUser && (
         <div>
+          <Button onClick={handleCreate}>Создать замер</Button>
           <h3>Замеры клиента</h3>
           {measurements.map((measurement) => (
             <MeasurementCard
               key={measurement.id}
               measurement={measurement}
-              onDelete={() => handleDelete(m.id)}
+              onDelete={() => handleDelete(measurement.id)}
               onUpdate={handleUpdate}
             />
           ))}
