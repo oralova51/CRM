@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router'; // 👈 добавляем useNavigate
 import { useAppDispatch, useAppSelector } from '../../app/store/store';
 import { getAllProceduresThunk } from '../../entities/procedure/api/procedureApi';
 import { ProcedureRadioCard } from '../../entities/procedure/ui/ProcedureRadioCard/ProcedureRadioCard';
 import type { Procedure } from '../../entities/procedure/model/types';
+import { CLIENT_ROUTES } from '../../shared/consts/clientRoutes'; // 👈 импортируем константы маршрутов
 import './PromoPage.css';
 
 // Типы для формы
@@ -56,6 +58,7 @@ type ProcedureDisplay = Procedure & {
 };
 
 const PromoPage: React.FC = () => {
+  const navigate = useNavigate(); // 👈 инициализируем navigate
   const dispatch = useAppDispatch();
   const [selectedProcedureId, setSelectedProcedureId] = useState<number | null>(null);
   const [formData, setFormData] = useState<AppointmentFormData>({
@@ -71,7 +74,6 @@ const PromoPage: React.FC = () => {
   const [success, setSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   
-  // ✅ ИСПРАВЛЕНО: используем state.procedures (как в store.ts)
   const { procedures, isLoading, error } = useAppSelector((state) => state.procedures);
 
   // Добавляем мета-информацию
@@ -115,12 +117,18 @@ const PromoPage: React.FC = () => {
     }
   };
 
+  // 👇 ОБНОВЛЕННАЯ функция: теперь редирект на страницу регистрации
   const handleProcedureSelect = (procedure: Procedure) => {
-    setSelectedProcedureId(procedure.id);
-    setFormData(prev => ({ 
-      ...prev, 
-      procedure: procedure.name
+    // Сохраняем данные выбранной процедуры в sessionStorage
+    sessionStorage.setItem('selectedProcedure', JSON.stringify({
+      id: procedure.id,
+      name: procedure.name,
+      price: procedure.price,
+      duration: procedure.duration_min
     }));
+    
+    // Редирект на страницу регистрации
+    navigate(CLIENT_ROUTES.AUTH);
   };
 
   const formatPrice = (price: number) => {
