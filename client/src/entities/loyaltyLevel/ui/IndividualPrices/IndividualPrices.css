@@ -1,0 +1,202 @@
+/* IndividualPrices.css — стили по образцу PricingCard из references */
+
+.individual-prices {
+  background: linear-gradient(to bottom right, #fffbeb, #fff7ed);
+  border-radius: var(--crm-radius-lg, 1rem);
+  padding: 1.5rem;
+  border: 1px solid #fde68a;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .individual-prices {
+    padding: 2rem;
+    max-width: 540px;
+  }
+}
+
+.individual-prices-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.individual-prices-icon-wrapper {
+  padding: 0.625rem;
+  background-color: #fef3c7;
+  border-radius: 0.75rem;
+}
+
+.individual-prices-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #b45309;
+}
+
+.individual-prices-header-text {
+  flex: 1;
+}
+
+.individual-prices-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--crm-text-main, #030213);
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .individual-prices-title {
+    font-size: 1.25rem;
+  }
+}
+
+.individual-prices-subtitle {
+  font-size: 0.875rem;
+  color: var(--crm-text-muted, #6b7280);
+  margin: 0.25rem 0 0;
+}
+
+.individual-prices-sparkles {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #d97706;
+}
+
+.individual-prices-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .individual-prices-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+.individual-prices-card {
+  background-color: var(--crm-surface, #ffffff);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  border: 1px solid #fef3c7;
+  transition: border-color 0.2s ease;
+}
+
+.individual-prices-card:hover {
+  border-color: #fcd34d;
+}
+
+.individual-prices-card-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--crm-text-main, #030213);
+  margin: 0 0 0.75rem;
+}
+
+.individual-prices-card-prices {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.individual-prices-card-your-price {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--crm-text-main, #030213);
+}
+
+@media (min-width: 768px) {
+  .individual-prices-card-your-price {
+    font-size: 1.5rem;
+  }
+}
+
+.individual-prices-card-regular {
+  font-size: 0.875rem;
+  color: var(--crm-text-muted, #9ca3af);
+  text-decoration: line-through;
+}
+
+.individual-prices-card-savings {
+  font-size: 0.75rem;
+  color: #059669;
+  margin: 0.5rem 0 0;
+}
+
+.individual-prices-footer {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #fde68a;
+}
+
+.individual-prices-footer-text {
+  font-size: 0.875rem;
+  color: var(--crm-text-muted, #6b7280);
+  text-align: center;
+  margin: 0;
+}
+
+/* Skeleton */
+.individual-prices-skeleton {
+  min-height: 280px;
+  position: relative;
+  overflow: hidden;
+}
+
+.individual-prices-shimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  animation: individual-prices-shimmer 1.5s infinite;
+}
+
+@keyframes individual-prices-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Error state */
+.individual-prices-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+}
+
+.individual-prices-error-text {
+  font-size: 0.875rem;
+  color: var(--crm-text-muted, #6b7280);
+  margin: 0;
+}
+
+/* Empty state */
+.individual-prices-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  gap: 0.5rem;
+}
+
+.individual-prices-empty-text {
+  font-size: 0.875rem;
+  color: var(--crm-text-muted, #6b7280);
+  margin: 0;
+}
