@@ -17,4 +17,11 @@ app.use('/api', apiRouter);
 // Запускаем приложение
 app.listen(PORT, () => {
   console.log(`Сервер запущен на порту: ${PORT}`);
+
+  try {
+    require('./cron/bookingReminders');
+    console.log('✅ Push notification scheduler loaded');
+  } catch (error) {
+    console.error('❌ Failed to load push notification scheduler:', error);
+  }
 });
