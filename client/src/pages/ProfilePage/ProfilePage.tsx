@@ -5,6 +5,7 @@ import { CLIENT_ROUTES } from "@/shared/consts/clientRoutes";
 import { useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { PushNotificationToggle } from '@/features/push-notifications/PushNotificationToggle';
 
 export default function MeasurementPage() {
   const [measurements, setMeasurements] = useState<MeasurementType[]>([]);
@@ -39,7 +40,12 @@ export default function MeasurementPage() {
       ) : (
         <h1>Нет замеров</h1>
       )}
+      <div >
+        <h2 >Настройки уведомлений</h2>
+        <PushNotificationToggle />
+      </div>
     </div>
+
   );
 }
 
