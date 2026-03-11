@@ -3,7 +3,7 @@ const config = require('../configs/index');
 class LLMService {
   async generateAnswer(context, question) {
     const requestBody = {
-      model: 'qwen/qwen3-next-80b-a3b-instruct:free',
+      model: 'arcee-ai/trinity-mini:free',
       messages: [
         {
           role: 'user',
