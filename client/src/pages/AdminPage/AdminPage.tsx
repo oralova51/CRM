@@ -2,18 +2,25 @@ import { useState } from "react";
 import { useUserSearch } from "@/shared/hooks/useUserSearch";
 import { UserWithoutPassword } from "@/entities/user/model";
 import MeasurementApi from "@/entities/measurement/api/MeasurementApi";
-import MeasurementCard from "@/entities/measurement/ui/MeasurementCard";
+import MeasurementCard from "@/entities/measurement/ui/MeasurementCard/MeasurementCard";
+import EditFormMeasurement from "@/entities/measurement/ui/EditForm/EditFormMeasurement";
 import {
   MeasurementInputData,
   MeasurementType,
   CreateMeasurementType,
 } from "@/entities/measurement/model";
 import { Button } from "@/shared/ui/Button/Button";
+import AddMeasurementForm from "@/entities/measurement/ui/AddForm/AddMeasurementForm";
+import { useAppSelector } from "@/app/store/store";
 
 export default function AdminPage() {
+  const currentUser = useAppSelector((state) => state.user.user);
   // Поиск
   const { query, setQuery, results } = useUserSearch();
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [editingMeasurement, setEditingMeasurement] =
+    useState<MeasurementType | null>(null);
   const [selectedUser, setSelectedUser] = useState<UserWithoutPassword | null>(
     null,
   );
@@ -22,7 +29,9 @@ export default function AdminPage() {
   const handleSelectUser = async (user: UserWithoutPassword) => {
     setSelectedUser(user);
     setQuery("");
+    setIsLoading(true);
     setShowCreateForm(false);
+    setEditingMeasurement(null);
     try {
       const response = await MeasurementApi.AdminGetUsersMeasurements(user.id);
       if (response && Array.isArray(response.data)) {
@@ -33,60 +42,111 @@ export default function AdminPage() {
     } catch (error) {
       console.error("Error fetching measurements:", error);
       setMeasurements([]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // Создание замера
-  async function handleCreate() {
-    if (!selectedUser) return;
 
+  async function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!selectedUser) return;
+    const formData = new FormData(e.currentTarget);
     const newMeasurement: CreateMeasurementType = {
       user_id: selectedUser.id,
       measured_at: new Date(),
-      waist_cm: 0,
-      hips_cm: 0,
-      hip_1: 0,
-      chest_cm: 0,
-      arms_cm: 0,
+      waist_cm: Number(formData.get("waist_cm")) || 0,
+      hips_cm: Number(formData.get("hips_cm")) || 0,
+      hip_1: Number(formData.get("hip_1")) || 0,
+      chest_cm: Number(formData.get("chest_cm")) || 0,
+      arms_cm: Number(formData.get("arms_cm")) || 0,
       photo_before: "",
       photo_after: "",
-      notes: "",
+      notes: (formData.get("notes") as string) || "",
+      created_by: currentUser?.id || 1,
     };
-
     try {
-      const response = await MeasurementApi.createMeasurement(newMeasurement);
-      if (response?.data) {
-        const newMeasurementData: MeasurementType = response.data;
-        setMeasurements((prev) => [...prev, newMeasurementData]);
+      const responce = await MeasurementApi.createMeasurement(newMeasurement);
+      if (responce?.data) {
+        const newMeasurementData: MeasurementType = responce.data;
+        setMeasurements((prev) => [newMeasurementData, ...prev]);
+        setShowCreateForm(false);
       }
     } catch (error) {
-      console.error("Error creating measurement:", error);
+      console.log(error);
     }
   }
 
   // Обновление замера
-  async function handleUpdate(updatedMeasurement: MeasurementType) {
+
+  const handleEdit = (measurement: MeasurementType) => {
+    setEditingMeasurement(measurement);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingMeasurement(null);
+  };
+  async function handleFormUpdate(
+    e: React.FormEvent<HTMLFormElement>,
+    id: number,
+  ) {
+    e.preventDefault();
+
+    console.log("1. handleFormUpdate started with id:", id); // ЛОГ 1
+
+    if (!selectedUser || !editingMeasurement) {
+      console.log("2. Validation failed:", {
+        selectedUser,
+        editingMeasurement,
+      }); // ЛОГ 2
+      return;
+    }
+
+    console.log("3. selectedUser:", selectedUser); // ЛОГ 3
+    console.log("4. editingMeasurement:", editingMeasurement); // ЛОГ 4
+
+    const formData = new FormData(e.currentTarget);
+     console.log("5. Form data entries:"); // ЛОГ 5
+    const updatedMeasurement: CreateMeasurementType = {
+      user_id: selectedUser.id,
+      measured_at: editingMeasurement.measured_at,
+      waist_cm: Number(formData.get("waist_cm")) || 0,
+      hips_cm: Number(formData.get("hips_cm")) || 0,
+      hip_1: Number(formData.get("hip_1")) || 0,
+      chest_cm: Number(formData.get("chest_cm")) || 0,
+      arms_cm: Number(formData.get("arms_cm")) || 0,
+      photo_before: editingMeasurement.photo_before,
+      photo_after: editingMeasurement.photo_after,
+      notes: (formData.get("notes") as string) || editingMeasurement.notes,
+      created_by: editingMeasurement.created_by || currentUser?.id || 1,
+    };
     try {
-      const response = await MeasurementApi.updateMeasurement(
-        updatedMeasurement.id,
+      const responce = await MeasurementApi.updateMeasurement(
+        id,
         updatedMeasurement,
       );
-      if (response?.data) {
-        const updatedData: MeasurementType = response.data;
+      if (responce?.data) {
+        const updatedData: MeasurementType = responce.data;
         setMeasurements((prev) =>
           prev.map((m) => (m.id === updatedData.id ? updatedData : m)),
         );
+        setEditingMeasurement(null);
       }
     } catch (error) {
-      console.error("Error updating measurement:", error);
+      console.log(error);
     }
   }
 
   // Удаление замера
-  const handleDelete = async (id: number) => {
-    await MeasurementApi.deleteMeasurement(id);
-    setMeasurements(measurements.filter((m) => m.id !== id));
-  };
+  async function handleDelete(id: number) {
+    try {
+      await MeasurementApi.deleteMeasurement(id);
+      setMeasurements((prev) => prev.filter((m) => m.id !== id));
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div style={{ padding: 20 }}>
@@ -132,17 +192,36 @@ export default function AdminPage() {
         </div>
       )}
 
-      {/* Замеры */}
+      {/* Замеры [showCreateForm, setShowCreateForm]*/}
       {selectedUser && (
         <div>
-          <Button onClick={handleCreate}>Создать замер</Button>
+          <Button onClick={() => setShowCreateForm(!showCreateForm)}>
+            {showCreateForm ? "Отмена" : "Новый замер"}
+          </Button>
+          {/* Форма создания замера */}
+          {showCreateForm && (
+            <div style={{ marginBottom: "20px" }}>
+              <AddMeasurementForm submitHandler={handleFormSubmit} />
+            </div>
+          )}
+
+          {/* Форма редактирования замера */}
+          {editingMeasurement && (
+            <div style={{ marginBottom: "20px", marginTop: "20px" }}>
+              <EditFormMeasurement
+                measurement={editingMeasurement}
+                submitHandler={handleFormUpdate}
+                onCancel={handleCancelEdit}
+              />
+            </div>
+          )}
           <h3>Замеры клиента</h3>
           {measurements.map((measurement) => (
             <MeasurementCard
               key={measurement.id}
               measurement={measurement}
               onDelete={() => handleDelete(measurement.id)}
-              onUpdate={handleUpdate}
+              onEdit={() => handleEdit(measurement)}
             />
           ))}
         </div>

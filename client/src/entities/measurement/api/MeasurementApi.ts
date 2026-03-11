@@ -4,6 +4,7 @@ import type {
   MeasurementInputData,
   MeasurementsListResponse,
   MeasurementResponse,
+  CreateMeasurementType,
 } from "../model";
 import type { ServerResponseType } from "@/shared/types";
 
@@ -83,7 +84,7 @@ export default class MeasurementApi {
 
   static async updateMeasurement(
     id: number,
-    body: MeasurementInputData,
+    body: CreateMeasurementType,
   ): Promise<MeasurementResponse> {
     try {
       const response = await axiosInstance.put<
