@@ -1,39 +1,45 @@
 const MeasurementService = require("../services/Measurement.service");
 const formatResponse = require("../utils/formatResponse");
+const path = require('path');
+const fs = require('fs');
 
 class MeasurementController {
 
-  static async adminGetMeasurementByUserId(req, res){
-try {
-  const {user: adminUser}= res.locals;
-  const {userId} = req.params;
-  if (adminUser.role !== "isAdmin") {
-    return res
-      .status(403)
-      .json(formatResponse(403, "Доступ запрещён: недостаточно прав"));
-  }
-  if (!userId || isNaN(Number(userId))) {
-    return res
-      .status(400)
-      .json(formatResponse(400, "Некорректный ID пользователя"));
-  }
-  const userMeasurement = await MeasurementService.getMeasurementByUserId(
-    userId,
-  );
-  if (userMeasurement.length === 0) {
-    return res
-      .status(200)
-      .json(formatResponse(200, "У данного пользователя пока нет замеров"));
-  }
-  res
-    .status(200)
-    .json(formatResponse(200, "Замеры получены", userMeasurement));
-} catch (error) {
-  console.log(error);
+  static async adminGetMeasurementByUserId(req, res) {
+    try {
+      const { user: adminUser } = res.locals;
+      const { userId } = req.params;
+      
+      if (adminUser.role !== "isAdmin") {
+        return res
+          .status(403)
+          .json(formatResponse(403, "Доступ запрещён: недостаточно прав"));
+      }
+      
+      if (!userId || isNaN(Number(userId))) {
+        return res
+          .status(400)
+          .json(formatResponse(400, "Некорректный ID пользователя"));
+      }
+      
+      const userMeasurement = await MeasurementService.getMeasurementByUserId(userId);
+      
+      if (userMeasurement.length === 0) {
+        return res
+          .status(200)
+          .json(formatResponse(200, "У данного пользователя пока нет замеров"));
+      }
+      
+      res
+        .status(200)
+        .json(formatResponse(200, "Замеры получены", userMeasurement));
+    } catch (error) {
+      console.log(error);
       console.log("==== MeasurementController.adminGetMeasurementByUserId ==== ");
       res.status(500).json(formatResponse(500, "Внутренняя ошибка сервера"));
-}
+    }
   }
+
   static async getAllMeasurement(req, res) {
     try {
       const measurement = await MeasurementService.getAllMeasurement();
@@ -44,22 +50,25 @@ try {
       res.status(500).json(formatResponse(500, "Внутренняя ошибка сервера"));
     }
   }
+
   static async getUserMeasurement(req, res) {
     try {
       const { user } = res.locals;
+      
       if (!user) {
         return res
           .status(401)
           .json(formatResponse(401, "Авторизуйтесь, пожалуйста"));
       }
-      const userMeasurement = await MeasurementService.getMeasurementByUserId(
-        user.id,
-      );
+      
+      const userMeasurement = await MeasurementService.getMeasurementByUserId(user.id);
+      
       if (userMeasurement.length === 0) {
         return res
           .status(200)
           .json(formatResponse(200, "У Вас пока нет замеров"));
       }
+      
       res
         .status(200)
         .json(formatResponse(200, "Замеры получены", userMeasurement));
@@ -78,8 +87,6 @@ try {
       hip_1,
       chest_cm,
       arms_cm,
-      photo_before,
-      photo_after,
       notes,
     } = req.body;
     const { user } = res.locals;
@@ -90,21 +97,13 @@ try {
         .json(formatResponse(401, "Авторизуйтесь, пожалуйста"));
     }
 
-    if (
-      arms_cm === undefined ||
-      arms_cm === null ||
-      typeof arms_cm !== "number"
-    ) {
+    if (arms_cm === undefined || arms_cm === null || typeof arms_cm !== "number") {
       return res
         .status(400)
         .json(formatResponse(400, "Заполните поле arms_cm"));
     }
 
-    if (
-      chest_cm === undefined ||
-      chest_cm === null ||
-      typeof chest_cm !== "number"
-    ) {
+    if (chest_cm === undefined || chest_cm === null || typeof chest_cm !== "number") {
       return res
         .status(400)
         .json(formatResponse(400, "Заполните поле chest_cm"));
@@ -116,21 +115,13 @@ try {
         .json(formatResponse(400, "Заполните поле measured_at"));
     }
 
-    if (
-      waist_cm === undefined ||
-      waist_cm === null ||
-      typeof waist_cm !== "number"
-    ) {
+    if (waist_cm === undefined || waist_cm === null || typeof waist_cm !== "number") {
       return res
         .status(400)
         .json(formatResponse(400, "Заполните поле waist_cm"));
     }
 
-    if (
-      hips_cm === undefined ||
-      hips_cm === null ||
-      typeof hips_cm !== "number"
-    ) {
+    if (hips_cm === undefined || hips_cm === null || typeof hips_cm !== "number") {
       return res
         .status(400)
         .json(formatResponse(400, "Заполните поле hips_cm"));
@@ -149,8 +140,6 @@ try {
         hip_1,
         chest_cm,
         arms_cm,
-        photo_before,
-        photo_after,
         notes,
         created_by: user.id,
       });
@@ -165,6 +154,208 @@ try {
     }
   }
 
+  // ✅ НОВЫЙ МЕТОД: Загрузка фото "до"
+  static async uploadPhotoBefore(req, res) {
+    const { id } = req.params;
+    const { user } = res.locals;
+
+    if (isNaN(Number(id))) {
+      return res
+        .status(400)
+        .json(formatResponse(400, "Некорректный формат ID"));
+    }
+
+    try {
+      const measurement = await MeasurementService.getMeasurementById(Number(id));
+
+      if (!measurement) {
+        return res
+          .status(404)
+          .json(formatResponse(404, `Замер с ID: ${id} не найден`));
+      }
+
+      // Проверяем права доступа
+      if (user.id !== measurement.user_id && user.role !== 'isAdmin') {
+        return res
+          .status(403)
+          .json(formatResponse(403, "Доступ запрещен"));
+      }
+
+      if (!req.file) {
+        return res
+          .status(400)
+          .json(formatResponse(400, "Файл не загружен"));
+      }
+
+      // Если есть старое фото, удаляем его
+      if (measurement.photo_before) {
+        const oldPhotoPath = path.join(__dirname, '../../public', measurement.photo_before);
+        if (fs.existsSync(oldPhotoPath)) {
+          fs.unlinkSync(oldPhotoPath);
+        }
+      }
+
+      // Сохраняем путь к новому фото
+      const photoUrl = `/uploads/measurements/${req.file.filename}`;
+      const updatedMeasurement = await MeasurementService.updateMeasurementPhoto(
+        Number(id),
+        'photo_before',
+        photoUrl
+      );
+
+      res.status(200).json(
+        formatResponse(200, "Фото 'до' загружено успешно", updatedMeasurement)
+      );
+    } catch (error) {
+      console.log("==== MeasurementController.uploadPhotoBefore ==== ");
+      console.log(error);
+      
+      // Если ошибка, удаляем загруженный файл
+      if (req.file) {
+        const filePath = path.join(__dirname, '../../public/uploads/measurements', req.file.filename);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      }
+      
+      res.status(500).json(formatResponse(500, "Внутренняя ошибка сервера"));
+    }
+  }
+
+  // ✅ НОВЫЙ МЕТОД: Загрузка фото "после"
+  static async uploadPhotoAfter(req, res) {
+    const { id } = req.params;
+    const { user } = res.locals;
+
+    if (isNaN(Number(id))) {
+      return res
+        .status(400)
+        .json(formatResponse(400, "Некорректный формат ID"));
+    }
+
+    try {
+      const measurement = await MeasurementService.getMeasurementById(Number(id));
+
+      if (!measurement) {
+        return res
+          .status(404)
+          .json(formatResponse(404, `Замер с ID: ${id} не найден`));
+      }
+
+      // Проверяем права доступа
+      if (user.id !== measurement.user_id && user.role !== 'isAdmin') {
+        return res
+          .status(403)
+          .json(formatResponse(403, "Доступ запрещен"));
+      }
+
+      if (!req.file) {
+        return res
+          .status(400)
+          .json(formatResponse(400, "Файл не загружен"));
+      }
+
+      // Если есть старое фото, удаляем его
+      if (measurement.photo_after) {
+        const oldPhotoPath = path.join(__dirname, '../../public', measurement.photo_after);
+        if (fs.existsSync(oldPhotoPath)) {
+          fs.unlinkSync(oldPhotoPath);
+        }
+      }
+
+      // Сохраняем путь к новому фото
+      const photoUrl = `/uploads/measurements/${req.file.filename}`;
+      const updatedMeasurement = await MeasurementService.updateMeasurementPhoto(
+        Number(id),
+        'photo_after',
+        photoUrl
+      );
+
+      res.status(200).json(
+        formatResponse(200, "Фото 'после' загружено успешно", updatedMeasurement)
+      );
+    } catch (error) {
+      console.log("==== MeasurementController.uploadPhotoAfter ==== ");
+      console.log(error);
+      
+      // Если ошибка, удаляем загруженный файл
+      if (req.file) {
+        const filePath = path.join(__dirname, '../../public/uploads/measurements', req.file.filename);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      }
+      
+      res.status(500).json(formatResponse(500, "Внутренняя ошибка сервера"));
+    }
+  }
+
+  // ✅ НОВЫЙ МЕТОД: Удаление фото
+  static async deletePhoto(req, res) {
+    const { id } = req.params;
+    const { photoType } = req.query; // 'before' или 'after'
+    const { user } = res.locals;
+
+    if (isNaN(Number(id))) {
+      return res
+        .status(400)
+        .json(formatResponse(400, "Некорректный формат ID"));
+    }
+
+    if (!photoType || !['before', 'after'].includes(photoType)) {
+      return res
+        .status(400)
+        .json(formatResponse(400, "Укажите тип фото (before или after)"));
+    }
+
+    try {
+      const measurement = await MeasurementService.getMeasurementById(Number(id));
+
+      if (!measurement) {
+        return res
+          .status(404)
+          .json(formatResponse(404, `Замер с ID: ${id} не найден`));
+      }
+
+      // Проверяем права доступа
+      if (user.id !== measurement.user_id && user.role !== 'isAdmin') {
+        return res
+          .status(403)
+          .json(formatResponse(403, "Доступ запрещен"));
+      }
+
+      const photoField = photoType === 'before' ? 'photo_before' : 'photo_after';
+      const photoPath = measurement[photoField];
+
+      if (!photoPath) {
+        return res
+          .status(404)
+          .json(formatResponse(404, "Фото не найдено"));
+      }
+
+      // Удаляем файл
+      const fullPath = path.join(__dirname, '../../public', photoPath);
+      if (fs.existsSync(fullPath)) {
+        fs.unlinkSync(fullPath);
+      }
+
+      // Обновляем запись в БД
+      const updatedMeasurement = await MeasurementService.updateMeasurementPhoto(
+        Number(id),
+        photoField,
+        null
+      );
+
+      res.status(200).json(
+        formatResponse(200, "Фото удалено успешно", updatedMeasurement)
+      );
+    } catch (error) {
+      console.log("==== MeasurementController.deletePhoto ==== ");
+      console.log(error);
+      res.status(500).json(formatResponse(500, "Внутренняя ошибка сервера"));
+    }
+  }
+
   static async deleteMeasurement(req, res) {
     const { id } = req.params;
 
@@ -175,9 +366,28 @@ try {
     }
 
     try {
-      const deletedMeasurement = await MeasurementService.deleteMeasurementById(
-        Number(id),
-      );
+      // Получаем замер перед удалением, чтобы удалить фото
+      const measurement = await MeasurementService.getMeasurementById(Number(id));
+
+      if (measurement) {
+        // Удаляем фото "до"
+        if (measurement.photo_before) {
+          const beforePath = path.join(__dirname, '../../public', measurement.photo_before);
+          if (fs.existsSync(beforePath)) {
+            fs.unlinkSync(beforePath);
+          }
+        }
+        
+        // Удаляем фото "после"
+        if (measurement.photo_after) {
+          const afterPath = path.join(__dirname, '../../public', measurement.photo_after);
+          if (fs.existsSync(afterPath)) {
+            fs.unlinkSync(afterPath);
+          }
+        }
+      }
+
+      const deletedMeasurement = await MeasurementService.deleteMeasurementById(Number(id));
 
       if (!deletedMeasurement) {
         return res
@@ -204,8 +414,6 @@ try {
       hip_1,
       chest_cm,
       arms_cm,
-      photo_before,
-      photo_after,
       notes,
     } = req.body;
 
@@ -225,8 +433,6 @@ try {
           hip_1,
           chest_cm,
           arms_cm,
-          photo_before,
-          photo_after,
           notes,
         },
       );
