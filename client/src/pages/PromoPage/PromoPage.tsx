@@ -1,25 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router'; // 👈 добавляем useNavigate
+import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../app/store/store';
 import { getAllProceduresThunk } from '../../entities/procedure/api/procedureApi';
 import { ProcedureRadioCard } from '../../entities/procedure/ui/ProcedureRadioCard/ProcedureRadioCard';
 import type { Procedure } from '../../entities/procedure/model/types';
-import { CLIENT_ROUTES } from '../../shared/consts/clientRoutes'; // 👈 импортируем константы маршрутов
+import { CLIENT_ROUTES } from '../../shared/consts/clientRoutes';
 import './PromoPage.css';
-
-// Типы для формы
-type ContactMethod = 'Telegram' | 'WhatsApp' | 'Phone call';
-
-type AppointmentFormData = {
-  name: string;
-  phone: string;
-  desiredDate: string;
-  procedure: string;
-  procedureId?: number;
-  preferredContact: ContactMethod | '';
-  consentGiven: boolean;
-  infoAgreement: boolean;
-};
 
 // Маппинг названий процедур на файлы в public/procedures
 const PROCEDURE_IMAGE_MAP: Record<string, string> = {
@@ -41,7 +27,6 @@ const PROCEDURE_IMAGE_MAP: Record<string, string> = {
 
 const PLACEHOLDER_IMAGE = '/procedures/placeholder.svg';
 
-// Процедуры без фото: Горячий массаж для похудения, БиоФотон
 const getProcedureImageUrl = (name: string): string => {
   const mapped = PROCEDURE_IMAGE_MAP[name];
   return mapped ?? PLACEHOLDER_IMAGE;
@@ -52,31 +37,17 @@ const NEW_PROCEDURE_NAMES = new Set(['Индиба (1 зона)', 'Sketch мас
 
 const isNewProcedure = (name: string): boolean => NEW_PROCEDURE_NAMES.has(name);
 
-// Локальный тип для отображения
 type ProcedureDisplay = Procedure & {
   isNew?: boolean;
 };
 
 const PromoPage: React.FC = () => {
-  const navigate = useNavigate(); // 👈 инициализируем navigate
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [selectedProcedureId, setSelectedProcedureId] = useState<number | null>(null);
-  const [formData, setFormData] = useState<AppointmentFormData>({
-    name: '',
-    phone: '',
-    desiredDate: '',
-    procedure: '',
-    preferredContact: '',
-    consentGiven: false,
-    infoAgreement: false
-  });
-  const [submitting, setSubmitting] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
   
   const { procedures, isLoading, error } = useAppSelector((state) => state.procedures);
 
-  // Добавляем мета-информацию
   const proceduresWithMeta: ProcedureDisplay[] = procedures
     .filter(proc => proc.is_active)
     .map(proc => ({
@@ -89,37 +60,7 @@ const PromoPage: React.FC = () => {
     dispatch(getAllProceduresThunk());
   }, [dispatch]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setSubmitError(null);
-    
-    try {
-      // Здесь будет отправка на бэкенд
-      console.log('Submitting:', formData);
-      setSuccess(true);
-      setTimeout(() => setSuccess(false), 5000);
-    } catch (err) {
-      setSubmitError('Ошибка при отправке');
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
-    
-    if (type === 'checkbox') {
-      const checkbox = e.target as HTMLInputElement;
-      setFormData(prev => ({ ...prev, [name]: checkbox.checked }));
-    } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
-    }
-  };
-
-  // 👇 ОБНОВЛЕННАЯ функция: теперь редирект на страницу регистрации
   const handleProcedureSelect = (procedure: Procedure) => {
-    // Сохраняем данные выбранной процедуры в sessionStorage
     sessionStorage.setItem('selectedProcedure', JSON.stringify({
       id: procedure.id,
       name: procedure.name,
@@ -127,7 +68,6 @@ const PromoPage: React.FC = () => {
       duration: procedure.duration_min
     }));
     
-    // Редирект на страницу регистрации
     navigate(CLIENT_ROUTES.AUTH);
   };
 
@@ -141,7 +81,7 @@ const PromoPage: React.FC = () => {
 
   return (
     <main className="promo-page">
-      {/* Hero секция с формой */}
+      {/* Hero секция с блогом */}
       <section className="hero-section">
         <div className="container">
           <div className="hero-grid">
@@ -150,134 +90,54 @@ const PromoPage: React.FC = () => {
               <p className="hero-subtitle">Работаем с 2019 года.</p>
             </div>
 
-            <div className="appointment-card">
-              <h2 className="appointment-title">Онлайн запись</h2>
-              <p className="appointment-description">
-                Оставьте свои данные, и я свяжусь с вами для подтверждения.
-              </p>
+            <div className="blog-card">
+              <h2 className="blog-title">О нашей студии</h2>
+              
+              <div className="blog-content">
+                <p className="blog-text">
+                  <strong>Студия идеального тела</strong> — это пространство, где забота о себе становится 
+                  приятной и эффективной привычкой. Мы объединили современные аппаратные методики 
+                  с индивидуальным подходом, чтобы помочь вам достичь желаемых результатов.
+                </p>
 
-              <form onSubmit={handleSubmit} className="appointment-form">
-                <div className="form-group">
-                  <label htmlFor="name">Имя</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    placeholder="Имя"
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="phone">Телефон</label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    placeholder="+7 (000) 000-00-00"
-                    required
-                  />
-                </div>
-
-                <div className="form-row">
-                  <div className="form-group">
-                    <label htmlFor="desiredDate">Желаемая дата</label>
-                    <input
-                      type="date"
-                      id="desiredDate"
-                      name="desiredDate"
-                      value={formData.desiredDate}
-                      onChange={handleInputChange}
-                      required
-                    />
+                <div className="blog-stats">
+                  <div className="stat-item">
+                    <span className="stat-number">8+</span>
+                    <span className="stat-label">лет опыта</span>
                   </div>
-
-                  <div className="form-group">
-                    <label htmlFor="procedure">Процедура</label>
-                    <select
-                      id="procedure"
-                      name="procedure"
-                      value={formData.procedure}
-                      onChange={handleInputChange}
-                      required
-                    >
-                      <option value="">Выберите процедуру</option>
-                      {proceduresWithMeta.map((proc) => (
-                        <option key={proc.id} value={proc.name}>
-                          {proc.name} - {formatPrice(proc.price)}
-                        </option>
-                      ))}
-                    </select>
+                  <div className="stat-item">
+                    <span className="stat-number">1500+</span>
+                    <span className="stat-label">довольных клиентов</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-number">15+</span>
+                    <span className="stat-label">процедур</span>
                   </div>
                 </div>
 
-                <div className="form-group">
-                  <label htmlFor="preferredContact">Предпочтительный способ связи</label>
-                  <select
-                    id="preferredContact"
-                    name="preferredContact"
-                    value={formData.preferredContact}
-                    onChange={handleInputChange}
-                    required
-                  >
-                    <option value="">Выберите способ</option>
-                    <option value="Telegram">Telegram</option>
-                    <option value="WhatsApp">WhatsApp</option>
-                    <option value="Phone call">Телефонный звонок</option>
-                  </select>
+                <div className="blog-features">
+                  <h3 className="features-title">Почему выбирают нас:</h3>
+                  <ul className="features-list">
+                    <li>✅ Сертифицированные специалисты с медицинским образованием</li>
+                    <li>✅ Современное европейское оборудование</li>
+                    <li>✅ Индивидуальные программы коррекции</li>
+                    <li>✅ Уютная атмосфера и комфортные условия</li>
+                    <li>✅ Работаем с 2019 года без выходных</li>
+                  </ul>
                 </div>
 
-                <div className="form-checkboxes">
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
-                      name="consentGiven"
-                      checked={formData.consentGiven}
-                      onChange={handleInputChange}
-                      required
-                    />
-                    <span>
-                      Нажимая кнопку, я даю согласие на обработку персональных 
-                      данных и принимаю условия Политики конфиденциальности.
-                    </span>
-                  </label>
-
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
-                      name="infoAgreement"
-                      checked={formData.infoAgreement}
-                      onChange={handleInputChange}
-                    />
-                    <span>
-                      Даю согласие на информационное обновление, акциях и 
-                      изменениях в услугах.
-                    </span>
-                  </label>
+                <div className="blog-quote">
+                  <p>
+                    "Мы не просто делаем процедуры — мы помогаем вам полюбить свое тело 
+                    и чувствовать себя уверенно каждый день"
+                  </p>
+                  <span className="quote-author">— Основатель студии</span>
                 </div>
 
-                {submitError && (
-                  <div className="error-message">{submitError}</div>
-                )}
-
-                {success && (
-                  <div className="success-message">
-                    Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.
-                  </div>
-                )}
-
-                <button 
-                  type="submit" 
-                  className="submit-button"
-                  disabled={submitting}
-                >
-                  {submitting ? 'Отправка...' : 'Оставить заявку'}
-                </button>
-              </form>
+                <div className="blog-cta">
+                  <p>Выберите процедуру ниже и начните свой путь к идеальному телу!</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
