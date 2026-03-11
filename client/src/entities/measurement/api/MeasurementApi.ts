@@ -8,6 +8,7 @@ import type {
 import type { ServerResponseType } from "@/shared/types";
 
 export default class MeasurementApi {
+
   static async AdminGetUsersMeasurements(
     userId: number,
   ): Promise<MeasurementsListResponse> {
@@ -62,7 +63,7 @@ export default class MeasurementApi {
   }
 
   static async createMeasurement(
-    body: MeasurementInputData,
+    body: CreateMeasurementType,
   ): Promise<MeasurementResponse> {
     try {
       const response = await axiosInstance.post<
