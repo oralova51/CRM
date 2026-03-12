@@ -9,6 +9,7 @@ import { TimeSelectionStep } from "@/widgets/booking-form/TimeSelectionStep/Time
 import { useCreateBooking } from "@/features/bookings/create-booking/useCreateBooking";
 import { CLIENT_ROUTES } from "@/shared/consts/clientRoutes";
 import styles from "./BookAppointmentPage.module.css";
+import { useToast } from '@/shared/lib/toast/ToastContext';
 
 type Step = 1 | 2 | 3;
 
@@ -22,6 +23,7 @@ export default function BookAppointmentPage() {
   const [selectedServiceId, setSelectedServiceId] = useState<number | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const toast = useToast();
 
   useEffect(() => {
     dispatch(getAllProceduresThunk());
@@ -53,10 +55,10 @@ export default function BookAppointmentPage() {
         scheduled_at: scheduledAt,
       });
 
-      // После успешной записи переходим на страницу календаря
+      toast.success('Запись успешно создана! Ждём вас в студии!');
       navigate(CLIENT_ROUTES.PROCEDURES);
     } catch (error) {
-      console.error("Failed to create booking:", error);
+      toast.error('Не удалось создать запись. Попробуйте позже.');
     }
   };
 
