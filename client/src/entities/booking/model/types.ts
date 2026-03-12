@@ -41,6 +41,7 @@ export type CreateBookingData = {
   procedure_id: number;
   scheduled_at: string;
   notes?: string | null;
+  user_id?: number;
 };
 
 export type UpdateBookingStatusData = {
