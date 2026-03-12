@@ -52,7 +52,7 @@ class RAGService {
   // обработка запроса - создание контекста для LLM и генерация ответа
   async query(query) {
     const context = await this.findRelevantChunks(query);
-    const answer = await llmService.generateAnswer(context, query);
+    const answer = await llmService.generateAnswerWithGigaChat(context, query);
 
     return { answer, context };
   }

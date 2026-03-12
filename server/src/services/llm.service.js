@@ -1,4 +1,7 @@
 const config = require('../configs/index');
+const oAuth = require('../utils/gigaChatAuth');
+const { gigaChatUrl } = require('../configs/aiConfig');
+const axios = require('axios');
 
 class LLMService {
   async generateAnswer(context, question) {
@@ -45,6 +48,37 @@ class LLMService {
 
     return answer;
   }
+
+  // Новый метод для GigaChat
+async generateAnswerWithGigaChat(context, question) {
+  const contextText = Array.isArray(context) ? context.join('\n\n') : context;
+  
+  const messages = [
+    {
+      role: 'system',
+      content: 'Ты помощник. Отвечай только на основе предоставленного контекста. Если ответа нет в контексте — скажи об этом. Отвечай кратко, на русском.',
+    },
+    {
+      role: 'user',
+      content: `Контекст: ${contextText}\n\nВопрос: ${question}`,
+    },
+  ];
+  const { access_token } = await oAuth();
+  
+  const response = await axios.post(
+    gigaChatUrl,
+    { model: 'GigaChat', messages },
+    {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      httpsAgent: new (require('https').Agent)({ rejectUnauthorized: false }),
+    },
+  );
+  return response.data.choices[0].message.content;
+}
 }
 
 module.exports = new LLMService();
