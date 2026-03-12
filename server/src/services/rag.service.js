@@ -7,28 +7,16 @@ class RAGService {
   constructor() {
     this.vectorStorage = [];
   }
-  // Разбиваем текст на фрагменты (чанки)
+  // Разбиваем текст на фрагменты по маркеру CHUNK
   getTextChunks(text) {
-    const sentences = text.match(/[^\.!\?]+[\.!\?]+/gm) || [text];
+    const parts = text.split(/\bCHUNK\b/);
 
-    const chunks = [];
+    const chunks = parts
+      .map((part) => part.trim())
+      .filter((part) => part.length > 0)
+      .map((part) => 'CHUNK' + (part.startsWith(':') ? part : ': ' + part));
 
-    let currentChunk = '';
-
-    sentences.forEach((sentence) => {
-      if (currentChunk.length + sentence.length > config.chunkSize) {
-        chunks.push(currentChunk.trim());
-        currentChunk = '';
-      }
-      currentChunk += sentence + ' ';
-    });
-
-    if (currentChunk.trim()) {
-      chunks.push(currentChunk.trim());
-    }
-
-    console.log(chunks);
-
+      console.log(chunks);
     return chunks;
   }
 
