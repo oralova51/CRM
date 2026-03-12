@@ -23,15 +23,7 @@ class MeasurementService {
   }
 
   static async updateMeasurementById(id, measurementData) {
-    console.log("=== UPDATE MEASUREMENT SERVICE ===");
-    console.log("Service received id:", id);
-    console.log("Service received measurementData:", measurementData);
-
-    // Проверяем, что measurementData существует
-    if (!measurementData) {
-      console.error("updateMeasurementById: measurementData is undefined");
-      return null;
-    }
+    if (!measurementData) return;
 
     const measurementToUpdate = await Measurement.findByPk(id);
     console.log("Found measurement in service:", measurementToUpdate);
@@ -66,25 +58,6 @@ class MeasurementService {
 
     return measurementToUpdate;
   }
-
-  //   static async updateMeasurementById(id, updateData) {
-  //     const measurementToUpdate = await Measurement.findByPk(id);
-
-  //     if (!measurementToUpdate) return null;
-
-  //     const {measured_at, waist_cm, hips_cm, hip_1, chest_cm, arms_cm, photo_before, photo_after, notes} = updateData;
-  //     if(measured_at !== underined) updateMeasurement.measured_at = measured_at;
-  //     if(waist_cm !== underined) updateMeasurement.waist_cm = waist_cm;
-  //     if(hips_cm !== underined) updateMeasurement.hips_cm = hips_cm;
-  //     if(hip_1 !== underined) updateMeasurement.hip_1 = hip_1;
-  //     if(chest_cm !== underined) updateMeasurement.chest_cm = chest_cm;
-  //     if(arms_cm !== underined) updateMeasurement.arms_cm = arms_cm;
-  //     if(photo_before !== underined) updateMeasurement.photo_before = photo_before;
-  //     if(photo_after !== underined) updateMeasurement.photo_after = photo_after;
-  //     if(notes !== underined) updateMeasurement.notes = notes;
-  //     await updateMeasurement.save();
-  //     return updateMeasurement;
-  //   }
 }
 
 module.exports = MeasurementService;

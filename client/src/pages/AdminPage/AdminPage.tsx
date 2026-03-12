@@ -26,6 +26,12 @@ export default function AdminPage() {
   );
   const [measurements, setMeasurements] = useState<MeasurementType[]>([]);
 
+  function toNumber(value: any): number {
+    if (!value) return 0;
+    const num = Number(value);
+    return isNaN(num) ? 0 : num;
+  }
+
   const handleSelectUser = async (user: UserWithoutPassword) => {
     setSelectedUser(user);
     setQuery("");
@@ -56,11 +62,11 @@ export default function AdminPage() {
     const newMeasurement: CreateMeasurementType = {
       user_id: selectedUser.id,
       measured_at: new Date(),
-      waist_cm: Number(formData.get("waist_cm")) || 0,
-      hips_cm: Number(formData.get("hips_cm")) || 0,
-      hip_1: Number(formData.get("hip_1")) || 0,
-      chest_cm: Number(formData.get("chest_cm")) || 0,
-      arms_cm: Number(formData.get("arms_cm")) || 0,
+      waist_cm: toNumber(formData.get("waist_cm")),
+      hips_cm: toNumber(formData.get("hips_cm")),
+      hip_1: toNumber(formData.get("hip_1")),
+      chest_cm: toNumber(formData.get("chest_cm")),
+      arms_cm: toNumber(formData.get("arms_cm")),
       photo_before: "",
       photo_after: "",
       notes: (formData.get("notes") as string) || "",
@@ -93,29 +99,18 @@ export default function AdminPage() {
   ) {
     e.preventDefault();
 
-    console.log("1. handleFormUpdate started with id:", id); // ЛОГ 1
-
-    if (!selectedUser || !editingMeasurement) {
-      console.log("2. Validation failed:", {
-        selectedUser,
-        editingMeasurement,
-      }); // ЛОГ 2
-      return;
-    }
-
-    console.log("3. selectedUser:", selectedUser); // ЛОГ 3
-    console.log("4. editingMeasurement:", editingMeasurement); // ЛОГ 4
+    if (!selectedUser || !editingMeasurement) return;
 
     const formData = new FormData(e.currentTarget);
-     console.log("5. Form data entries:"); // ЛОГ 5
+
     const updatedMeasurement: CreateMeasurementType = {
       user_id: selectedUser.id,
       measured_at: editingMeasurement.measured_at,
-      waist_cm: Number(formData.get("waist_cm")) || 0,
-      hips_cm: Number(formData.get("hips_cm")) || 0,
-      hip_1: Number(formData.get("hip_1")) || 0,
-      chest_cm: Number(formData.get("chest_cm")) || 0,
-      arms_cm: Number(formData.get("arms_cm")) || 0,
+      waist_cm: toNumber(formData.get("waist_cm")),
+      hips_cm: toNumber(formData.get("hips_cm")),
+      hip_1: toNumber(formData.get("hip_1")),
+      chest_cm: toNumber(formData.get("chest_cm")),
+      arms_cm: toNumber(formData.get("arms_cm")),
       photo_before: editingMeasurement.photo_before,
       photo_after: editingMeasurement.photo_after,
       notes: (formData.get("notes") as string) || editingMeasurement.notes,

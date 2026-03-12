@@ -201,86 +201,8 @@ class MeasurementController {
     }
   }
 
-  // static async updateMeasurement(req, res) {
-  //   const { id } = req.params;
-  //   const {
-  //     user_id,
-  //     measured_at,
-  //     waist_cm,
-  //     hips_cm,
-  //     hip_1,
-  //     chest_cm,
-  //     arms_cm,
-  //     photo_before,
-  //     photo_after,
-  //     notes,
-  //   } = req.body;
-
-  //   const { user } = res.locals;
-
-  //   if (isNaN(Number(id))) {
-  //     return res
-  //       .status(400)
-  //       .json(formatResponse(400, "Некорректный формат ID"));
-  //   }
-
-  //   try {
-  //     const measurementToUpdate =
-  //       await MeasurementService.updateMeasurementById(Number(id));
-
-  //     if (!measurementToUpdate) {
-  //       return res
-  //         .status(404)
-  //         .json(formatResponse(404, `Замеры с ID: ${id} не найдены`));
-  //     }
-  //     if (user.role !== "isAdmin" && measurementToUpdate.user_id !== user.id) {
-  //       return res
-  //         .status(403)
-  //         .json(formatResponse(403, "Нет прав для обновления этого замера"));
-  //     }
-  //     const updateData = {};
-
-  //     if (measured_at !== underined)
-  //       updateMeasurement.measured_at = measured_at;
-  //     if (waist_cm !== underined) updateMeasurement.waist_cm = waist_cm;
-  //     if (hips_cm !== underined) updateMeasurement.hips_cm = hips_cm;
-  //     if (hip_1 !== underined) updateMeasurement.hip_1 = hip_1;
-  //     if (chest_cm !== underined) updateMeasurement.chest_cm = chest_cm;
-  //     if (arms_cm !== underined) updateMeasurement.arms_cm = arms_cm;
-  //     if (photo_before !== underined)
-  //       updateMeasurement.photo_before = photo_before;
-  //     if (photo_after !== underined)
-  //       updateMeasurement.photo_after = photo_after;
-  //     if (notes !== underined) updateMeasurement.notes = notes;
-
-  //      console.log("Updating measurement with data:", updateData); // Для отладки
-
-  //     const updatedMeasurement = await MeasurementService.updateMeasurementById(
-  //       Number(id),
-  //       updateData,
-  //     );
-  //     if (!updatedMeasurement) {
-  //       return res
-  //         .status(404)
-  //         .json(formatResponse(404, `Замеры с ID: ${id} не найдены`));
-  //     }
-  //     res
-  //       .status(200)
-  //       .json(formatResponse(200, "Замер обновлен", updatedMeasurement));
-  //   } catch (error) {
-  //     console.log("==== MeasurementController.updateMeasurement ==== ");
-  //     console.log(error);
-  //     res
-  //       .status(500)
-  //       .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
-  //   }
-  // }
 
   static async updateMeasurement(req, res) {
-    console.log("=== UPDATE MEASUREMENT CONTROLLER ===");
-    console.log("req.params:", req.params);
-    console.log("req.body:", req.body);
-    console.log("res.locals.user:", res.locals.user);
 
     const { id } = req.params;
     const {
@@ -309,7 +231,6 @@ class MeasurementController {
       const measurementToUpdate = await MeasurementService.getMeasurementById(
         Number(id),
       );
-      console.log("Found measurement:", measurementToUpdate);
 
       if (!measurementToUpdate) {
         return res
@@ -317,14 +238,14 @@ class MeasurementController {
           .json(formatResponse(404, `Замер с ID: ${id} не найден`));
       }
 
-      // Проверка прав
+
       if (user.role !== "isAdmin" && measurementToUpdate.user_id !== user.id) {
         return res
           .status(403)
           .json(formatResponse(403, "Нет прав для обновления этого замера"));
       }
 
-      // Подготавливаем данные для обновления
+
       const updateData = {
         measured_at,
         waist_cm,
@@ -337,14 +258,14 @@ class MeasurementController {
         notes,
       };
 
-      // Удаляем undefined поля
+
       Object.keys(updateData).forEach(
         (key) => updateData[key] === undefined && delete updateData[key],
       );
 
       console.log("Update data prepared:", updateData);
 
-      // Проверяем, есть ли что обновлять
+
       if (Object.keys(updateData).length === 0) {
         return res
           .status(400)
