@@ -1,5 +1,3 @@
-// client/src/features/auth/ui/SignUpForm/SignUpForm.tsx
-
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { UserValidator } from "@/entities/user/model/UserValidator";
@@ -8,12 +6,14 @@ import { Button } from "@/shared/ui/Button/Button";
 import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { signUpThunk } from "@/entities/user/api/UserApi";
 import styles from "./SignUpForm.module.css";
+import { useToast } from '@/shared/lib/toast/ToastContext';
 
 export default function SignUpForm() {
   const initialValue = { name: "", email: "", password: "", phone: "" };
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [signUpData, setSignUpData] = useState(initialValue);
+  const toast = useToast();
 
   const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSignUpData((current) => ({
@@ -29,11 +29,16 @@ export default function SignUpForm() {
       UserValidator.validateSignUpData(signUpData);
 
     if (!isValid) {
-      alert(validationError);
+      toast.error(validationError || 'Ошибка валидации');
       return;
     }
-    await dispatch(signUpThunk(signUpData));
-    navigate("/");
+    try {
+      await dispatch(signUpThunk(signUpData)).unwrap();
+      toast.success('Регистрация успешна! Добро пожаловать!');
+      navigate("/");
+    } catch (error) {
+      toast.error('Ошибка при регистрации. Попробуйте позже.');
+    }
   };
 
   return (
