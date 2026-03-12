@@ -1,8 +1,12 @@
 const { Measurement } = require("../../db/models");
+
 class MeasurementService {
   static async getAllMeasurement() {
-    return await Measurement.findAll();
+    return await Measurement.findAll({
+      order: [["measured_at", "DESC"]],
+    });
   }
+
   static async getMeasurementById(id) {
     return await Measurement.findByPk(id);
   }
@@ -13,9 +17,11 @@ class MeasurementService {
       order: [["measured_at", "DESC"]],
     });
   }
+
   static async createNewMeasurement(measurementData) {
     return await Measurement.create(measurementData);
   }
+
   static async deleteMeasurementById(id) {
     const measurementToDelete = await Measurement.findByPk(id);
     if (!measurementToDelete) return null;
@@ -57,6 +63,58 @@ class MeasurementService {
     console.log("Measurement after save:", measurementToUpdate);
 
     return measurementToUpdate;
+  }
+
+  // ✅ НОВЫЙ МЕТОД: Обновление фото замера
+  static async updateMeasurementPhoto(id, photoField, photoUrl) {
+    const measurement = await Measurement.findByPk(id);
+    if (!measurement) return null;
+
+    // Проверяем, что photoField - допустимое поле
+    if (photoField !== 'photo_before' && photoField !== 'photo_after') {
+      throw new Error('Недопустимое поле фото');
+    }
+
+    measurement[photoField] = photoUrl;
+    await measurement.save();
+    return measurement;
+  }
+
+  // ✅ НОВЫЙ МЕТОД: Получение замеров пользователя с фото
+  static async getUserMeasurementsWithPhotos(userId) {
+    return await Measurement.findAll({
+      where: { user_id: userId },
+      order: [["measured_at", "DESC"]],
+      attributes: [
+        'id',
+        'measured_at',
+        'waist_cm',
+        'hips_cm',
+        'hip_1',
+        'chest_cm',
+        'arms_cm',
+        'photo_before',
+        'photo_after',
+        'notes',
+        'created_by',
+        'createdAt',
+        'updatedAt'
+      ]
+    });
+  }
+
+  // ✅ НОВЫЙ МЕТОД: Удаление фото из замера
+  static async removeMeasurementPhoto(id, photoField) {
+    const measurement = await Measurement.findByPk(id);
+    if (!measurement) return null;
+
+    if (photoField !== 'photo_before' && photoField !== 'photo_after') {
+      throw new Error('Недопустимое поле фото');
+    }
+
+    measurement[photoField] = null;
+    await measurement.save();
+    return measurement;
   }
 }
 

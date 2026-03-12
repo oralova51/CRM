@@ -1,0 +1,775 @@
+/* client/src/pages/PromoPage/ui/PromoPage.module.css */
+
+.page {
+  width: 100%;
+  overflow-x: hidden;
+  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Hero секция */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #030213 0%, #1a1a1a 100%);
+  color: white;
+  padding: 80px 0;
+}
+
+.heroContent {
+  max-width: 600px;
+  margin-bottom: 40px;
+}
+
+.heroTitle {
+  font-size: 4rem;
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  color: white;
+}
+
+.heroSubtitle {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.heroButton {
+  background: white;
+  color: #030213;
+  border: none;
+  padding: 16px 32px;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.heroButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(255, 255, 255, 0.3);
+}
+
+/* Статистика */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-top: 60px;
+  max-width: 600px;
+}
+
+.statItem {
+  text-align: center;
+}
+
+.statValue {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.statLabel {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* О студии */
+.about {
+  padding: 100px 0;
+  background: white;
+}
+
+.aboutGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.aboutContent {
+  padding-right: 40px;
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: #030213;
+  margin-bottom: 24px;
+}
+
+.aboutText {
+  color: #6b7280;
+  line-height: 1.8;
+  font-size: 1.125rem;
+  margin-bottom: 32px;
+}
+
+.aboutText strong {
+  color: #030213;
+  font-weight: 500;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #030213;
+  font-size: 1rem;
+}
+
+.featureIcon {
+  width: 20px;
+  height: 20px;
+  color: #10b981;
+  flex-shrink: 0;
+}
+
+/* Цитата */
+.quoteCard {
+  background: linear-gradient(135deg, #f8f9fa 0%, #f1f3f5 100%);
+  border-radius: 24px;
+  padding: 40px;
+  border: 1px solid rgba(3, 2, 19, 0.08);
+}
+
+.quoteIcon {
+  width: 40px;
+  height: 40px;
+  color: #030213;
+  margin-bottom: 24px;
+}
+
+.quoteText {
+  font-size: 1.25rem;
+  line-height: 1.8;
+  color: #030213;
+  margin-bottom: 24px;
+  font-style: italic;
+}
+
+.quoteAuthor {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+/* Процедуры */
+.procedures {
+  padding: 100px 0;
+  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+}
+
+.proceduresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+}
+
+.procedureCard {
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(3, 2, 19, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.procedureCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.newBadge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #030213;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  z-index: 1;
+}
+
+.procedureImage {
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+}
+
+.procedureImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.procedureCard:hover .procedureImage img {
+  transform: scale(1.1);
+}
+
+.procedureContent {
+  padding: 24px;
+}
+
+.procedureTitle {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #030213;
+  margin-bottom: 12px;
+}
+
+.procedureDescription {
+  color: #6b7280;
+  line-height: 1.6;
+  font-size: 0.875rem;
+  margin-bottom: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.procedureMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(3, 2, 19, 0.08);
+  border-bottom: 1px solid rgba(3, 2, 19, 0.08);
+}
+
+.procedureDuration {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.metaIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.procedurePrice {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #030213;
+}
+
+.selectButton {
+  width: 100%;
+  background: #030213;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.selectButton:hover {
+  background: #1a1a1a;
+}
+
+/* CTA секция */
+.cta {
+  padding: 100px 0;
+  background: white;
+}
+
+.ctaCard {
+  background: linear-gradient(135deg, #030213 0%, #1a1a1a 100%);
+  border-radius: 32px;
+  padding: 60px;
+  text-align: center;
+  color: white;
+}
+
+.ctaTitle {
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+
+.ctaText {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 32px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ctaButton {
+  background: white;
+  color: #030213;
+  border: none;
+  padding: 16px 40px;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(255, 255, 255, 0.3);
+}
+
+/* Загрузка */
+.loading {
+  text-align: center;
+  padding: 60px;
+  color: #6b7280;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 20px;
+  border: 3px solid rgba(3, 2, 19, 0.1);
+  border-top: 3px solid #030213;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Ошибка */
+.error {
+  text-align: center;
+  padding: 60px;
+  color: #ef4444;
+  background: #fee2e2;
+  border-radius: 12px;
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+  .heroTitle {
+    font-size: 3rem;
+  }
+  
+  .aboutGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .aboutContent {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 60px 0;
+    text-align: center;
+  }
+  
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+  
+  .stats {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .features {
+    grid-template-columns: 1fr;
+  }
+  
+  .proceduresGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .ctaCard {
+    padding: 40px 20px;
+  }
+  
+  .ctaTitle {
+    font-size: 2rem;
+  }
+  
+  .ctaText {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroTitle {
+    font-size: 2rem;
+  }
+  
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+  
+  .sectionTitle {
+    font-size: 2rem;
+  }
+  
+  .procedureImage {
+    height: 200px;
+  }
+  
+  .procedureContent {
+    padding: 20px;
+  }
+}
+
+.memberships {
+  padding: 80px 0;
+  background: linear-gradient(135deg, #030213 0%, #1a1a1a 100%);
+  color: white;
+}
+
+.membershipsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.membershipsHeader .sectionTitle {
+  color: white;
+  margin-bottom: 0;
+}
+
+.savingsBadge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.savingsIcon {
+  width: 18px;
+  height: 18px;
+  color: #fbbf24;
+}
+
+.savingsBadge span {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: white;
+}
+
+.membershipsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+}
+
+.membershipCard {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.membershipCard:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+.membershipHeader {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.membershipTitle {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.membershipNote {
+  display: block;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 8px;
+}
+
+.membershipNew {
+  display: inline-block;
+  padding: 4px 8px;
+  background: #fbbf24;
+  color: #030213;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sessionsList {
+  margin-bottom: 20px;
+}
+
+.sessionItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.sessionItem:last-child {
+  border-bottom: none;
+}
+
+.sessionInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sessionCount {
+  font-size: 0.875rem;
+  color: white;
+  font-weight: 500;
+}
+
+.sessionSavings {
+  font-size: 0.75rem;
+  color: #10b981;
+}
+
+.sessionPrice {
+  text-align: right;
+}
+
+.price {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 2px;
+}
+
+.pricePerSession {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.membershipButton {
+  width: 100%;
+  padding: 12px;
+  background: white;
+  color: #030213;
+  border: none;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 16px;
+}
+
+.membershipButton:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: scale(1.02);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .memberships {
+    padding: 60px 0;
+  }
+  
+  .membershipsHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .membershipsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .membershipCard {
+    padding: 20px;
+  }
+  
+  .membershipTitle {
+    font-size: 1.125rem;
+  }
+  
+  .price {
+    font-size: 1.125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .memberships {
+    padding: 40px 0;
+  }
+  
+  .sessionItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .sessionPrice {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .pricePerSession {
+    text-align: right;
+  }
+}
+
+/* Hero кнопки */
+.heroButtons {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.heroButtonPrimary {
+  padding: 16px 32px;
+  background: white;
+  color: #030213;
+  border: none;
+  border-radius: 9999px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.heroButtonPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(255, 255, 255, 0.3);
+}
+
+.heroButtonSecondary {
+  padding: 16px 32px;
+  background: transparent;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 9999px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.heroButtonSecondary:hover {
+  border-color: white;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Кнопка выбора процедуры */
+.selectButton {
+  width: 100%;
+  padding: 12px 24px;
+  background: #030213;
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 16px;
+}
+
+.selectButton:hover {
+  background: #1a1a1a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Кнопка выбора абонемента */
+.sessionSelectButton {
+  padding: 6px 12px;
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.sessionSelectButton:hover {
+  background: white;
+  color: #030213;
+  border-color: white;
+}
+
+/* Адаптивность для кнопок */
+@media (max-width: 768px) {
+  .heroButtons {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .heroButtonPrimary,
+  .heroButtonSecondary {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .sessionItem {
+    flex-wrap: wrap;
+  }
+  
+  .sessionSelectButton {
+    width: 100%;
+    margin-top: 8px;
+  }
+}

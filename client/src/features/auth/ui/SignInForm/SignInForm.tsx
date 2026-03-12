@@ -1,18 +1,18 @@
+// client/src/features/auth/ui/SignInForm/SignInForm.tsx
+
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import "./SignInForm.css";
-import { UserValidator } from "../../../../entities/user/model/UserValidator";
+import { UserValidator } from "@/entities/user/model/UserValidator";
 import { Input } from "@/shared/ui/Input/Input";
 import { Button } from "@/shared/ui/Button/Button";
 import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { signInThunk } from "@/entities/user/api/UserApi";
+import styles from "./SignInForm.module.css";
 
 export default function SignInForm() {
   const initialValue = { email: "", password: "" };
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
-
   const [signInData, setSignInData] = useState(initialValue);
 
   const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +22,7 @@ export default function SignInForm() {
     }));
   };
 
-  const signInHandler = async (event: React.SubmitEvent<HTMLFormElement>) => {
+  const signInHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const { isValid, error: validationError } =
@@ -37,8 +37,8 @@ export default function SignInForm() {
   };
 
   return (
-    <form className="auth-form" onSubmit={signInHandler}>
-      <div className="auth-fields">
+    <form className={styles.form} onSubmit={signInHandler}>
+      <div className={styles.fields}>
         <Input
           name="email"
           type="email"

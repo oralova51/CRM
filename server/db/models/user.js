@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.hasMany(models.Order, { foreignKey: 'user_id' });
       this.hasMany(models.AiMessage, { foreignKey: 'user_id' });
+      this.hasMany(models.PushSubscription, {
+        foreignKey: 'user_id',
+        as: 'pushSubscriptions'
+      });
     }
 
     static validateEmail(email) {
