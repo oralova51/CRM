@@ -15,8 +15,9 @@ export default function AppRouter() {
   return (
     <Routes>
       <Route path={CLIENT_ROUTES.MAIN_PAGE} element={<Layout />}>
-
-        <Route index element={<MainPage />} />
+        {/* Главная теперь ведёт на Landing для неавторизованных */}
+        <Route index element={<PromoPage />} />
+        <Route path={CLIENT_ROUTES.LANDING.slice(1)} element={<LandingPage />} />
         <Route path={CLIENT_ROUTES.AUTH.slice(1)} element={<AuthPage />} />
         <Route path={CLIENT_ROUTES.BOOK.slice(1)} element={<BookAppointmentPage />} />
         <Route path={CLIENT_ROUTES.PROCEDURES.slice(1)} element={<ProcedureCalendarPage />} />
