@@ -1,18 +1,18 @@
+// client/src/features/auth/ui/SignUpForm/SignUpForm.tsx
+
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import "./SignUpForm.css";
-import { UserValidator } from "../../../../entities/user/model/UserValidator";
+import { UserValidator } from "@/entities/user/model/UserValidator";
 import { Input } from "@/shared/ui/Input/Input";
 import { Button } from "@/shared/ui/Button/Button";
 import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { signUpThunk } from "@/entities/user/api/UserApi";
+import styles from "./SignUpForm.module.css";
 
 export default function SignUpForm() {
-  const initialValue = { name: "", email: "", password: "", phone: ""  };
+  const initialValue = { name: "", email: "", password: "", phone: "" };
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
-
   const [signUpData, setSignUpData] = useState(initialValue);
 
   const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,8 +37,8 @@ export default function SignUpForm() {
   };
 
   return (
-    <form className="auth-form" onSubmit={signUpHandler}>
-      <div className="auth-fields">
+    <form className={styles.form} onSubmit={signUpHandler}>
+      <div className={styles.fields}>
         <Input
           name="name"
           type="text"
@@ -66,7 +66,6 @@ export default function SignUpForm() {
           label="Пароль"
           placeholder="Минимум 8 символов"
         />
-
         <Input
           name="phone"
           type="tel"
