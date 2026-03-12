@@ -32,6 +32,15 @@ export default function AdminPage() {
     return isNaN(num) ? 0 : num;
   }
 
+  const handlePhotoUpdate = (updatedMeasurement: MeasurementType) => {
+    if (!updatedMeasurement || !updatedMeasurement.id) return;
+    setMeasurements((prev) =>
+      prev.map((m) =>
+        m.id === updatedMeasurement.id ? updatedMeasurement : m,
+      ),
+    );
+  };
+
   const handleSelectUser = async (user: UserWithoutPassword) => {
     setSelectedUser(user);
     setQuery("");
@@ -55,32 +64,49 @@ export default function AdminPage() {
 
   // Создание замера
 
-  async function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleFormSubmit(
+    e: React.FormEvent<HTMLFormElement>,
+    photoBefore?: File,
+    photoAfter?: File,
+  ) {
     e.preventDefault();
-    if (!selectedUser) return;
-    const formData = new FormData(e.currentTarget);
-    const newMeasurement: CreateMeasurementType = {
-      user_id: selectedUser.id,
-      measured_at: new Date(),
-      waist_cm: toNumber(formData.get("waist_cm")),
-      hips_cm: toNumber(formData.get("hips_cm")),
-      hip_1: toNumber(formData.get("hip_1")),
-      chest_cm: toNumber(formData.get("chest_cm")),
-      arms_cm: toNumber(formData.get("arms_cm")),
-      photo_before: "",
-      photo_after: "",
-      notes: (formData.get("notes") as string) || "",
-      created_by: currentUser?.id || 1,
-    };
+    if (!selectedUser || !currentUser) return;
+
+    // Получаем значения из формы
+    const formElements = e.currentTarget.elements as any;
+
+    // Собираем все данные в FormData
+    const formData = new FormData();
+    formData.append("user_id", String(selectedUser.id));
+    formData.append("created_by", String(currentUser.id));
+    formData.append("measured_at", new Date().toISOString());
+    formData.append("waist_cm", formElements.waist_cm.value || "0");
+    formData.append("hips_cm", formElements.hips_cm.value || "0");
+    formData.append("hip_1", formElements.hip_1.value || "0");
+    formData.append("chest_cm", formElements.chest_cm.value || "0");
+    formData.append("arms_cm", formElements.arms_cm.value || "0");
+    formData.append("notes", formElements.notes.value || "");
+
+    // Добавляем файлы, если они есть
+    if (photoBefore) {
+      formData.append("photo_before", photoBefore);
+    }
+    if (photoAfter) {
+      formData.append("photo_after", photoAfter);
+    }
+
     try {
-      const responce = await MeasurementApi.createMeasurement(newMeasurement);
-      if (responce?.data) {
-        const newMeasurementData: MeasurementType = responce.data;
-        setMeasurements((prev) => [newMeasurementData, ...prev]);
+      // Отправляем на сервер
+      const response =
+        await MeasurementApi.createMeasurementWithPhoto(formData);
+
+      if (response?.data) {
+        const newMeasurement = response.data;
+        setMeasurements((prev) => [newMeasurement, ...prev]);
         setShowCreateForm(false);
       }
     } catch (error) {
-      console.log(error);
+      console.log("❌ Ошибка при создании замера:", error);
     }
   }
 
@@ -117,12 +143,12 @@ export default function AdminPage() {
       created_by: editingMeasurement.created_by || currentUser?.id || 1,
     };
     try {
-      const responce = await MeasurementApi.updateMeasurement(
+      const response = await MeasurementApi.updateMeasurement(
         id,
         updatedMeasurement,
       );
-      if (responce?.data) {
-        const updatedData: MeasurementType = responce.data;
+      if (response?.data) {
+        const updatedData: MeasurementType = response.data;
         setMeasurements((prev) =>
           prev.map((m) => (m.id === updatedData.id ? updatedData : m)),
         );
@@ -217,6 +243,7 @@ export default function AdminPage() {
               measurement={measurement}
               onDelete={() => handleDelete(measurement.id)}
               onEdit={() => handleEdit(measurement)}
+              onPhotoUpdate={handlePhotoUpdate}
             />
           ))}
         </div>

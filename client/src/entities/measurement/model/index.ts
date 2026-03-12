@@ -8,8 +8,8 @@ export type MeasurementType = {
   hip_1: number;
   chest_cm: number;
   arms_cm: number;
-  photo_before: string;
-  photo_after: string;
+  photo_before: string | null;
+  photo_after: string | null;
   notes: string;
   created_by: number;
   created_at?: string;
@@ -24,8 +24,8 @@ export type MeasurementInputData = {
   hip_1?: number;
   chest_cm?: number;
   arms_cm?: number;
-  photo_before?: string;
-  photo_after?: string;
+  photo_before?: string | null;
+  photo_after?: string | null;
   notes?: string;
 };
 
@@ -55,8 +55,8 @@ export type CreateMeasurementType = {
   hip_1?: number;
   chest_cm?: number;
   arms_cm?: number;
-  photo_before?: string;
-  photo_after?: string;
+  photo_before?: string | null;
+  photo_after?: string | null;
   notes?: string;
   created_by?: number;
 };
