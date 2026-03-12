@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import AiApi from '../../api/AiApi'
 import './Chat.css'
-import { Send, CheckCheck } from 'lucide-react'
+import { Send, CheckCheck, Bot, User, Sparkles } from 'lucide-react'
 
 const WELCOME_MESSAGE = 'Здравствуйте! Я виртуальный ассистент Студии идеального тела. Подскажу по процедурам, ценам и помогу записаться. Чем я могу быть полезна?'
 
@@ -41,38 +41,93 @@ export default function Chat() {
     return (
         <div className="chat-wrapper">
             <div className="chat-container">
+                {/* Шапка чата */}
+                <div className="chat-header">
+                    <div className="chat-header-content">
+                        <div className="chat-header-icon">
+                            <Sparkles size={20} />
+                        </div>
+                        <div>
+                            <h2 className="chat-header-title">AI-ассистент</h2>
+                            <p className="chat-header-subtitle">Всегда рядом, чтобы помочь</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Сообщения */}
                 <div className="chat-messages">
                     {messages.map((msg, index) => (
                         <div
                             key={index}
                             className={`chat-message chat-message--${msg.role}`}
                         >
-                            <span className="chat-message__text">{msg.content}</span>
-                            {msg.role === 'user' && (
-                                <CheckCheck className="chat-message__status" size={16} />
-                            )}
+                            <div className="chat-message-avatar">
+                                {msg.role === 'assistant' ? (
+                                    <div className="chat-message-avatar-bot">
+                                        <Bot size={16} />
+                                    </div>
+                                ) : (
+                                    <div className="chat-message-avatar-user">
+                                        <User size={14} />
+                                    </div>
+                                )}
+                            </div>
+                            <div className="chat-message-content">
+                                <div className="chat-message-bubble">
+                                    <span className="chat-message__text">{msg.content}</span>
+                                </div>
+                                {msg.role === 'user' && (
+                                    <div className="chat-message-status">
+                                        <CheckCheck size={14} />
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     ))}
                     {writing && (
-                        <div className="chat-message chat-message--assistant chat-typing">
-                            <span className="chat-typing__dots">
-                                <span className="chat-typing__dot" />
-                                <span className="chat-typing__dot" />
-                                <span className="chat-typing__dot" />
-                            </span>
+                        <div className="chat-message chat-message--assistant">
+                            <div className="chat-message-avatar">
+                                <div className="chat-message-avatar-bot">
+                                    <Bot size={16} />
+                                </div>
+                            </div>
+                            <div className="chat-message-content">
+                                <div className="chat-message-bubble chat-typing">
+                                    <span className="chat-typing__dots">
+                                        <span className="chat-typing__dot" />
+                                        <span className="chat-typing__dot" />
+                                        <span className="chat-typing__dot" />
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     )}
                 </div>
+
+                {/* Поле ввода */}
                 <div className="chat-input-container">
                     <input
                         type="text"
-                        placeholder="Message"
+                        placeholder="Напишите сообщение..."
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                         className="chat-input"
                     />
-                    <button onClick={handleSend} className="chat-button"><Send /></button>
+                    <button 
+                        onClick={handleSend} 
+                        className={`chat-button ${!message.trim() ? 'chat-button-disabled' : ''}`}
+                        disabled={!message.trim()}
+                    >
+                        <Send size={18} />
+                    </button>
                 </div>
+
+                {/* Подпись */}
+                <p className="chat-disclaimer">
+                    AI-ассистент может ошибаться. Для точной информации обратитесь к администратору.
+                </p>
             </div>
-        </div >)
+        </div>
+    )
 }
