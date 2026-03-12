@@ -55,7 +55,7 @@ export default function ModalForm({ onClose, selectedUser }: { onClose: () => vo
     return (
         <>
             <div className="modal-form">
-                <button onClick={onClose}>Закрыть</button>
+                <button className="modal-form__close" onClick={onClose}>Закрыть</button>
                 <FormInput
                     label="Цена"
                     name="price"

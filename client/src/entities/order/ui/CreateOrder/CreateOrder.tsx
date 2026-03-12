@@ -3,6 +3,7 @@ import OrderApi from '../../api/OrderApi';
 import { useAppSelector } from '@/app/store/store';
 import ModalForm from '../ModalForm/ModalForm';
 import { UserWithoutPassword } from '@/entities/user/model';
+import { Button } from "@/shared/ui/Button/Button";
 
 
 interface CreateOrderProps {
@@ -23,7 +24,7 @@ export default function CreateOrder({ selectedUser }: CreateOrderProps) {
     }
   return (
     <>
-     <button onClick={handleOpenModal}>Сделать заказ</button>
+     <Button onClick={handleOpenModal} >Сделать заказ</Button>
      {isOpen && <ModalForm onClose={handleCloseModal}  selectedUser={selectedUser} />}
     </>
   )
