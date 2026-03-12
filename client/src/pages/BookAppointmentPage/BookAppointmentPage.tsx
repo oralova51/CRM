@@ -10,6 +10,7 @@ import { useCreateBooking } from "@/features/bookings/create-booking/useCreateBo
 import { CLIENT_ROUTES } from "@/shared/consts/clientRoutes";
 import styles from "./BookAppointmentPage.module.css";
 import { useToast } from '@/shared/lib/toast/ToastContext';
+import { useLocation } from 'react-router';
 
 type Step = 1 | 2 | 3;
 
@@ -24,6 +25,8 @@ export default function BookAppointmentPage() {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const toast = useToast();
+  const location = useLocation();
+  const selectedUser = location.state?.selectedUser;
 
   useEffect(() => {
     dispatch(getAllProceduresThunk());
@@ -53,10 +56,16 @@ export default function BookAppointmentPage() {
       await createBooking({
         procedure_id: selectedProcedure.id,
         scheduled_at: scheduledAt,
+        user_id: selectedUser.id
       });
 
       toast.success('Запись успешно создана! Ждём вас в студии!');
-      navigate(CLIENT_ROUTES.PROCEDURES);
+      //есди есть selectedUser, то не нужна навигация на страницу процедур
+      if (selectedUser) {
+        navigate(CLIENT_ROUTES.ADMIN_PAGE);
+      } else {
+        navigate(CLIENT_ROUTES.PROCEDURES);
+      }
     } catch (error) {
       toast.error('Не удалось создать запись. Попробуйте позже.');
     }

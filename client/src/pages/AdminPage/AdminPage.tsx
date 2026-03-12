@@ -13,6 +13,7 @@ import { Button } from "@/shared/ui/Button/Button";
 import AddMeasurementForm from "@/entities/measurement/ui/AddForm/AddMeasurementForm";
 import { useAppSelector } from "@/app/store/store";
 import CreateOrder from "@/entities/order/ui/CreateOrder/CreateOrder";
+import BookingByAdmin from "@/entities/booking/ui/BookingByAdmin/BookingByAdmin";
 
 
 export default function AdminPage() {
@@ -202,6 +203,7 @@ export default function AdminPage() {
             </div>
           )}
           <CreateOrder selectedUser={selectedUser}/>
+          <BookingByAdmin selectedUser={selectedUser}/>
 
           {/* Форма редактирования замера */}
           {editingMeasurement && (

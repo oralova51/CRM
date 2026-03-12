@@ -1,7 +1,7 @@
 // server/src/controllers/Booking.controller.js
 
 const BookingService = require("../services/Booking.service");
-const { Procedure } = require("../../db/models");
+const { Procedure, User } = require("../../db/models");
 const formatResponse = require("../utils/formatResponse");
 
 class BookingController {
@@ -99,23 +99,56 @@ class BookingController {
   }
 
   // POST /api/bookings — создать запись
+  // Клиент создаёт запись для себя, админ — для указанного клиента (user_id в body)
   static async createBooking(req, res) {
     const { user } = res.locals;
 
-    if (user.role !== "isClient") {
+    if (user.role !== "isClient" && user.role !== "isAdmin") {
       return res
         .status(403)
         .json(
           formatResponse(
             403,
-            "Доступ запрещен. Только клиенты могут создавать записи",
+            "Доступ запрещен. Создавать записи могут только клиенты и администраторы",
             null,
             "Forbidden",
           ),
         );
     }
 
-    const { procedure_id, scheduled_at, notes } = req.body;
+    const { procedure_id, scheduled_at, notes, user_id: clientId } = req.body;
+
+    let targetUserId;
+    if (user.role === "isAdmin") {
+      if (!clientId) {
+        return res
+          .status(400)
+          .json(
+            formatResponse(
+              400,
+              "Укажите клиента (user_id) для создания записи",
+              null,
+              "user_id is required for admin",
+            ),
+          );
+      }
+      targetUserId = clientId;
+    } else {
+      // Клиент может создавать записи только для себя
+      if (clientId != null && Number(clientId) !== user.id) {
+        return res
+          .status(403)
+          .json(
+            formatResponse(
+              403,
+              "Клиент может создавать записи только для себя",
+              null,
+              "Forbidden",
+            ),
+          );
+      }
+      targetUserId = user.id;
+    }
 
     if (!procedure_id) {
       return res
@@ -144,6 +177,34 @@ class BookingController {
     }
 
     try {
+      if (user.role === "isAdmin") {
+        const targetUser = await User.findByPk(targetUserId);
+        if (!targetUser) {
+          return res
+            .status(404)
+            .json(
+              formatResponse(
+                404,
+                "Клиент не найден",
+                null,
+                "User not found",
+              ),
+            );
+        }
+        if (targetUser.role !== "isClient") {
+          return res
+            .status(400)
+            .json(
+              formatResponse(
+                400,
+                "Запись можно создать только для клиента",
+                null,
+                "Target user must be a client",
+              ),
+            );
+        }
+      }
+
       const procedure = await Procedure.findByPk(procedure_id);
       if (!procedure) {
         return res
@@ -159,7 +220,7 @@ class BookingController {
       }
 
       const bookingData = {
-        user_id: user.id,
+        user_id: targetUserId,
         procedure_id,
         scheduled_at,
         status: "pending",
