@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router";
 import Layout from "../Layout/Layout";
 import AuthPage from "../../pages/AuthPage/AuthPage";
-import MainPage from "../../pages/MainPage/MainPage";
+import IndexPage from "../../pages/IndexPage/IndexPage";
 import AdminPage from "@/pages/AdminPage/AdminPage";
 import ProfilePage from "@/pages/ProfilePage/ProfilePage";
 import AiPage from "../../pages/AiPage/AiPage";
@@ -15,9 +15,8 @@ export default function AppRouter() {
   return (
     <Routes>
       <Route path={CLIENT_ROUTES.MAIN_PAGE} element={<Layout />}>
-        {/* Главная теперь ведёт на Landing для неавторизованных */}
-        <Route index element={<PromoPage />} />
-        <Route path={CLIENT_ROUTES.LANDING.slice(1)} element={<LandingPage />} />
+        {/* "/" — Дашборд для авторизованных, Promo для неавторизованных */}
+        <Route index element={<IndexPage />} />
         <Route path={CLIENT_ROUTES.AUTH.slice(1)} element={<AuthPage />} />
         <Route path={CLIENT_ROUTES.BOOK.slice(1)} element={<BookAppointmentPage />} />
         <Route path={CLIENT_ROUTES.PROCEDURES.slice(1)} element={<ProcedureCalendarPage />} />
