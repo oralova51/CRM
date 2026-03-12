@@ -1,15 +1,15 @@
 import { axiosInstance } from "../../../shared/lib/axiosInstance";
 
-import type { AiMessageResponse } from "../model";
+import type { RagQueryResponse, ServerResponseType } from "../model";
 
 export default class AiApi {
-  static async createChat(body: { message: string }): Promise<AiMessageResponse> {
-    const response = await axiosInstance.post<AiMessageResponse>("/ai/chat", body);
-    return response.data;
-  }
+    static async createChat(body: { question: string }): Promise<RagQueryResponse> {
+        const response = await axiosInstance.post<RagQueryResponse>("/rag/query", body);
+        return response.data;
+    }
 
-  static async getChatHistory(): Promise<AiMessageResponse[]> {
-    const response = await axiosInstance.get<AiMessageResponse[]>("/ai/history");
-    return response.data;
-  }
+    static async getChatHistory(): Promise<ServerResponseType<{ content: string; role: string }[]>> {
+        const response = await axiosInstance.get<ServerResponseType<{ content: string; role: string }[]>>("/ai/history");
+        return response.data;
+    }
 }
