@@ -7,7 +7,7 @@ import { useAppSelector } from "@/shared/hooks/useReduxHooks";
 import { PushNotificationToggle } from '@/features/push-notifications/PushNotificationToggle';
 import MeasurementApi from "@/entities/measurement/api/MeasurementApi";
 import { MeasurementType } from "@/entities/measurement/model";
-import MeasurementCard from "@/entities/measurement/ui/MeasurementCard";
+import MeasurementCard from "@/entities/measurement/ui/MeasurementCard/MeasurementCard";
 import { CLIENT_ROUTES } from "@/shared/consts/clientRoutes";
 import styles from "./ProfilePage.module.css";
 

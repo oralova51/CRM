@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './AddMeasurementForm.module.css';
 
 type AddMeasurementFormProps = {
-  submitHandler: (e: React.FormEvent<HTMLFormElement>) => void;
+  submitHandler: (e: React.SubmitEvent<HTMLFormElement>) => void;
 };
 
 export default function AddMeasurementForm({ submitHandler }: AddMeasurementFormProps) {

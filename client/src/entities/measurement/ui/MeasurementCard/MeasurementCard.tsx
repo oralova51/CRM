@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import type { MeasurementType } from "../model";
+import type { MeasurementType } from "../../model";
 import "./MeasurementCard.css"; // создадим отдельный файл со стилями
 import { useAppSelector } from "@/shared/hooks/useReduxHooks";
 
 type MeasurementCardProps = {
   measurement: MeasurementType;
   onDelete: (id: number) => void;
-  onUpdate: (measurement: MeasurementType) => void;
+  onEdit: (measurement: MeasurementType) => void;
 };
 
 export default function MeasurementCard({
   measurement,
   onDelete,
-  onUpdate,
+  onEdit,
 }: MeasurementCardProps) {
   const { user } = useAppSelector((state) => state.user);
   const [isOpen, setIsOpen] = useState(false);
@@ -35,15 +35,15 @@ export default function MeasurementCard({
       {isOpen && (
         <div className="measurement-content">
           {user?.role === "isAdmin" && (
-            <>
+            <div className="admin-actions">
+              <button onClick={() => onEdit(measurement)}>{"✏️"}</button>
               <button
                 className="delete-button"
                 onClick={() => onDelete(measurement.id)}
               >
                 {"❌"}
               </button>
-              <button onClick={() => onUpdate(measurement)}>{"✏️"}</button>
-            </>
+            </div>
           )}
           <div className="content-grid">
             <div className="measurement-item">

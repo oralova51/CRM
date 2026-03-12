@@ -12,8 +12,8 @@ export type MeasurementType = {
   photo_after: string;
   notes: string;
   created_by: number;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
 };
 
 export type MeasurementInputData = {
@@ -58,4 +58,5 @@ export type CreateMeasurementType = {
   photo_before?: string;
   photo_after?: string;
   notes?: string;
+  created_by?: number;
 };
