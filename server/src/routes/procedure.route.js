@@ -1,8 +1,9 @@
 const procedureRouter = require("express").Router();
 const ProcedureController = require("../controllers/Procedure.controller");
 const verifyAccessToken = require("../middlewares/verifyAccessToken");
+const verifyAccessTokenOptional = require("../middlewares/verifyAccessTokenOptional");
 
-procedureRouter.get('/', ProcedureController.getProcedures);
+procedureRouter.get('/', verifyAccessTokenOptional, ProcedureController.getProcedures);
 procedureRouter.get('/:id', ProcedureController.getOneProcedure);
 
 procedureRouter

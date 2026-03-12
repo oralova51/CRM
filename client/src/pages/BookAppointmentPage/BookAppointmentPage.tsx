@@ -56,7 +56,7 @@ export default function BookAppointmentPage() {
       await createBooking({
         procedure_id: selectedProcedure.id,
         scheduled_at: scheduledAt,
-        user_id: selectedUser.id
+        ...(selectedUser && { user_id: selectedUser.id }),
       });
 
       toast.success('Запись успешно создана! Ждём вас в студии!');
