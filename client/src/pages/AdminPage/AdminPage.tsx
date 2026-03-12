@@ -12,6 +12,8 @@ import {
 import { Button } from "@/shared/ui/Button/Button";
 import AddMeasurementForm from "@/entities/measurement/ui/AddForm/AddMeasurementForm";
 import { useAppSelector } from "@/app/store/store";
+import CreateOrder from "@/entities/order/ui/CreateOrder/CreateOrder";
+
 
 export default function AdminPage() {
   const currentUser = useAppSelector((state) => state.user.user);
@@ -199,6 +201,7 @@ export default function AdminPage() {
               <AddMeasurementForm submitHandler={handleFormSubmit} />
             </div>
           )}
+          <CreateOrder selectedUser={selectedUser}/>
 
           {/* Форма редактирования замера */}
           {editingMeasurement && (
