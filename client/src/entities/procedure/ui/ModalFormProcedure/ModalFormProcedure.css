@@ -1,0 +1,122 @@
+.modalFormProcedure {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: modalFormProcedureFadeIn 0.2s ease;
+}
+
+.modalFormProcedure__content {
+  background-color: var(--crm-surface);
+  border-radius: var(--crm-radius-lg);
+  width: 100%;
+  max-width: 420px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--crm-border-subtle);
+  animation: modalFormProcedureSlideUp 0.2s ease;
+}
+
+.modalFormProcedure__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--crm-border-subtle);
+  flex-shrink: 0;
+}
+
+.modalFormProcedure__title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--crm-text-main);
+}
+
+.modalFormProcedure__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.375rem;
+  color: var(--crm-text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: color 0.18s ease, background-color 0.18s ease;
+}
+
+.modalFormProcedure__close:hover {
+  color: var(--crm-text-main);
+  background-color: rgba(15, 23, 42, 0.05);
+}
+
+.modalFormProcedure__body {
+  padding: 1.25rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modalFormProcedure__loading,
+.modalFormProcedure__error {
+  margin: 0 0 1rem;
+  font-size: 0.9375rem;
+  color: var(--crm-text-muted);
+}
+
+.modalFormProcedure__error {
+  color: #dc2626;
+}
+
+.modalFormProcedure__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modalFormProcedure__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--crm-background);
+  border-radius: 0.625rem;
+  border: 1px solid var(--crm-border-subtle);
+}
+
+.modalFormProcedure__rowName {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--crm-text-main);
+  flex: 1;
+  min-width: 0;
+}
+
+@keyframes modalFormProcedureFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalFormProcedureSlideUp {
+  from {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

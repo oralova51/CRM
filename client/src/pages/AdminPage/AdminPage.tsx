@@ -14,7 +14,7 @@ import AddMeasurementForm from "@/entities/measurement/ui/AddForm/AddMeasurement
 import { useAppSelector } from "@/app/store/store";
 import CreateOrder from "@/entities/order/ui/CreateOrder/CreateOrder";
 import BookingByAdmin from "@/entities/booking/ui/BookingByAdmin/BookingByAdmin";
-import IsActive from "./isActive/isActive";
+import IsActive from "../../entities/procedure/ui/isActive/isActive";
 
 
 export default function AdminPage() {
