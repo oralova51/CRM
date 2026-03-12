@@ -425,6 +425,8 @@ class MeasurementController {
       chest_cm,
       arms_cm,
       notes,
+      photo_before,
+      photo_after
     } = req.body;
 
     const { user } = res.locals;
