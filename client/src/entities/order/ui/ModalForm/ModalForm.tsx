@@ -2,7 +2,7 @@ import { Button } from '@/shared/ui/Button/Button'
 import FormInput from '@/shared/ui/FormInput/FormInput'
 import React, { useState } from 'react'
 import OrderApi from '../../api/OrderApi';
-import './ModalForm.module.css';
+import './ModalForm.css';
 import { PaymentMethod, OrderStatus } from '../../model';
 import type { UserWithoutPassword } from '@/entities/user/model';
 
