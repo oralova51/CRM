@@ -161,73 +161,82 @@ class MeasurementController {
     }
   }
 
-  // ✅ НОВЫЙ МЕТОД: Загрузка фото "до"
-  static async uploadPhotoBefore(req, res) {
-    const { id } = req.params;
-    const { user } = res.locals;
 
-    if (isNaN(Number(id))) {
+
+static async uploadPhotoBefore(req, res) {
+  
+  const { id } = req.params;
+  const { user } = res.locals;
+
+  if (isNaN(Number(id))) {
+    return res
+      .status(400)
+      .json(formatResponse(400, "Некорректный формат ID"));
+  }
+
+  try {
+    // Проверяем, есть ли файл
+    if (!req.file) {
       return res
         .status(400)
-        .json(formatResponse(400, "Некорректный формат ID"));
+        .json(formatResponse(400, "Файл не загружен"));
     }
 
-    try {
-      const measurement = await MeasurementService.getMeasurementById(Number(id));
+    const measurement = await MeasurementService.getMeasurementById(Number(id));
 
-      if (!measurement) {
-        return res
-          .status(404)
-          .json(formatResponse(404, `Замер с ID: ${id} не найден`));
+    if (!measurement) {
+      if (req.file && fs.existsSync(req.file.path)) {
+        fs.unlinkSync(req.file.path);
       }
-
-      // Проверяем права доступа
-      if (user.id !== measurement.user_id && user.role !== 'isAdmin') {
-        return res
-          .status(403)
-          .json(formatResponse(403, "Доступ запрещен"));
-      }
-
-      if (!req.file) {
-        return res
-          .status(400)
-          .json(formatResponse(400, "Файл не загружен"));
-      }
-
-      // Если есть старое фото, удаляем его
-      if (measurement.photo_before) {
-        const oldPhotoPath = path.join(__dirname, '../../public', measurement.photo_before);
-        if (fs.existsSync(oldPhotoPath)) {
-          fs.unlinkSync(oldPhotoPath);
-        }
-      }
-
-      // Сохраняем путь к новому фото
-      const photoUrl = `/uploads/measurements/${req.file.filename}`;
-      const updatedMeasurement = await MeasurementService.updateMeasurementPhoto(
-        Number(id),
-        'photo_before',
-        photoUrl
-      );
-
-      res.status(200).json(
-        formatResponse(200, "Фото 'до' загружено успешно", updatedMeasurement)
-      );
-    } catch (error) {
-      console.log("==== MeasurementController.uploadPhotoBefore ==== ");
-      console.log(error);
-      
-      // Если ошибка, удаляем загруженный файл
-      if (req.file) {
-        const filePath = path.join(__dirname, '../../public/uploads/measurements', req.file.filename);
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath);
-        }
-      }
-      
-      res.status(500).json(formatResponse(500, "Внутренняя ошибка сервера"));
+      return res
+        .status(404)
+        .json(formatResponse(404, `Замер с ID: ${id} не найден`));
     }
+
+    // Проверяем права доступа
+    if (user.id !== measurement.user_id && user.role !== 'isAdmin') {
+      if (req.file && fs.existsSync(req.file.path)) {
+        fs.unlinkSync(req.file.path);
+      }
+      return res
+        .status(403)
+        .json(formatResponse(403, "Доступ запрещен"));
+    }
+
+    // Если есть старое фото, удаляем его
+    if (measurement.photo_before) {
+      const oldPhotoPath = path.join(__dirname, '../../public', measurement.photo_before);
+      if (fs.existsSync(oldPhotoPath)) {
+        fs.unlinkSync(oldPhotoPath);
+      }
+    }
+
+    // Сохраняем путь к новому фото
+   const photoUrl = `/uploads/measurementsPhoto/${req.file.filename}`;
+
+    const updatedMeasurement = await MeasurementService.updateMeasurementPhoto(
+      Number(id),
+      'photo_before',
+      photoUrl
+    );
+
+
+    res.status(200).json(
+      formatResponse(200, "Фото 'до' загружено успешно", updatedMeasurement)
+    );
+  } catch (error) {
+    console.log("❌❌❌ ОШИБКА В uploadPhotoBefore:");
+    console.log(error);
+    
+    // Если ошибка, удаляем загруженный файл
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+    
+    res.status(500).json(formatResponse(500, "Внутренняя ошибка сервера"));
   }
+}
+
 
   // ✅ НОВЫЙ МЕТОД: Загрузка фото "после"
   static async uploadPhotoAfter(req, res) {
@@ -271,7 +280,7 @@ class MeasurementController {
       }
 
       // Сохраняем путь к новому фото
-      const photoUrl = `/uploads/measurements/${req.file.filename}`;
+      const photoUrl = `/uploads/measurementsPhoto/${req.file.filename}`;
       const updatedMeasurement = await MeasurementService.updateMeasurementPhoto(
         Number(id),
         'photo_after',
@@ -287,7 +296,7 @@ class MeasurementController {
       
       // Если ошибка, удаляем загруженный файл
       if (req.file) {
-        const filePath = path.join(__dirname, '../../public/uploads/measurements', req.file.filename);
+        const filePath = path.join(__dirname, '../../public/uploads/measurementsPhoto', req.file.filename);
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath);
         }
@@ -474,8 +483,6 @@ class MeasurementController {
         (key) => updateData[key] === undefined && delete updateData[key],
       );
 
-      console.log("Update data prepared:", updateData);
-
 
       if (Object.keys(updateData).length === 0) {
         return res
@@ -488,8 +495,6 @@ class MeasurementController {
         Number(id),
         updateData, // ← передаем объект с данными
       );
-
-      console.log("Updated measurement:", updatedMeasurement);
 
       if (!updatedMeasurement) {
         return res
@@ -512,6 +517,60 @@ class MeasurementController {
         );
     }
   }
+  static async createMeasurementWithPhoto(req, res) {
+ 
+  const { user } = res.locals;
+  
+  try {
+    const {
+      user_id,
+      measured_at,
+      waist_cm,
+      hips_cm,
+      hip_1,
+      chest_cm,
+      arms_cm,
+      notes,
+    } = req.body;
+
+    // Проверка обязательных полей
+    if (!user_id) {
+      return res.status(400).json(formatResponse(400, "Не указан ID клиента"));
+    }
+
+    // Формируем пути к фото
+    let photo_before = null;
+    let photo_after = null;
+    
+    if (req.files && req.files['photo_before']) {
+      photo_before = `/uploads/measurementsPhoto/${req.files['photo_before'][0].filename}`;
+    }
+    
+    if (req.files && req.files['photo_after']) {
+      photo_after = `/uploads/measurementsPhoto/${req.files['photo_after'][0].filename}`;
+    }
+
+    // Создаем замер СРАЗУ с путями к фото
+    const newMeasurement = await MeasurementService.createNewMeasurement({
+      user_id: Number(user_id),
+      measured_at: measured_at || new Date(),
+      waist_cm: Number(waist_cm) || 0,
+      hips_cm: Number(hips_cm) || 0,
+      hip_1: Number(hip_1) || 0,
+      chest_cm: Number(chest_cm) || 0,
+      arms_cm: Number(arms_cm) || 0,
+      photo_before,
+      photo_after,
+      notes: notes || '',
+      created_by: user.id,
+    });
+
+    res.status(201).json(formatResponse(201, "Замер создан с фото", newMeasurement));
+  } catch (error) {
+    console.log("==== MeasurementController.createMeasurementWithPhoto ==== ", error);
+    res.status(500).json(formatResponse(500, "Внутренняя ошибка сервера"));
+  }
+}
 }
 
 module.exports = MeasurementController;
