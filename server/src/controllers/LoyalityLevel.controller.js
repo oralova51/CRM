@@ -47,6 +47,42 @@ class LoyaltyLevelController {
         .json(formatResponse(500, 'Failed to fetch activity statistics'));
     }
   }
+
+  static async getUserDiscountById(req, res) {
+    try {
+      const { userId } = req.params;
+      const { user: adminUser } = res.locals;
+
+      // Проверяем, что админ имеет доступ
+      if (adminUser.role !== 'isAdmin') {
+        return res.status(403).json(
+          formatResponse(403, 'Доступ запрещен. Только для администраторов')
+        );
+      }
+
+      const discountData = await LoyaltyLevelService.getUserDiscountById(userId);
+
+      res.json(
+        formatResponse(
+          200,
+          "User discount fetched successfully",
+          discountData
+        )
+      );
+    } catch (error) {
+      console.error("Error fetching user discount by id:", error);
+
+      if (error.message === "User not found") {
+        return res.status(404).json(
+          formatResponse(404, "Пользователь не найден")
+        );
+      }
+
+      res.status(500).json(
+        formatResponse(500, "Failed to fetch user discount")
+      );
+    }
+  }
 }
 
 module.exports = LoyaltyLevelController;

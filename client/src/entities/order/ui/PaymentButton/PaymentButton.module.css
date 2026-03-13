@@ -1,0 +1,13 @@
+/* client/src/entities/order/ui/PaymentButton/PaymentButton.module.css */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #10b981;
+  color: white;
+}
+
+.button:hover {
+  background: #059669;
+}
