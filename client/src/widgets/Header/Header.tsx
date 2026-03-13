@@ -114,7 +114,7 @@ export function Header() {
                   key={item.to}
                   to={item.to}
                   className={({ isActive }) =>
-                    `${styles.navItem} ${isActive ? styles.navItemActive : ""} ${
+                    `${styles.navItem} ${isActive && user ? styles.navItemActive : ""} ${
                       !user ? styles.navItemDisabled : ""
                     }`
                   }

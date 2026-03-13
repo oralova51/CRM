@@ -12,6 +12,10 @@ import {
 import { Button } from "@/shared/ui/Button/Button";
 import AddMeasurementForm from "@/entities/measurement/ui/AddForm/AddMeasurementForm";
 import { useAppSelector } from "@/app/store/store";
+import CreateOrder from "@/entities/order/ui/CreateOrder/CreateOrder";
+import BookingByAdmin from "@/entities/booking/ui/BookingByAdmin/BookingByAdmin";
+import IsActive from "../../entities/procedure/ui/isActive/isActive";
+
 
 export default function AdminPage() {
   const currentUser = useAppSelector((state) => state.user.user);
@@ -172,7 +176,6 @@ export default function AdminPage() {
   return (
     <div style={{ padding: 20 }}>
       <h1>Админ панель</h1>
-
       {/* Поиск */}
       <div>
         <input
@@ -182,6 +185,8 @@ export default function AdminPage() {
           placeholder="Поиск клиента... email, имя, телефон."
           style={{ width: "100%", padding: 10, marginBottom: 10 }}
         />
+
+        <IsActive />
 
         {/* Результаты поиска */}
         {results.length > 0 && (
@@ -225,6 +230,8 @@ export default function AdminPage() {
               <AddMeasurementForm submitHandler={handleFormSubmit} />
             </div>
           )}
+          <CreateOrder selectedUser={selectedUser} />
+          <BookingByAdmin selectedUser={selectedUser} />
 
           {/* Форма редактирования замера */}
           {editingMeasurement && (

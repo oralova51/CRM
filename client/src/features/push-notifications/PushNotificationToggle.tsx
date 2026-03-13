@@ -1,9 +1,8 @@
-// client/src/features/push-notifications/PushNotificationToggle.tsx
-
 import { useState } from 'react';
 import { Bell, BellOff, Loader2 } from 'lucide-react';
 import { usePushNotifications } from './usePushNotifications';
 import styles from './PushNotificationToggle.module.css';
+import { useToast } from '@/shared/lib/toast/ToastContext';
 
 export function PushNotificationToggle() {
   const {
@@ -18,6 +17,7 @@ export function PushNotificationToggle() {
   } = usePushNotifications();
 
   const [showTest, setShowTest] = useState(false);
+  const toast = useToast();
 
   if (!supported) {
     return (
@@ -31,12 +31,18 @@ export function PushNotificationToggle() {
   }
 
   const handleToggle = async () => {
-    if (isSubscribed) {
-      await unsubscribe();
-    } else {
-      await subscribe();
+  if (isSubscribed) {
+    const success = await unsubscribe();
+    if (success) {
+      toast.success('Уведомления отключены');
     }
-  };
+  } else {
+    const success = await subscribe();
+    if (success) {
+      toast.success('Уведомления включены! Теперь вы будете получать напоминания');
+    }
+  }
+};
 
   const handleTest = async () => {
     await sendTestNotification();

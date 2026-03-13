@@ -3,6 +3,7 @@ import AppRouter from "./app/routing/AppRouter";
 // import { refreshThunk } from "@/entities/user/api/UserApi";
 import { getMeThunk } from "@/entities/user/api/UserApi";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useReduxHooks";
+import { ToastProvider } from "@/shared/lib/toast/ToastContext";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -16,7 +17,11 @@ function App() {
     return <div>Загрузка приложения...</div>;
   }
 
-  return <AppRouter />;
+  return (
+    <ToastProvider>
+      <AppRouter />
+    </ToastProvider>
+  );
 }
 
 export default App;
