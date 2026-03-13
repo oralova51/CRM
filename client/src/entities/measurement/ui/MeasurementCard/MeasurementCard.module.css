@@ -1,0 +1,418 @@
+.card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid rgba(3, 2, 19, 0.08);
+  overflow: hidden;
+  transition: all 0.2s;
+  margin-bottom: 12px;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  cursor: pointer;
+  background: white;
+  transition: background 0.2s;
+}
+
+.header:hover {
+  background: #f9fafb;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dateIcon {
+  width: 36px;
+  height: 36px;
+  background: #f3f4f6;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+}
+
+.date {
+  font-weight: 500;
+  color: #030213;
+  margin-bottom: 2px;
+}
+
+.notePreview {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.actions {
+  display: flex;
+  gap: 4px;
+}
+
+.editButton,
+.deleteButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.editButton {
+  color: #3b82f6;
+}
+
+.editButton:hover {
+  background: #eff6ff;
+}
+
+.deleteButton {
+  color: #ef4444;
+}
+
+.deleteButton:hover {
+  background: #fee2e2;
+}
+
+.expandButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: #f3f4f6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: all 0.2s;
+}
+
+.expandButton:hover {
+  background: #e5e7eb;
+  color: #030213;
+}
+
+.content {
+  padding: 16px;
+  border-top: 1px solid rgba(3, 2, 19, 0.08);
+  background: #fafafa;
+}
+
+.measurementsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.measurementItem {
+  background: white;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(3, 2, 19, 0.04);
+}
+
+.measurementLabel {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.measurementValue {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #030213;
+}
+
+.notes {
+  background: white;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(3, 2, 19, 0.04);
+  margin-bottom: 16px;
+}
+
+.notesLabel {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.notesText {
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.photoContainer {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid rgba(3, 2, 19, 0.04);
+  overflow: hidden;
+}
+
+.photoHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #f9fafb;
+  border-bottom: 1px solid rgba(3, 2, 19, 0.04);
+}
+
+.photoLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #030213;
+}
+
+.photoActions {
+  display: flex;
+  gap: 4px;
+}
+
+.photoAction {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: none;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: all 0.2s;
+}
+
+.photoAction:hover {
+  background: #f3f4f6;
+  color: #030213;
+}
+
+.deletePhoto {
+  color: #ef4444;
+}
+
+.deletePhoto:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.photo {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}
+
+.photoPlaceholder {
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #9ca3af;
+  background: #f3f4f6;
+}
+
+.uploading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  color: #6b7280;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e5e7eb;
+  border-top-color: #030213;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .measurementsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .photos {
+    grid-template-columns: 1fr;
+  }
+  
+  .headerLeft {
+    max-width: 60%;
+  }
+}
+
+/* Фото с увеличением */
+.photoWrapper {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.photoWrapper:hover .photo {
+  transform: scale(1.05);
+}
+
+.photoOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  color: white;
+}
+
+.photoWrapper:hover .photoOverlay {
+  opacity: 1;
+}
+
+.photoPlaceholder {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #9ca3af;
+  background: #f3f4f6;
+}
+
+/* Лайтбокс (полноэкранный просмотр) */
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  cursor: pointer;
+}
+
+.lightboxClose {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10000;
+}
+
+.lightboxClose:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.lightboxImage {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.lightboxCaption {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  backdrop-filter: blur(4px);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .photo {
+    height: 100%;
+  }
+  
+  .photoPlaceholder {
+    height: 150px;
+  }
+  
+  .lightboxImage {
+    max-width: 95vw;
+    max-height: 80vh;
+  }
+  
+  .lightboxClose {
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+  }
+}
