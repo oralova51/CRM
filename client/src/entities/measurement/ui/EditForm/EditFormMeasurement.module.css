@@ -1,97 +1,79 @@
 .form {
-  width: 100%;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  background: white;
+  border-radius: 16px;
   padding: 20px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #eee;
-  margin-bottom: 20px;
+  border: 1px solid rgba(3, 2, 19, 0.08);
 }
 
 .formTitle {
-  margin: 0 0 8px 0;
-  font-size: 16px;
+  font-size: 1.125rem;
   font-weight: 600;
-  color: #333;
+  color: #030213;
+  margin: 0 0 20px 0;
 }
 
 .field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  margin-bottom: 16px;
 }
 
 .label {
+  display: block;
+  font-size: 0.875rem;
   font-weight: 500;
-  color: #333;
-  font-size: 14px;
+  color: #4b5563;
+  margin-bottom: 6px;
 }
 
 .input {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  border: 1px solid rgba(3, 2, 19, 0.1);
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  transition: all 0.2s;
 }
 
 .input:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+  border-color: #030213;
 }
-
-.input[type="number"]::-webkit-inner-spin-button,
-.input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* .input[type="number"] {
-  -moz-appearance: textfield;
-} */
 
 .buttonGroup {
   display: flex;
-  gap: 10px;
-  margin-top: 8px;
+  gap: 12px;
+  margin-top: 20px;
 }
 
 .submitButton {
   flex: 1;
-  padding: 10px;
-  background: #333;
+  padding: 12px;
+  background: #030213;
   color: white;
   border: none;
-  border-radius: 6px;
-  font-size: 14px;
+  border-radius: 8px;
+  font-size: 0.9375rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 
 .submitButton:hover {
-  background: #444;
+  background: #1a1a1a;
 }
 
 .cancelButton {
   flex: 1;
-  padding: 10px;
-  background: #6c757d;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 12px;
+  background: white;
+  color: #4b5563;
+  border: 1px solid rgba(3, 2, 19, 0.1);
+  border-radius: 8px;
+  font-size: 0.9375rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 
 .cancelButton:hover {
-  background: #5a6268;
+  background: #f3f4f6;
 }
-
