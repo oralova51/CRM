@@ -1,80 +1,154 @@
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '@/shared/hooks/useReduxHooks';
-import { getAllProceduresThunk } from '@/entities/procedure/api/procedureApi';
-import { updateProcedureThunk } from '@/entities/procedure/api/procedureApi';
-import { Button } from '@/shared/ui/Button/Button';
-import { Procedure } from '@/entities/procedure/model/types';
-import './ModalFormProcedure.css';
+// client/src/entities/procedure/ui/ModalFormProcedure/ModalFormProcedure.tsx
 
-type Props = {
-    onClose: () => void;
+import React, { useState, useEffect } from 'react';
+import { X, Search } from 'lucide-react';
+import { axiosInstance } from '@/shared/lib/axiosInstance';
+import { useToast } from '@/shared/lib/toast/ToastContext';
+import { ToggleSwitch } from '@/shared/ui/ToggleSwitch/ToggleSwitch';
+import styles from './ModalFormProcedure.module.css';
+
+type Procedure = {
+  id: number;
+  name: string;
+  description: string;
+  duration_min: number;
+  price: number;
+  is_active: boolean;
 };
 
-export default function ModalFormProcedure({ onClose }: Props) {
-    const dispatch = useAppDispatch();
-    const { procedures, isLoading, error } = useAppSelector(
-        (state) => state.procedures
-    );
+type ModalFormProcedureProps = {
+  onClose: () => void;
+};
 
-    useEffect(() => {
-        dispatch(getAllProceduresThunk());
-    }, [dispatch]);
+export default function ModalFormProcedure({ onClose }: ModalFormProcedureProps) {
+  const [procedures, setProcedures] = useState<Procedure[]>([]);
+  const [filteredProcedures, setFilteredProcedures] = useState<Procedure[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [updatingId, setUpdatingId] = useState<number | null>(null);
+  const toast = useToast();
 
-    const handleToggle = async (procedure: Procedure) => {
-        await dispatch(updateProcedureThunk({
-            id: procedure.id,
-            data: { is_active: !procedure.is_active }
-        }));
-    };
+  useEffect(() => {
+    fetchProcedures();
+  }, []);
 
-    return (
-        <div className="modalFormProcedure" onClick={onClose}>
-            <div
-                className="modalFormProcedure__content"
-                onClick={(e) => e.stopPropagation()}
-            >
-                <div className="modalFormProcedure__header">
-                    <h3 className="modalFormProcedure__title">
-                        Управление процедурами
-                    </h3>
-                    <button
-                        type="button"
-                        className="modalFormProcedure__close"
-                        onClick={onClose}
-                    >
-                        Закрыть
-                    </button>
-                </div>
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setFilteredProcedures(procedures);
+    } else {
+      const query = searchQuery.toLowerCase();
+      setFilteredProcedures(
+        procedures.filter(proc => 
+          proc.name.toLowerCase().includes(query) ||
+          proc.description?.toLowerCase().includes(query)
+        )
+      );
+    }
+  }, [searchQuery, procedures]);
 
-                <div className="modalFormProcedure__body">
-                    {isLoading && (
-                        <p className="modalFormProcedure__loading">
-                            Загрузка...
-                        </p>
-                    )}
-                    {error && (
-                        <p className="modalFormProcedure__error">{error}</p>
-                    )}
-                    <div className="modalFormProcedure__list">
-                        {procedures.map((p) => (
-                            <div
-                                key={p.id}
-                                className="modalFormProcedure__row"
-                            >
-                                <span className="modalFormProcedure__rowName">
-                                    {p.name}
-                                </span>
-                                <Button
-                                    onClick={() => handleToggle(p)}
-                                    size="sm"
-                                >
-                                    {p.is_active ? 'Отключить' : 'Включить'}
-                                </Button>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
+  const fetchProcedures = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axiosInstance.get('/procedure');
+      if (response.data?.data) {
+        setProcedures(response.data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching procedures:', error);
+      toast.error('Не удалось загрузить процедуры');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const toggleProcedureStatus = async (procedure: Procedure) => {
+    setUpdatingId(procedure.id);
+    try {
+      const response = await axiosInstance.put(`/procedure/${procedure.id}`, {
+        is_active: !procedure.is_active
+      });
+
+      if (response.data?.data) {
+        setProcedures(prev => 
+          prev.map(p => p.id === procedure.id ? response.data.data : p)
+        );
+        toast.success(
+          `Процедура "${procedure.name}" ${!procedure.is_active ? 'активирована' : 'деактивирована'}`
+        );
+      }
+    } catch (error) {
+      console.error('Error toggling procedure:', error);
+      toast.error('Не удалось изменить статус процедуры');
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
+  return (
+    <div className={styles.overlay} onClick={onClose}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.header}>
+          <h2 className={styles.title}>Управление процедурами</h2>
+          <button className={styles.closeButton} onClick={onClose}>
+            <X size={20} />
+          </button>
         </div>
-    );
+
+        {/* Поиск */}
+        <div className={styles.searchContainer}>
+          <Search className={styles.searchIcon} size={20} />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Поиск по названию..."
+            className={styles.searchInput}
+            autoFocus
+          />
+        </div>
+
+        {/* Список процедур */}
+        <div className={styles.proceduresList}>
+          {isLoading ? (
+            <div className={styles.loading}>Загрузка...</div>
+          ) : filteredProcedures.length === 0 ? (
+            <div className={styles.emptyState}>
+              {searchQuery ? 'Ничего не найдено' : 'Нет процедур'}
+            </div>
+          ) : (
+            filteredProcedures.map((procedure) => (
+              <div key={procedure.id} className={styles.procedureItem}>
+                <div className={styles.procedureInfo}>
+                  <div className={styles.procedureName}>
+                    {procedure.name}
+                    {!procedure.is_active && (
+                      <span className={styles.inactiveBadge}>Неактивна</span>
+                    )}
+                  </div>
+                  <div className={styles.procedureMeta}>
+                    <span>{procedure.duration_min} мин</span>
+                    <span>{procedure.price.toLocaleString()} ₽</span>
+                  </div>
+                </div>
+                
+                <div className={styles.procedureToggle}>
+                  <ToggleSwitch
+                    isActive={procedure.is_active}
+                    onChange={() => toggleProcedureStatus(procedure)}
+                    disabled={updatingId === procedure.id}
+                  />
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        <div className={styles.footer}>
+          <button className={styles.closeFooterButton} onClick={onClose}>
+            Закрыть
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
