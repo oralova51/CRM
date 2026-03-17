@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import "./SignInForm.css";
-import { UserValidator } from "../../../../entities/user/model/UserValidator";
+import { UserValidator } from "@/entities/user/model/UserValidator";
 import { Input } from "@/shared/ui/Input/Input";
 import { Button } from "@/shared/ui/Button/Button";
 import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { signInThunk } from "@/entities/user/api/UserApi";
+import styles from "./SignInForm.module.css";
+import { useToast } from '@/shared/lib/toast/ToastContext';
 
 export default function SignInForm() {
   const initialValue = { email: "", password: "" };
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
-
   const [signInData, setSignInData] = useState(initialValue);
+  const toast = useToast();
 
   const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSignInData((current) => ({
@@ -22,23 +22,28 @@ export default function SignInForm() {
     }));
   };
 
-  const signInHandler = async (event: React.SubmitEvent<HTMLFormElement>) => {
+  const signInHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const { isValid, error: validationError } =
       UserValidator.validateSignInData(signInData);
 
     if (!isValid) {
-      alert(validationError);
+      toast.error(validationError || 'Ошибка валидации');
       return;
     }
-    await dispatch(signInThunk(signInData));
-    navigate("/");
+    try {
+      await dispatch(signInThunk(signInData)).unwrap();
+      toast.success('Успешный вход! Добро пожаловать!');
+      navigate("/");
+    } catch (error) {
+      toast.error('Неверный email или пароль');
+    }
   };
 
   return (
-    <form className="auth-form" onSubmit={signInHandler}>
-      <div className="auth-fields">
+    <form className={styles.form} onSubmit={signInHandler}>
+      <div className={styles.fields}>
         <Input
           name="email"
           type="email"

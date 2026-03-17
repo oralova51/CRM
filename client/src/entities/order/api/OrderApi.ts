@@ -10,7 +10,7 @@ import type {
   OrdersResponse,
 } from "../model";
 import type { ServerResponseType } from "@/shared/types";
-import { CLIENT_ROUTES } from "@/shared/consts/clientRoutes";
+
 const ORDER_BASE = "/order";
 
 function toOrderResponse(
@@ -40,7 +40,7 @@ export default class OrderApi {
     try {
       const response = await axiosInstance.post<
         ServerResponseType<OrderApiData>
-      >(CLIENT_ROUTES.ORDER + '/byUser/' + body.user_id, body);
+      >(ORDER_BASE, body);
       return toOrderResponse(response.data);
     } catch (error) {
       console.error("OrderApi.createOrder:", error);

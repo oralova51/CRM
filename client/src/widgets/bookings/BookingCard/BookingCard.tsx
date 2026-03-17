@@ -1,5 +1,3 @@
-// client/src/widgets/bookings/BookingCard/BookingCard.tsx
-
 import { useState } from "react";
 import { Calendar, Clock } from "lucide-react";
 import { BookingStatusBadge } from "@/entities/booking/ui/BookingStatusBadge/BookingStatusBadge";
@@ -8,6 +6,7 @@ import { useCancelBooking } from "@/features/bookings/cancel-booking/useCancelBo
 import { useRescheduleBooking } from "@/features/bookings/reschedule-booking/useRescheduleBooking";
 import type { Booking } from "@/entities/booking/model/types";
 import styles from "./BookingCard.module.css";
+import { useToast } from '@/shared/lib/toast/ToastContext';
 
 type Props = {
   booking: Booking;
@@ -15,16 +14,17 @@ type Props = {
   showActions?: boolean;
 };
 
-export function BookingCard({ 
-  booking, 
-  procedureName, 
+export function BookingCard({
+  booking,
+  procedureName,
   showActions = true,
 }: Props) {
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showRescheduleModal, setShowRescheduleModal] = useState(false);
-  
+
   const { cancelBooking, isLoading: isCancelling } = useCancelBooking();
   const { rescheduleBooking, isLoading: isRescheduling } = useRescheduleBooking();
+  const toast = useToast();
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -57,7 +57,9 @@ export function BookingCard({
     const result = await cancelBooking(booking.id);
     if (result.success) {
       setShowCancelModal(false);
-      // Можно добавить уведомление об успехе
+      toast.success('Запись успешно отменена');
+    } else {
+      toast.error('Не удалось отменить запись');
     }
   };
 
@@ -89,14 +91,14 @@ export function BookingCard({
 
         {showButtons && (
           <div className={styles.actions}>
-            <button 
+            <button
               className={`${styles.rescheduleButton} ${booking.status !== 'pending' ? styles.disabled : ''}`}
               onClick={() => booking.status === 'pending' && setShowRescheduleModal(true)}
               disabled={booking.status !== 'pending'}
             >
               Перенести
             </button>
-            <button 
+            <button
               className={`${styles.cancelButton} ${booking.status !== 'pending' ? styles.disabled : ''}`}
               onClick={() => booking.status === 'pending' && setShowCancelModal(true)}
               disabled={booking.status !== 'pending'}
@@ -105,7 +107,7 @@ export function BookingCard({
             </button>
           </div>
         )}
-        
+
         {isPast && booking.status === 'pending' && (
           <div className={styles.pastNote}>
             Время записи прошло

@@ -1,0 +1,14 @@
+/* client/src/features/auth/ui/SignUpForm/SignUpForm.module.css */
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

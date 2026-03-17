@@ -3,38 +3,35 @@ const formatResponse = require("../utils/formatResponse");
 
 class ProcedureController {
   static async getProcedures(req, res) {
-    console.log('\n========== PROCEDURE CONTROLLER ==========');
-    console.log('1. Inside getProcedures');
-    console.log('2. res.locals.user:', res.locals.user);
     try {
-      const { user } = res.locals;
+      console.log('=== getProcedures ===');
+      console.log('User from locals:', res.locals.user);
+
+      // Получаем пользователя (может быть undefined)
+      const user = res.locals.user;
+
       let procedures;
 
-      // Админ видит все процедуры, клиент - только активные
-      if (user.role === "isAdmin") {
+      // Проверяем, есть ли пользователь и является ли он админом
+      if (user && user.role === "isAdmin") {
+        console.log('User is admin, getting all procedures');
         procedures = await ProcedureService.getAllProcedures();
       } else {
+        console.log('User is not admin or not authenticated, getting only active procedures');
         procedures = await ProcedureService.getActiveProcedures();
       }
 
-      if (procedures.length === 0) {
-        return res
-          .status(200)
-          .json(formatResponse(200, "В базе данных нет процедур", [], null));
-      }
+      console.log(`Found ${procedures.length} procedures`);
 
-      res
-        .status(200)
-        .json(
-          formatResponse(200, "Данные о процедурах получены", procedures, null)
-        );
+      res.status(200).json(
+        formatResponse(200, "Данные о процедурах получены", procedures, null)
+      );
     } catch (error) {
-       console.log('6. ❌ Error in getProcedures:');
       console.log("==== ProcedureController.getProcedures ==== ");
       console.log(error);
-      res
-        .status(500)
-        .json(formatResponse(500, "Внутренняя ошибка сервера", null, error));
+      res.status(500).json(
+        formatResponse(500, "Внутренняя ошибка сервера", null, error.message)
+      );
     }
   }
 
@@ -67,6 +64,20 @@ class ProcedureController {
               null,
               `Процедура с ID: ${id} не найдена`,
             ),
+          );
+      }
+
+      const user = res.locals.user;
+      if (!user && !procedure.is_active) {
+        return res
+          .status(404)
+          .json(
+            formatResponse(
+              404,
+              `Процедура не найдена`,
+              null,
+              `Procedure not found or inactive`
+            )
           );
       }
 

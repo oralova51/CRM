@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 // Создаем папку для загрузок, если её нет
-const uploadDir = path.join(__dirname, '../../public/uploads/procedures');
+const uploadDir = path.join(__dirname, '../../public/uploads/measurementsPhoto');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
     // Генерируем уникальное имя файла
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     const ext = path.extname(file.originalname);
-    cb(null, `procedure-${uniqueSuffix}${ext}`);
+    cb(null, `measurement-${uniqueSuffix}${ext}`);
   }
 });
 

@@ -15,7 +15,7 @@ const serverConfig = (app) => {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
   app.use(removeXPoweredByHeader); // собственная миддлвара для удаления заголовка
-  app.use(express.static(path.join(__dirname, '../public'))); // раздача статических файлов из папки public
+  app.use(express.static(path.join(__dirname, '../../public'))); // раздача статических файлов из папки public
 };
 
 module.exports = serverConfig;

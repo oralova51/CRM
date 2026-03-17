@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import "./SignUpForm.css";
-import { UserValidator } from "../../../../entities/user/model/UserValidator";
+import { UserValidator } from "@/entities/user/model/UserValidator";
 import { Input } from "@/shared/ui/Input/Input";
 import { Button } from "@/shared/ui/Button/Button";
 import { useAppDispatch } from "@/shared/hooks/useReduxHooks";
 import { signUpThunk } from "@/entities/user/api/UserApi";
+import styles from "./SignUpForm.module.css";
+import { useToast } from '@/shared/lib/toast/ToastContext';
 
 export default function SignUpForm() {
-  const initialValue = { name: "", email: "", password: "", phone: ""  };
+  const initialValue = { name: "", email: "", password: "", phone: "" };
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
-
   const [signUpData, setSignUpData] = useState(initialValue);
+  const toast = useToast();
 
   const inputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSignUpData((current) => ({
@@ -29,16 +29,21 @@ export default function SignUpForm() {
       UserValidator.validateSignUpData(signUpData);
 
     if (!isValid) {
-      alert(validationError);
+      toast.error(validationError || 'Ошибка валидации');
       return;
     }
-    await dispatch(signUpThunk(signUpData));
-    navigate("/");
+    try {
+      await dispatch(signUpThunk(signUpData)).unwrap();
+      toast.success('Регистрация успешна! Добро пожаловать!');
+      navigate("/");
+    } catch (error) {
+      toast.error('Ошибка при регистрации. Попробуйте позже.');
+    }
   };
 
   return (
-    <form className="auth-form" onSubmit={signUpHandler}>
-      <div className="auth-fields">
+    <form className={styles.form} onSubmit={signUpHandler}>
+      <div className={styles.fields}>
         <Input
           name="name"
           type="text"
@@ -66,7 +71,6 @@ export default function SignUpForm() {
           label="Пароль"
           placeholder="Минимум 8 символов"
         />
-
         <Input
           name="phone"
           type="tel"

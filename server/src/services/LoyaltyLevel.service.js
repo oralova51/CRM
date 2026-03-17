@@ -80,6 +80,63 @@ class LoyaltyLevelService {
 
     return { visits, averageInterval };
   }
+
+  static async getUserDiscountById(userId) {
+    const user = await User.findByPk(userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const totalSpent = parseFloat(user.totalSpent) || 0;
+
+    const loyaltyLevel = await LoyaltyLevel.findOne({
+      where: {
+        min_spent: {
+          [Op.lte]: totalSpent,
+        },
+      },
+      order: [["min_spent", "DESC"]],
+    });
+
+    // Находим следующий уровень для отображения прогресса
+    const nextLevel = await LoyaltyLevel.findOne({
+      where: {
+        min_spent: {
+          [Op.gt]: totalSpent,
+        },
+      },
+      order: [["min_spent", "ASC"]],
+    });
+
+    if (!loyaltyLevel) {
+      return {
+        discount: 0,
+        level: "Базовый",
+        min_spent: 0,
+        nextLevel: nextLevel ? {
+          name: nextLevel.level,
+          discount: nextLevel.discount_pct,
+          min_spent: nextLevel.min_spent,
+          needed: nextLevel.min_spent - totalSpent
+        } : null,
+        totalSpent
+      };
+    }
+
+    return {
+      discount: loyaltyLevel.discount_pct,
+      level: loyaltyLevel.level,
+      min_spent: loyaltyLevel.min_spent,
+      nextLevel: nextLevel ? {
+        name: nextLevel.level,
+        discount: nextLevel.discount_pct,
+        min_spent: nextLevel.min_spent,
+        needed: nextLevel.min_spent - totalSpent
+      } : null,
+      totalSpent
+    };
+  }
 }
 
 module.exports = LoyaltyLevelService;

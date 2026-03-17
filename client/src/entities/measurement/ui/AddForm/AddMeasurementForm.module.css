@@ -1,0 +1,73 @@
+.form {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(3, 2, 19, 0.08);
+}
+
+.formTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #030213;
+  margin: 0 0 20px 0;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4b5563;
+  margin-bottom: 6px;
+}
+
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(3, 2, 19, 0.1);
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  transition: all 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #030213;
+}
+
+.fileInput {
+  width: 100%;
+  padding: 8px;
+  border: 1px dashed rgba(3, 2, 19, 0.2);
+  border-radius: 8px;
+  background: #f9fafb;
+  cursor: pointer;
+}
+
+.fileName {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 12px;
+  background: #030213;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.submitButton:hover {
+  background: #1a1a1a;
+  transform: translateY(-1px);
+}

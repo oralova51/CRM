@@ -39,5 +39,14 @@ measurementRouter
     verifyAccessToken, 
     MeasurementController.deletePhoto
   );
+  measurementRouter.post(
+  "/with-photo",
+  verifyAccessToken,
+  upload.fields([
+    { name: 'photo_before', maxCount: 1 },
+    { name: 'photo_after', maxCount: 1 }
+  ]),
+  MeasurementController.createMeasurementWithPhoto
+);
 
 module.exports = measurementRouter;
