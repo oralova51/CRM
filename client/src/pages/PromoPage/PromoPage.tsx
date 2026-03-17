@@ -203,7 +203,8 @@ export default function PromoPage() {
               Студия<br />идеального тела
             </h1>
             <p className={styles.heroSubtitle}>
-              Работаем с 2019 года. Помогаем вам стать лучшей версией себя.
+              Работаем с 2019 года. <br />
+              Помогаем вам стать лучшей версией себя.
             </p>
             <div className={styles.heroButtons}>
               <button 
