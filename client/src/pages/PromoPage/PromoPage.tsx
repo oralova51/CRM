@@ -14,18 +14,20 @@ import styles from './PromoPage.module.css';
 const PROCEDURE_IMAGE_MAP: Record<string, string> = {
   'Массаж тела по технологии LPG': '/procedures/lpg_telo.jpg',
   'LPG массаж лица': '/procedures/lpg_face.jpg',
-  'Sketch массаж': '/procedures/placeholder.svg',
   'Sketch массаж лица': '/procedures/sketch_face.JPG',
   'Индиба (1 зона)': '/procedures/indiba.JPG',
   'Турбо массаж для похудения': '/procedures/turbo.JPG',
   'Криолиполиз (манипула для тела)': '/procedures/cryolipoliz.jpg',
-  'Криолиполиз (манипула для подбородка)': '/procedures/placeholder.svg',
+  'Криолиполиз (манипула для подбородка)': '/procedures/kryoface.jpg',
   'RF лифтинг для лица': '/procedures/rf_face.JPG',
   'RF лифтинг для тела': '/procedures/rf_lifting.jpg',
   'Кавитация': '/procedures/kavitaciya.jpeg',
   'Миостимуляция': '/procedures/miostimul.jpeg',
   'Прессотерапия': '/procedures/pressoterapia.jpg',
   'Обёртывания': '/procedures/obertivanie.jpeg',
+  'БиоФотон': '/procedures/foton.jpg',
+  'Горячий массаж для похудения': '/procedures/hot.jpg',
+  'Sketch массаж': '/procedures/sketch.jpg',
 };
 
 const PLACEHOLDER_IMAGE = '/procedures/placeholder.svg';
@@ -201,7 +203,8 @@ export default function PromoPage() {
               Студия<br />идеального тела
             </h1>
             <p className={styles.heroSubtitle}>
-              Работаем с 2019 года. Помогаем вам стать лучшей версией себя.
+              Работаем с 2019 года. <br />
+              Помогаем вам стать лучшей версией себя.
             </p>
             <div className={styles.heroButtons}>
               <button 
