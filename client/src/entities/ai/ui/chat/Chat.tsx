@@ -28,10 +28,15 @@ export default function Chat() {
             if (!requestCompletedRef.current) setWriting(true);
         }, 0);
         try {
-            const response = await AiApi.createChat({ message: userMessage });
-            if (response?.data?.content) {
-                setMessages((prev) => [...prev, { content: response.data.content, role: 'assistant' }]);
+            const response = await AiApi.createChat({ question: userMessage });
+            if (response?.answer) {
+                setMessages((prev) => [...prev, { content: response.answer, role: 'assistant' }]);
             }
+        } catch (error) {
+            const errorMessage =
+                (error as { response?: { data?: { message?: string } } })?.response?.data?.message ||
+                'Не удалось получить ответ. Убедитесь, что файлы проиндексированы.';
+            setMessages((prev) => [...prev, { content: errorMessage, role: 'assistant' }]);
         } finally {
             requestCompletedRef.current = true;
             setWriting(false);
